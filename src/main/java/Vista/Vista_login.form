@@ -153,6 +153,7 @@
     </Component>
     <Component class="javax.swing.JPasswordField" name="txt_clave">
       <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txt_claveFocusLost"/>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_claveKeyReleased"/>
       </Events>
       <AuxValues>

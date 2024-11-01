@@ -2,18 +2,24 @@ package Vista;
 
 import Modelo.Usuario;
 import Persistencia.LoginDAO;
-import com.mxrck.autocompleter.TextAutoCompleter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 public class Vista_login extends javax.swing.JFrame {
 
-    private TextAutoCompleter ac;
+    private Timer timer;
+    private final int DELAY = 500;
 
     public Vista_login() {
         initComponents();
         btn_crearCuenta.setVisible(false);
-        this.setLocationRelativeTo(null);
-        ac = new TextAutoCompleter(txt_usuario);
-        cargarAutoCompleter();
+        configurarAutoCompleter();
     }
 
     @SuppressWarnings("unchecked")
@@ -69,6 +75,11 @@ public class Vista_login extends javax.swing.JFrame {
 
         txt_clave.putClientProperty("JComponent.roundRect", true);
         txt_clave.putClientProperty("JTextField.placeholderText", "Ingrese su contraseña");
+        txt_clave.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_claveFocusLost(evt);
+            }
+        });
         txt_clave.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_claveKeyReleased(evt);
@@ -140,16 +151,23 @@ public class Vista_login extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
     private void txt_usuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyReleased
-        verificarAccesoAdministrador();
+
+        iniciarTimer();
     }//GEN-LAST:event_txt_usuarioKeyReleased
 
     private void txt_claveKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_claveKeyReleased
         verificarAccesoAdministrador();
+                iniciarTimer();
+                
     }//GEN-LAST:event_txt_claveKeyReleased
 
     private void btn_crearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearCuentaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_crearCuentaActionPerformed
+
+    private void txt_claveFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_claveFocusLost
+//        verificarAccesoAdministrador();
+    }//GEN-LAST:event_txt_claveFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -164,16 +182,24 @@ public class Vista_login extends javax.swing.JFrame {
     private javax.swing.JPasswordField txt_clave;
     private javax.swing.JTextField txt_usuario;
     // End of variables declaration//GEN-END:variables
-    private void verificarAccesoAdministrador() {
-        LoginDAO loginDAO = new LoginDAO();
-        String usuario = txt_usuario.getText();
-        String clave = new String(txt_clave.getPassword());
-        if (loginDAO.esUsuarioAdmin(usuario, clave)) {
-            btn_crearCuenta.setVisible(true);
-        } else {
-            btn_crearCuenta.setVisible(false);
-        }
+private void verificarAccesoAdministrador() {
+    LoginDAO loginDAO = new LoginDAO();
+    String usuario = txt_usuario.getText().trim(); // Eliminamos espacios en blanco
+    String clave = new String(txt_clave.getPassword()).trim();
+
+    if (usuario.isEmpty() || clave.isEmpty()) {
+       // JOptionPane.showMessageDialog(this, "Por favor, ingrese usuario y clave.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
     }
+
+    // Usar un hilo para evitar el bloqueo de la UI
+    new Thread(() -> {
+        boolean esAdmin = loginDAO.esUsuarioAdmin(usuario, clave);
+        SwingUtilities.invokeLater(() -> {
+            btn_crearCuenta.setVisible(esAdmin);
+        });
+    }).start();
+}
 
     private void validar() {
         LoginDAO loginDAO = new LoginDAO();
@@ -197,11 +223,25 @@ public class Vista_login extends javax.swing.JFrame {
         }
     }
 
-    public void cargarAutoCompleter() {
+    private void configurarAutoCompleter() {
         LoginDAO loginDAO = new LoginDAO();
-        String[] usuariosRecordados = loginDAO.obtenerUsuariosRecordados();
-        for (String usuariosRecordado : usuariosRecordados) {
-            ac.addItem(usuariosRecordado);
-        }
+        List<String> usuariosRecordados = loginDAO.obtenerUsuariosRecordados();
+        AutoCompleteDecorator.decorate(txt_usuario, usuariosRecordados, false);
     }
+
+    private void iniciarTimer() {
+        if (timer != null) {
+            timer.stop(); 
+        }
+        timer = new Timer(DELAY, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timer.stop(); // Detiene el timer después de ejecutar
+                verificarAccesoAdministrador();
+            }
+        });
+        timer.setRepeats(false); // Asegúrate de que el timer no se repita
+        timer.start(); // Inicia el timer
+    }
+
 }

@@ -1,12 +1,14 @@
 Vista\Vista_bienvenida$1.class
 Vista\Vista_login$1.class
-Vista\Vista_login$4.class
 Vista\Iniciador.class
 Abstrac\DAO.class
 Vista\Vista_login$2.class
 Modelo\Usuario.class
 Vista\Vista_login.class
-Modelo\LoginPreferences.class
 Vista\Vista_login$3.class
+Vista\Vista_login$4.class
+Modelo\LoginPreferences.class
+Vista\Vista_login$6.class
+Vista\Vista_login$5.class
 Persistencia\LoginDAO.class
 Vista\Vista_bienvenida.class

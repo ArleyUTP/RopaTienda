@@ -6,6 +6,8 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
 
@@ -13,7 +15,7 @@ public class LoginDAO extends DAO<Usuario> {
 
     private static final String PREF_USUARIO_KEY = "usuario_";
     private static final String PREF_CANTIDAD_USUARIOS = "cantidad_usuarios";
-    private Preferences prefs;
+    private final Preferences prefs;
 
     public LoginDAO() {
         prefs = Preferences.userNodeForPackage(LoginDAO.class);
@@ -69,19 +71,18 @@ public class LoginDAO extends DAO<Usuario> {
         prefs.putInt(PREF_CANTIDAD_USUARIOS, cantidadUsuarios + 1);
     }
 
-    // Método para obtener todos los usuarios recordados
-    public String[] obtenerUsuariosRecordados() {
+    public List<String> obtenerUsuariosRecordados() {
         int cantidadUsuarios = prefs.getInt(PREF_CANTIDAD_USUARIOS, 0);
-        String[] usuarios = new String[cantidadUsuarios];
-        
-        // Recuperar cada usuario recordado usando su índice
+        List<String> usuarios = new ArrayList<>();
         for (int i = 0; i < cantidadUsuarios; i++) {
-            usuarios[i] = prefs.get(PREF_USUARIO_KEY + i, "");
+            String usuario = prefs.get(PREF_USUARIO_KEY + i, "");
+            if (!usuario.isEmpty()) {
+                usuarios.add(usuario);
+            }
         }
         return usuarios;
     }
 
-    // Método para limpiar los usuarios recordados
     public void limpiarUsuariosRecordados() {
         int cantidadUsuarios = prefs.getInt(PREF_CANTIDAD_USUARIOS, 0);
         for (int i = 0; i < cantidadUsuarios; i++) {
@@ -89,6 +90,7 @@ public class LoginDAO extends DAO<Usuario> {
         }
         prefs.putInt(PREF_CANTIDAD_USUARIOS, 0);
     }
+
     protected void mensaje(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
     }
