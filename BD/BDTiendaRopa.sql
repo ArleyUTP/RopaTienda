@@ -16,6 +16,12 @@ CREATE TABLE Usuarios (
     foto NVARCHAR(MAX),
     fecha_creacion DATETIME2 DEFAULT GETDATE()
 );
+CREATE TABLE UsuariosRecordados (
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
+    usuario_id BIGINT FOREIGN KEY REFERENCES Usuarios(id),
+    fecha_recordado DATETIME2 DEFAULT GETDATE(),
+    UNIQUE (usuario_id)  -- Para evitar duplicados
+);
 
 CREATE TABLE Tallas (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
@@ -98,14 +104,61 @@ CREATE TABLE Promociones (
 );
 --PROCEMIENTO ALMACENADO QUE ME PERMITE VERFICAR SI ES UN ADMINISTRADOR A PARTIR DE
 --EL USUARIO Y LA CONTRASEÑA
-CREATE PROC VerificarAdmin
-@usuario NVARCHAR(50),
-@clave NVARCHAR(255)
+CREATE PROCEDURE InsertarUsuarioRecordado
+    @usuario NVARCHAR(50)
 AS
 BEGIN
-	SELECT rol FROM Usuarios
-	WHERE usuario = @usuario AND clave = @clave;
+    DECLARE @usuarioId BIGINT;
+
+    -- Obtener el ID del usuario a partir del nombre de usuario
+    SELECT @usuarioId = id
+    FROM Usuarios
+    WHERE usuario = @usuario;
+
+    -- Verificar si se encontró un usuario
+    IF @usuarioId IS NOT NULL
+    BEGIN
+        -- Insertar en UsuariosRecordados
+        INSERT INTO UsuariosRecordados (usuario_id)
+        VALUES (@usuarioId);
+    END
+    ELSE
+    BEGIN
+        -- Manejo de errores si no se encuentra el usuario
+        RAISERROR('Usuario no encontrado', 16, 1);
+    END
+END;
+
+--PROCEDIMIENTO ALMACENDAO QUE PERMITE EL RECUPERAR LOS USUARIOS RECORDADOS
+CREATE PROC ObtenerUsuariosRecordados
+AS
+BEGIN
+	SELECT U.usuario
+	FROM UsuariosRecordados UR
+	INNER JOIN Usuarios U ON UR.usuario_id=U.id
 END
+--PROCEDIMIENTO ALMACENADO QUE PERMITE EL ELIMINAR UN USUARIO RECORDADO
+CREATE PROC EliminarUsuarioRecordado
+@usuario NVARCHAR(50)
+AS
+BEGIN
+	DECLARE @usuarioID BIGINT;
+	-- Obtener el ID del usuario a partir del nombre de usuario
+	SELECT @usuarioID = id
+	FROM Usuarios
+	WHERE usuario = @usuario
+	-- Verificar si se encontró un usuario
+    IF @usuarioId IS NOT NULL
+	BEGIN
+		DELETE FROM UsuariosRecordados
+		WHERE id = @usuarioID;
+	END
+	ELSE
+	BEGIN
+		-- Manejo de errores si no se encuentra el usuario
+        RAISERROR('Usuario no encontrado', 16, 1);
+	END
+END;
 --PROCEDIMIENTO ALMACENADO QUE PERMITE VALIDAR EL INGREDO DE DATOS EN EL LOGIN Y ME PERMITE CAPTURAR DATOS DEL
 --USUARIO ACTUAL
 CREATE PROC validarCredenciales
@@ -120,7 +173,16 @@ BEGIN
 		AND estado = 'activo';
 END;
 
-
+--PROCEDIMIENTO ALMACENADO QUE ME PERMITE INGRESAR UN USUARIO PARA RECORDAR USUARIO
+CREATE PROC InsertarUsuarioRecordado
+@usuario NVARCHAR(50)
+AS
+BEGIN
+	INSERT INTO UsuariosRecordados (usuario_id)
+	VALUES (SELECT id
+			FROM Usuarios
+			WHERE usuario = @usuario)
+END
 
 
 EXEC VerificarAdmin 'juanp','claveSegura123'

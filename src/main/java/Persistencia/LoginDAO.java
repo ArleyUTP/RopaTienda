@@ -8,17 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
 
 public class LoginDAO extends DAO<Usuario> {
 
-    private static final String PREF_USUARIO_KEY = "usuario_";
-    private static final String PREF_CANTIDAD_USUARIOS = "cantidad_usuarios";
-    private final Preferences prefs;
 
     public LoginDAO() {
-        prefs = Preferences.userNodeForPackage(LoginDAO.class);
     }
 
     public boolean esUsuarioAdmin(String usuario, String clave) {
@@ -49,7 +44,8 @@ public class LoginDAO extends DAO<Usuario> {
                     if ("activo".equalsIgnoreCase(estado)) {
                         usuarioAutenticado = new Usuario(
                                 rs.getInt("id"),
-                                rs.getString("nombre"), rs.getString("apellido"), usuario, estado, rs.getString("rol"));
+                                rs.getString("nombre"), rs.getString("apellido"),
+                                usuario, estado, rs.getString("rol"));
                         mensaje("Credenciales correctas");
                     } else {
                         mensaje("El estado de esta cuenta es inactivo");
@@ -61,36 +57,36 @@ public class LoginDAO extends DAO<Usuario> {
         }
         return usuarioAutenticado;
     }
-
-    // Método para guardar un usuario recordado
-    public void guardarUsuarioRecordado(String usuario) {
-        int cantidadUsuarios = prefs.getInt(PREF_CANTIDAD_USUARIOS, 0);
-
-        // Guardar el usuario en una clave con índice único
-        prefs.put(PREF_USUARIO_KEY + cantidadUsuarios, usuario);
-        prefs.putInt(PREF_CANTIDAD_USUARIOS, cantidadUsuarios + 1);
+    public  void agregarUsuarioRecordado(String usuario){
+        try(Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC InsertarUsuarioRecordado ?")) {
+            cs.setString(1, usuario);
+            cs.executeUpdate();
+        } catch (SQLException e) {
+            manejarError("Error al agregar usuario recordado", e);
+        }
     }
-
-    public List<String> obtenerUsuariosRecordados() {
-        int cantidadUsuarios = prefs.getInt(PREF_CANTIDAD_USUARIOS, 0);
-        List<String> usuarios = new ArrayList<>();
-        for (int i = 0; i < cantidadUsuarios; i++) {
-            String usuario = prefs.get(PREF_USUARIO_KEY + i, "");
-            if (!usuario.isEmpty()) {
-                usuarios.add(usuario);
+    public List<Usuario> obtenerUsuariosRecordados(){
+        List<Usuario> usuariosRecordados = new ArrayList<>();
+        try (Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC ObtenerUsuariosRecordados")){
+            ResultSet rs = cs.executeQuery();
+            while(rs.next()){
+                Usuario usuario = new Usuario();
+                usuario.setUsuario(rs.getString("usuario"));
+                usuariosRecordados.add(usuario);
             }
+        } catch (Exception e) {
+            manejarError("Error al obtener usuarios recordados", e);
         }
-        return usuarios;
+        return usuariosRecordados;
     }
-
-    public void limpiarUsuariosRecordados() {
-        int cantidadUsuarios = prefs.getInt(PREF_CANTIDAD_USUARIOS, 0);
-        for (int i = 0; i < cantidadUsuarios; i++) {
-            prefs.remove(PREF_USUARIO_KEY + i);
+    public void eliminarUsuarioRecordado(String usuario){
+        try(Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC EliminarUsuarioRecordado ?")) {
+            cs.setString(1, usuario);
+            cs.executeUpdate();
+        } catch (SQLException e) {
+            manejarError("Error al eliminar usuario recordado", e);
         }
-        prefs.putInt(PREF_CANTIDAD_USUARIOS, 0);
     }
-
     protected void mensaje(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
     }

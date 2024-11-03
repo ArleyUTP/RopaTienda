@@ -5,8 +5,10 @@ Abstrac\DAO.class
 Vista\Vista_login$2.class
 Modelo\Usuario.class
 Vista\Vista_login.class
+Vista\Vista_EnvioCorreo.class
 Vista\Vista_login$3.class
 Vista\Vista_login$4.class
+Vista\Vista_EnvioCorreo$1.class
 Modelo\LoginPreferences.class
 Vista\Vista_login$6.class
 Vista\Vista_login$5.class

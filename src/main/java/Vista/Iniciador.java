@@ -3,7 +3,7 @@ package Vista;
 import com.formdev.flatlaf.FlatDarkLaf;
 
 public class Iniciador {
-
+    
     public static void main(String[] args) {
         try {
             FlatDarkLaf.setup();
@@ -14,5 +14,5 @@ public class Iniciador {
         vista.setLocationRelativeTo(null);
         vista.setVisible(true);
     }
-
+    
 }
