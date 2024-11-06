@@ -52,21 +52,15 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lbl_titulo" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="txt_busqueda" min="-2" pref="200" max="-2" attributes="0"/>
-                                  <EmptySpace min="16" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="lbl_titulo" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="txt_busqueda" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="300" max="-2" attributes="0"/>
-                          <Component id="buttonAction3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="300" max="32767" attributes="0"/>
+                          <Component id="btn_crear" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="buttonAction2" min="-2" max="-2" attributes="0"/>
+                          <Component id="btn_editar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="buttonAction1" min="-2" max="-2" attributes="0"/>
+                          <Component id="btn_eliminar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -82,9 +76,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="txt_busqueda" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="buttonAction1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="buttonAction2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="buttonAction3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_eliminar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_editar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_crear" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                   <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
@@ -184,20 +178,23 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txt_busqueda">
         </Component>
-        <Component class="Vista_Usuarios.table.ButtonAction" name="buttonAction1">
+        <Component class="Vista_Usuarios.table.ButtonAction" name="btn_eliminar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Eliminar"/>
           </Properties>
         </Component>
-        <Component class="Vista_Usuarios.table.ButtonAction" name="buttonAction2">
+        <Component class="Vista_Usuarios.table.ButtonAction" name="btn_editar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Editar"/>
           </Properties>
         </Component>
-        <Component class="Vista_Usuarios.table.ButtonAction" name="buttonAction3">
+        <Component class="Vista_Usuarios.table.ButtonAction" name="btn_crear">
           <Properties>
             <Property name="text" type="java.lang.String" value="Crear"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_crearActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

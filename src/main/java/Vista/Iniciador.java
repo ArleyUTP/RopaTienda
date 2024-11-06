@@ -1,7 +1,6 @@
 package Vista;
 
 import Vista_Usuarios.Mantenimiento_Usuarios;
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Font;

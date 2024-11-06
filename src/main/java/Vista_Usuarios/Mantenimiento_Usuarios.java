@@ -9,6 +9,10 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Font;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import raven.popup.DefaultOption;
+import raven.popup.GlassPanePopup;
+import raven.popup.component.SimplePopupBorder;
+import raven.toast.Notifications;
 
 public class Mantenimiento_Usuarios extends javax.swing.JFrame {
 
@@ -18,6 +22,8 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
     }
 
     private void init() {
+        GlassPanePopup.install(this);
+        Notifications.getInstance().setJFrame(this);
         panel.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Table.background");
@@ -71,9 +77,9 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         lbl_titulo = new javax.swing.JLabel();
         txt_busqueda = new javax.swing.JTextField();
-        buttonAction1 = new Vista_Usuarios.table.ButtonAction();
-        buttonAction2 = new Vista_Usuarios.table.ButtonAction();
-        buttonAction3 = new Vista_Usuarios.table.ButtonAction();
+        btn_eliminar = new Vista_Usuarios.table.ButtonAction();
+        btn_editar = new Vista_Usuarios.table.ButtonAction();
+        btn_crear = new Vista_Usuarios.table.ButtonAction();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -163,11 +169,16 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
 
         lbl_titulo.setText("Usuarios");
 
-        buttonAction1.setText("Eliminar");
+        btn_eliminar.setText("Eliminar");
 
-        buttonAction2.setText("Editar");
+        btn_editar.setText("Editar");
 
-        buttonAction3.setText("Crear");
+        btn_crear.setText("Crear");
+        btn_crear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_crearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
@@ -183,15 +194,13 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
                             .addGroup(panelLayout.createSequentialGroup()
                                 .addComponent(lbl_titulo)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(300, 300, 300)
-                        .addComponent(buttonAction3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_crear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buttonAction2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonAction1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23)))
                 .addContainerGap())
         );
@@ -203,9 +212,9 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonAction1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonAction2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonAction3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_crear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -232,6 +241,28 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btn_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearActionPerformed
+// TODO add your handling code here:
+        Vista_Usuarios.Crear crear = new Crear();
+        DefaultOption option = new DefaultOption() {
+            @Override
+            public boolean closeWhenClickOutside() {
+                return true;
+            }
+        };
+        String actions[] = new String[]{"Cancelar", "Guardar"};
+        GlassPanePopup.showPopup(
+                new SimplePopupBorder(crear, "Crear Usuario", actions, (pc, i) -> {
+                    if (i == 1) {
+                        // Guardar
+                    } else {
+                        pc.closePopup();
+                    }
+                }),
+                option
+        );
+    }//GEN-LAST:event_btn_crearActionPerformed
+
     public static void main(String args[]) {
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
@@ -244,9 +275,9 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Vista_Usuarios.table.ButtonAction buttonAction1;
-    private Vista_Usuarios.table.ButtonAction buttonAction2;
-    private Vista_Usuarios.table.ButtonAction buttonAction3;
+    private Vista_Usuarios.table.ButtonAction btn_crear;
+    private Vista_Usuarios.table.ButtonAction btn_editar;
+    private Vista_Usuarios.table.ButtonAction btn_eliminar;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbl_titulo;
     private javax.swing.JPanel panel;
