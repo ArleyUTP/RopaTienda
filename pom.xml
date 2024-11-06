@@ -84,6 +84,19 @@
             <artifactId>AutoCompleter</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.passay/passay -->
+        <dependency>
+            <groupId>org.passay</groupId>
+            <artifactId>passay</artifactId>
+            <version>1.6.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.20</version>
+        </dependency>
+
         <dependency>
             <groupId>raven.popup</groupId>
             <artifactId>swing-glasspane-popup</artifactId>
@@ -93,6 +106,12 @@
             <groupId>raven.toast</groupId>
             <artifactId>swing-toast-notifications</artifactId>
             <version>1.0.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>6.3.4</version>
         </dependency>
     </dependencies>
     <properties>

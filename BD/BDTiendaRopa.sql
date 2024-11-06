@@ -246,3 +246,40 @@ BEGIN
         RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
     END CATCH
 END;
+
+--Fucion para generar nombre se usuario:
+CREATE FUNCTION dbo.GenerarUsuario
+(
+	@nombre NVARCHAR(50),
+	@apellido NVARCHAR(50),
+	@dni NVARCHAR(50)
+)
+RETURNS NVARCHAR(50)
+AS
+BEGIN
+	DECLARE @usuarioGenerado NVARCHAR(50);
+	SET @usuarioGenerado = LOWER(@nombre+LEFT(@apellido,1)+RIGHT(@dni,2));
+	RETURN @usuarioGenerado;
+END;
+PRINT dbo.GenerarUsuario('Arley','Ticse','71451008')
+
+--PROCEDIMIENTO QUE GENERA EL USUARIO USANDO LA FUNCION Y HACE LA COMPARACION DE QUE ES UNICO
+CREATE PROC GenerarUsuarioUnico
+    @nombre NVARCHAR(50),
+    @apellido NVARCHAR(50),
+    @dni NVARCHAR(50),
+    @usuarioGenerado NVARCHAR(50) OUTPUT
+AS
+BEGIN
+	DECLARE @usuarioBase NVARCHAR(50) = dbo.GenerarUsuario(@nombre, @apellido, @dni);
+	DECLARE @Contador INT = 1;
+
+	--Verificar si existe
+	WHILE EXISTS(SELECT 1 FROM Usuarios WHERE usuario = @usuarioBase)
+	BEGIN
+		SET @usuarioBase = dbo.GenerarUsuario(@nombre, @apellido, @dni) + CAST(@contador AS NVARCHAR(10));
+        SET @contador = @contador + 1
+	END
+	--Asignar el usuario generado a la variable de salida
+	SET @usuarioGenerado=@usuarioBase
+END;

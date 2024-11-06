@@ -31,7 +31,7 @@ public class Vista_MantenimientoUsuarios extends javax.swing.JFrame {
         usuario.setNombre(txt_nombre.getText());
         usuario.setApellido(txt_apellido.getText());
         usuario.setDni(txt_dni.getText());
-        usuario.setFechaCreacion(fechaNacimiento.getDate());
+      //  usuario.setFechaCreacion(fechaNacimiento.getDate());
         usuario.setCorreo(txt_correo.getText());
         usuario.setUsuario(txt_usuario.getText());
         usuario.setClave(txt_password.getText());

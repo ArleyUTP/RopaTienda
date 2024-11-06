@@ -3,6 +3,7 @@ package Vista_Usuarios;
 import Vista_Usuarios.table.CheckBoxTableHeaderRenderer;
 import Vista_Usuarios.table.TableHeaderAlignment;
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
@@ -18,6 +19,7 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
 
     public Mantenimiento_Usuarios() {
         initComponents();
+        this.setLocationRelativeTo(null);
         init();
     }
 
@@ -49,7 +51,7 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
                 + "background:$Table.background;");
         lbl_titulo.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:bold +5;");
-        txt_busqueda.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search...");
+        txt_busqueda.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Busqueda...");
         txt_busqueda.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("sample/icon/search.svg"));
         txt_busqueda.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:15;"
@@ -254,7 +256,7 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
         GlassPanePopup.showPopup(
                 new SimplePopupBorder(crear, "Crear Usuario", actions, (pc, i) -> {
                     if (i == 1) {
-                        // Guardar
+                        
                     } else {
                         pc.closePopup();
                     }
@@ -285,4 +287,8 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
     private javax.swing.JTable table;
     private javax.swing.JTextField txt_busqueda;
     // End of variables declaration//GEN-END:variables
+
+    private void guardar(){
+        
+    }
 }
