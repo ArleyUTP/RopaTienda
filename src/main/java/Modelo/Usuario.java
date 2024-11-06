@@ -28,8 +28,7 @@ public class Usuario {
         this.estado = estado;
         this.rol = rol;
     }
-
-    public Usuario(int idUsuario, String nombre, String apellido, String dni, String correo, String usuario, String clave, String estado, String rol, Date fechaNacimiento, String foto, Date fechaCreacion) {
+    public Usuario(int idUsuario, String nombre, String apellido, String dni, String correo, String usuario, String clave, String estado, String rol, Date fechaNacimiento,String foto, Date fechaCreacion) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;

@@ -56,7 +56,8 @@ CREATE TABLE Productos (
     precio_compra DECIMAL(18, 2),
     precio_venta DECIMAL(18, 2),
     estado_promocion BIT,
-    fecha_caducidad_promocion DATE
+    fecha_caducidad_promocion DATE,
+	foto NVARCHAR(MAX)
 );
 
 CREATE TABLE Pedidos (
@@ -188,3 +189,60 @@ END
 EXEC VerificarAdmin 'juanp','claveSegura123'
 INSERT INTO Usuarios (nombre, apellido, dni, correo, usuario, clave, estado, rol, fecha_nacimiento, foto)
 VALUES ('Juan', 'Pérez', '12345678', 'juan.perez@example.com', 'juanp', 'claveSegura123', 'activo', 'admin', '1985-05-15', NULL);
+
+--PROCEDIMIENTO ALMACENADO PARA CREAR UN USUARIO:
+CREATE PROCEDURE CrearUsuario 
+    @nombre NVARCHAR(MAX),
+    @apellido NVARCHAR(MAX),
+    @dni NVARCHAR(50),
+    @correo NVARCHAR(255),
+    @usuario NVARCHAR(50),
+    @clave NVARCHAR(255),
+    @estado NVARCHAR(20),
+    @rol NVARCHAR(20),
+    @fecha_nacimiento DATE,
+    @foto NVARCHAR(MAX)
+AS
+BEGIN
+    BEGIN TRY
+        INSERT INTO Usuarios (
+            nombre, 
+            apellido, 
+            dni, 
+            correo, 
+            usuario, 
+            clave, 
+            estado, 
+            rol, 
+            fecha_nacimiento, 
+            foto
+        ) VALUES (
+            @nombre, 
+            @apellido, 
+            @dni, 
+            @correo, 
+            @usuario, 
+            @clave, 
+            @estado, 
+            @rol, 
+            @fecha_nacimiento, 
+            @foto
+        );
+        
+        -- Mensaje opcional de confirmación
+        PRINT 'Usuario creado exitosamente';
+    END TRY
+    BEGIN CATCH
+        -- Manejo de errores
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
+
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
