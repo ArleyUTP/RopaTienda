@@ -1,13 +1,17 @@
 package Vista_Usuarios;
 
+import Modelo.Usuario;
+import Persistencia.UsuarioDAO;
 import Vista_Usuarios.table.CheckBoxTableHeaderRenderer;
 import Vista_Usuarios.table.TableHeaderAlignment;
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import raven.popup.DefaultOption;
@@ -21,6 +25,7 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         init();
+        cargarDatosTabla();
     }
 
     private void init() {
@@ -89,66 +94,17 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "SELECT", "#", "Nombre", "Apellido", "DNI", "Correo", "Usuario", "Clave"
+                "SELECT", "#", "Nombre", "Apellido", "DNI", "Correo", "Usuario", "Estado", "Rol"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, true, true
+                true, false, false, false, false, false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -174,6 +130,11 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
         btn_eliminar.setText("Eliminar");
 
         btn_editar.setText("Editar");
+        btn_editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editarActionPerformed(evt);
+            }
+        });
 
         btn_crear.setText("Crear");
         btn_crear.addActionListener(new java.awt.event.ActionListener() {
@@ -188,16 +149,14 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scroll)
+                    .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addComponent(lbl_titulo)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(lbl_titulo)
                             .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(300, 300, 300)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_crear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -236,7 +195,7 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 14, Short.MAX_VALUE)
+                .addGap(0, 42, Short.MAX_VALUE)
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -256,7 +215,12 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
         GlassPanePopup.showPopup(
                 new SimplePopupBorder(crear, "Crear Usuario", actions, (pc, i) -> {
                     if (i == 1) {
-                        
+                        Usuario usuario = crear.crearUsuario();
+                        UsuarioDAO usuarioDAO = new UsuarioDAO();
+                        usuarioDAO.crearUsuario(usuario);
+                        pc.closePopup();
+                        cargarDatosTabla();
+                        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado Correctamente");
                     } else {
                         pc.closePopup();
                     }
@@ -264,6 +228,45 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
                 option
         );
     }//GEN-LAST:event_btn_crearActionPerformed
+
+    private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
+        // Lista para almacenar los usuarios seleccionados en la tabla
+        List<Usuario> selectedUsers = getSelectedUsers();
+        // Verificar si hay algún usuario seleccionado
+        if (!selectedUsers.isEmpty()) {
+            if (selectedUsers.size() == 1) {
+                Usuario usuario = selectedUsers.get(0);
+                Crear crear = new Crear();
+                crear.cargarDatos(usuario);
+                String[] actions = new String[]{"Cancelar", "Actualizar"};
+                GlassPanePopup.showPopup(
+                        new SimplePopupBorder(crear, "Editar Usuario [" + usuario.getNombre() + "]", actions, (popupComponent, i) -> {
+                            if (i == 1) { // Opción de "Actualizar"
+                                Usuario usuarioEditado = crear.obtenerDatos();
+                                try {
+                                    // Actualizar el usuario en la base de datos
+                                    UsuarioDAO usuarioDAO = new UsuarioDAO();
+                                    usuarioDAO.actualizarUsuario(usuarioEditado);
+                                    popupComponent.closePopup();
+                                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario actualizado exitosamente");
+                                    // Actualizar la tabla o recargar los datos
+                                    cargarDatosTabla();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    JOptionPane.showMessageDialog(null, "Error al actualizar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            } else {
+                                popupComponent.closePopup(); // Cerrar el popup sin hacer nada
+                            }
+                        })
+                );
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, selecciona solo un usuario para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecciona un usuario para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btn_editarActionPerformed
 
     public static void main(String args[]) {
         FlatRobotoFont.install();
@@ -288,7 +291,43 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
     private javax.swing.JTextField txt_busqueda;
     // End of variables declaration//GEN-END:variables
 
-    private void guardar(){
-        
+    private List<Usuario> getSelectedUsers() throws NullPointerException {
+        List<Usuario> selectedUsers = new ArrayList<>();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        for (int i = 0; i < table.getRowCount(); i++) {
+            Boolean isSelected = (Boolean) table.getValueAt(i, 0); // Columna de selección
+            if (isSelected != null && isSelected) {
+                int userId = (Integer) table.getValueAt(i, 1); // Columna de ID o #
+                Usuario usuario = usuarioDAO.obtenerUsuarioPorId(userId); // Obtener el usuario de la base de datos
+                selectedUsers.add(usuario);
+            }
+        }
+        return selectedUsers;
+    }
+
+    private void cargarDatosTabla() {
+        // Limpia los datos actuales de la tabla
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);  // Borra todas las filas actuales
+        try {
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            List<Usuario> usuarios = usuarioDAO.obtenerTodosLosUsuarios();
+            for (Usuario usuario : usuarios) {
+                Object[] fila = new Object[]{
+                    false, // Columna de selección (Checkbox)
+                    usuario.getIdUsuario(), // ID del usuario
+                    usuario.getNombre(), // Nombre
+                    usuario.getApellido(), // Apellido
+                    usuario.getDni(), // DNI
+                    usuario.getCorreo(), // Correo
+                    usuario.getUsuario(), // Nombre de usuario
+                    usuario.getEstado(), // Estado (activo/inactivo)
+                    usuario.getRol(),};
+                model.addRow(fila);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al cargar los datos en la tabla", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

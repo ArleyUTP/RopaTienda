@@ -246,7 +246,7 @@ BEGIN
         RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
     END CATCH
 END;
-
+SELECT * FROM Usuarios;
 --Fucion para generar nombre se usuario:
 CREATE FUNCTION dbo.GenerarUsuario
 (
@@ -283,3 +283,77 @@ BEGIN
 	--Asignar el usuario generado a la variable de salida
 	SET @usuarioGenerado=@usuarioBase
 END;
+
+CREATE PROCEDURE ObtenerUsuarioPorId
+    @Id BIGINT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        id,
+        nombre,
+        apellido,
+        dni,
+        correo,
+        usuario,
+        clave,
+        estado,
+        rol,
+        fecha_nacimiento,
+        foto,
+        fecha_creacion
+    FROM Usuarios
+    WHERE id = @Id;
+END;
+CREATE PROCEDURE ActualizarUsuario
+    @Id BIGINT,
+    @Nombre NVARCHAR(MAX),
+    @Apellido NVARCHAR(MAX),
+    @DNI NVARCHAR(50),
+    @Correo NVARCHAR(255),
+    @Usuario NVARCHAR(50),
+    @Clave NVARCHAR(255),
+    @Estado NVARCHAR(20),
+    @Rol NVARCHAR(20),
+    @FechaNacimiento DATE,
+    @Foto NVARCHAR(MAX)
+AS
+BEGIN
+    UPDATE Usuarios
+    SET 
+        nombre = @Nombre,
+        apellido = @Apellido,
+        dni = @DNI,
+        correo = @Correo,
+        usuario = @Usuario,
+        clave = @Clave,
+        estado = @Estado,
+        rol = @Rol,
+        fecha_nacimiento = @FechaNacimiento,
+        foto = @Foto
+    WHERE 
+	id = @Id;
+END;
+CREATE PROCEDURE ObtenerTodosLosUsuarios
+AS
+BEGIN
+    SELECT 
+        id,
+        nombre,
+        apellido,
+        dni,
+        correo,
+        usuario,
+        estado,
+        rol,
+        fecha_nacimiento,
+        foto,
+        fecha_creacion
+    FROM Usuarios;
+END;
+SELECT * FROM Usuarios;
+
+UPDATE Usuarios
+SET nombre = 'Jomina'
+WHERE id = 3

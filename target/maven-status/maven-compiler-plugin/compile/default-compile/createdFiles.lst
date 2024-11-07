@@ -3,6 +3,7 @@ Vista\Vista_login$1.class
 Abstrac\DAO.class
 Vista_Usuarios\Crear$3.class
 Vista\Swing\ModernScrollBarUI$InvisibleScrollBarButton.class
+Vista_Usuarios\Crear$6.class
 Vista\Vista_Productos.class
 Modelo\Modelo_CartaUsuario.class
 Vista_Usuarios\Crear.class
@@ -15,6 +16,7 @@ Vista\Iniciador.class
 Vista\CartaProduc.class
 Vista\Vista_login$2.class
 Modelo\Usuario.class
+Vista_Usuarios\Crear$7.class
 Vista_Usuarios\Mantenimiento_Usuarios$4.class
 Vista\Vista_MantenimientoUsuarios$2.class
 Vista_Usuarios\table\TableHeaderAlignment.class
@@ -40,7 +42,9 @@ Vista\Vista_login$4.class
 Vista_Usuarios\Crear$5.class
 Vista_Usuarios\Mantenimiento_Usuarios$2.class
 Persistencia\LoginDAO.class
+Vista_Usuarios\Mantenimiento_Usuarios$5.class
 Vista_Usuarios\Mantenimiento_Usuarios.class
 Vista\Swing\ModernScrollBarUI.class
 Vista\Vista_bienvenida.class
+Vista_Usuarios\Crear$8.class
 Vista_Usuarios\Dasdsada$1.class
