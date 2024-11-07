@@ -56,7 +56,8 @@ CREATE TABLE Productos (
     precio_compra DECIMAL(18, 2),
     precio_venta DECIMAL(18, 2),
     estado_promocion BIT,
-    fecha_caducidad_promocion DATE
+    fecha_caducidad_promocion DATE,
+	foto NVARCHAR(MAX)
 );
 
 CREATE TABLE Pedidos (
@@ -188,3 +189,171 @@ END
 EXEC VerificarAdmin 'juanp','claveSegura123'
 INSERT INTO Usuarios (nombre, apellido, dni, correo, usuario, clave, estado, rol, fecha_nacimiento, foto)
 VALUES ('Juan', 'Pérez', '12345678', 'juan.perez@example.com', 'juanp', 'claveSegura123', 'activo', 'admin', '1985-05-15', NULL);
+
+--PROCEDIMIENTO ALMACENADO PARA CREAR UN USUARIO:
+CREATE PROCEDURE CrearUsuario 
+    @nombre NVARCHAR(MAX),
+    @apellido NVARCHAR(MAX),
+    @dni NVARCHAR(50),
+    @correo NVARCHAR(255),
+    @usuario NVARCHAR(50),
+    @clave NVARCHAR(255),
+    @estado NVARCHAR(20),
+    @rol NVARCHAR(20),
+    @fecha_nacimiento DATE,
+    @foto NVARCHAR(MAX)
+AS
+BEGIN
+    BEGIN TRY
+        INSERT INTO Usuarios (
+            nombre, 
+            apellido, 
+            dni, 
+            correo, 
+            usuario, 
+            clave, 
+            estado, 
+            rol, 
+            fecha_nacimiento, 
+            foto
+        ) VALUES (
+            @nombre, 
+            @apellido, 
+            @dni, 
+            @correo, 
+            @usuario, 
+            @clave, 
+            @estado, 
+            @rol, 
+            @fecha_nacimiento, 
+            @foto
+        );
+        
+        -- Mensaje opcional de confirmación
+        PRINT 'Usuario creado exitosamente';
+    END TRY
+    BEGIN CATCH
+        -- Manejo de errores
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
+
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
+SELECT * FROM Usuarios;
+--Fucion para generar nombre se usuario:
+CREATE FUNCTION dbo.GenerarUsuario
+(
+	@nombre NVARCHAR(50),
+	@apellido NVARCHAR(50),
+	@dni NVARCHAR(50)
+)
+RETURNS NVARCHAR(50)
+AS
+BEGIN
+	DECLARE @usuarioGenerado NVARCHAR(50);
+	SET @usuarioGenerado = LOWER(@nombre+LEFT(@apellido,1)+RIGHT(@dni,2));
+	RETURN @usuarioGenerado;
+END;
+PRINT dbo.GenerarUsuario('Arley','Ticse','71451008')
+
+--PROCEDIMIENTO QUE GENERA EL USUARIO USANDO LA FUNCION Y HACE LA COMPARACION DE QUE ES UNICO
+CREATE PROC GenerarUsuarioUnico
+    @nombre NVARCHAR(50),
+    @apellido NVARCHAR(50),
+    @dni NVARCHAR(50),
+    @usuarioGenerado NVARCHAR(50) OUTPUT
+AS
+BEGIN
+	DECLARE @usuarioBase NVARCHAR(50) = dbo.GenerarUsuario(@nombre, @apellido, @dni);
+	DECLARE @Contador INT = 1;
+
+	--Verificar si existe
+	WHILE EXISTS(SELECT 1 FROM Usuarios WHERE usuario = @usuarioBase)
+	BEGIN
+		SET @usuarioBase = dbo.GenerarUsuario(@nombre, @apellido, @dni) + CAST(@contador AS NVARCHAR(10));
+        SET @contador = @contador + 1
+	END
+	--Asignar el usuario generado a la variable de salida
+	SET @usuarioGenerado=@usuarioBase
+END;
+
+CREATE PROCEDURE ObtenerUsuarioPorId
+    @Id BIGINT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        id,
+        nombre,
+        apellido,
+        dni,
+        correo,
+        usuario,
+        clave,
+        estado,
+        rol,
+        fecha_nacimiento,
+        foto,
+        fecha_creacion
+    FROM Usuarios
+    WHERE id = @Id;
+END;
+CREATE PROCEDURE ActualizarUsuario
+    @Id BIGINT,
+    @Nombre NVARCHAR(MAX),
+    @Apellido NVARCHAR(MAX),
+    @DNI NVARCHAR(50),
+    @Correo NVARCHAR(255),
+    @Usuario NVARCHAR(50),
+    @Clave NVARCHAR(255),
+    @Estado NVARCHAR(20),
+    @Rol NVARCHAR(20),
+    @FechaNacimiento DATE,
+    @Foto NVARCHAR(MAX)
+AS
+BEGIN
+    UPDATE Usuarios
+    SET 
+        nombre = @Nombre,
+        apellido = @Apellido,
+        dni = @DNI,
+        correo = @Correo,
+        usuario = @Usuario,
+        clave = @Clave,
+        estado = @Estado,
+        rol = @Rol,
+        fecha_nacimiento = @FechaNacimiento,
+        foto = @Foto
+    WHERE 
+	id = @Id;
+END;
+CREATE PROCEDURE ObtenerTodosLosUsuarios
+AS
+BEGIN
+    SELECT 
+        id,
+        nombre,
+        apellido,
+        dni,
+        correo,
+        usuario,
+        estado,
+        rol,
+        fecha_nacimiento,
+        foto,
+        fecha_creacion
+    FROM Usuarios;
+END;
+SELECT * FROM Usuarios;
+
+UPDATE Usuarios
+SET nombre = 'Jomina'
+WHERE id = 3

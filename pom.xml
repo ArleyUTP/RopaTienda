@@ -39,11 +39,102 @@
             <version>12.8.1.jre11</version>
         </dependency>
         <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf-fonts-roboto -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-fonts-roboto</artifactId>
+            <version>2.137</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf-extras -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-extras</artifactId>
+            <version>3.5.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.github.bweng20/jSVG -->
+        <dependency>
+            <groupId>io.github.bweng20</groupId>
+            <artifactId>jSVG</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.miglayout/miglayout-core -->
+        <dependency>
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout-core</artifactId>
+            <version>11.4.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.miglayout/miglayout-swing -->
+        <dependency>
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout-swing</artifactId>
+            <version>11.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.dj-raven</groupId>
+            <artifactId>swing-datetime-picker</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        
+        <dependency>
             <groupId>autoCompleter.library</groupId>
             <artifactId>AutoCompleter</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.passay/passay -->
+        <dependency>
+            <groupId>org.passay</groupId>
+            <artifactId>passay</artifactId>
+            <version>1.6.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.20</version>
+        </dependency>
+
+        <dependency>
+            <groupId>raven.popup</groupId>
+            <artifactId>swing-glasspane-popup</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>raven.toast</groupId>
+            <artifactId>swing-toast-notifications</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>6.3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.steos</groupId>
+            <artifactId>jnafilechooser</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>raven</groupId>
+            <artifactId>java-swing-pictureBox</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>tomwhite</groupId>
+            <artifactId>superellipse</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>23</maven.compiler.release>

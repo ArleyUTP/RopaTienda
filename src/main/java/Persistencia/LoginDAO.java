@@ -87,8 +87,4 @@ public class LoginDAO extends DAO<Usuario> {
             manejarError("Error al eliminar usuario recordado", e);
         }
     }
-    protected void mensaje(String mensaje) {
-        JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
-    }
-
 }

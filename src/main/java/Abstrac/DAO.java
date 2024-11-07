@@ -1,6 +1,7 @@
 package Abstrac;
 
 import java.sql.*;
+import javax.swing.JOptionPane;
 
 public class DAO<T> {
 
@@ -18,6 +19,8 @@ public class DAO<T> {
 
     protected void manejarError(String mensaje, Exception e) {
         System.err.println(mensaje + " : " + e.getMessage());
-        e.printStackTrace();
+    }
+        protected void mensaje(String mensaje) {
+        JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
     }
 }

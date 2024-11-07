@@ -189,14 +189,12 @@ public class Vista_login extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private void verificarAccesoAdministrador() {
         LoginDAO loginDAO = new LoginDAO();
-        String usuario = txt_usuario.getText().trim(); // Eliminamos espacios en blanco
-        String clave = new String(txt_clave.getPassword()).trim();
+        String usuario = txt_usuario.getText(); // Eliminamos espacios en blanco
+        String clave = new String(txt_clave.getPassword());
 
         if (usuario.isEmpty() || clave.isEmpty()) {
             return;
         }
-
-        // Usar un hilo para evitar el bloqueo de la UI
         new Thread(() -> {
             boolean esAdmin = loginDAO.esUsuarioAdmin(usuario, clave);
             SwingUtilities.invokeLater(() -> {

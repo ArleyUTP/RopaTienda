@@ -1,7 +1,8 @@
 
 package Modelo;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 public class Usuario {
     private int idUsuario;
@@ -28,9 +29,7 @@ public class Usuario {
         this.estado = estado;
         this.rol = rol;
     }
-
-    public Usuario(int idUsuario, String nombre, String apellido, String dni, String correo, String usuario, String clave, String estado, String rol, Date fechaNacimiento, String foto, Date fechaCreacion) {
-        this.idUsuario = idUsuario;
+    public Usuario( String nombre, String apellido, String dni, String correo, String usuario, String clave, String estado, String rol, Date fechaNacimiento,String foto) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -41,7 +40,6 @@ public class Usuario {
         this.rol = rol;
         this.fechaNacimiento = fechaNacimiento;
         this.foto = foto;
-        this.fechaCreacion = fechaCreacion;
     }
 
     public int getIdUsuario() {
