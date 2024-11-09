@@ -2,8 +2,11 @@ package Vista;
 
 import Modelo.Usuario;
 import Persistencia.LoginDAO;
+import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
@@ -11,9 +14,55 @@ public class Vista_login extends javax.swing.JFrame {
 
     public Vista_login() {
         initComponents();
+        init();
         btn_crearCuenta.setVisible(false);
         configurarAutoCompleter();
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        lbl_ocultarContraseña.setVisible(false);
+    }
+
+    private void init() {
+        txt_usuario.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Usuario");
+        txt_usuario.putClientProperty(FlatClientProperties.STYLE, ""
+                + "arc:15;" // Bordes redondeados
+                + "borderWidth:1;" // Borde del campo
+                + "borderColor:#E0E0E0;" // Color gris suave para el borde
+                + "focusWidth:2;" // Ancho del borde al enfocar
+                + "focusColor:#39E079;" // Verde esmeralda al enfocar
+                + "margin:5,20,5,20;" // Margen interno
+                + "background:$TextField.background;");
+
+        txt_clave.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Contraseña");
+        txt_clave.putClientProperty(FlatClientProperties.STYLE, ""
+                + "arc:15;" // Bordes redondeados
+                + "borderWidth:1;" // Borde del campo
+                + "borderColor:#E0E0E0;" // Gris suave
+                + "focusWidth:2;" // Ancho de borde al enfocar
+                + "focusColor:#39E079;" // Verde esmeralda al enfocar
+                + "margin:5,20,5,20;" // Margen interno
+                + "background:$TextField.background;");
+
+        btn_ingresar.putClientProperty(FlatClientProperties.STYLE, ""
+                + "arc:15;" // Bordes redondeados
+                + "borderWidth:0;" // Sin borde
+                + "focusWidth:0;" // Sin borde de enfoque
+                + "margin:5,20,5,20;" // Margen interno
+                + "background:#39E079;" // Fondo esmeralda
+                + "foreground:#FFFFFF;");  // Texto blanco
+
+        btn_crearCuenta.putClientProperty(FlatClientProperties.STYLE, ""
+                + "arc:15;" // Bordes redondeados
+                + "borderWidth:1;" // Borde fino
+                + "borderColor:#E0E0E0;" // Gris claro
+                + "focusWidth:0;" // Sin borde de enfoque
+                + "margin:5,20,5,20;" // Margen interno
+                + "background:#39E079;" // Fondo gris claro
+                + "foreground:#FFFFFF;");  // Texto blanco
+
+        lbl_bienvenida.putClientProperty(FlatClientProperties.STYLE, ""
+                + "foreground:#000000;");
+
     }
 
     @SuppressWarnings("unchecked")
@@ -21,31 +70,33 @@ public class Vista_login extends javax.swing.JFrame {
     private void initComponents() {
 
         popupMenu = new javax.swing.JPopupMenu();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lbl_bienvenida = new javax.swing.JLabel();
         txt_usuario = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
         btn_ingresar = new javax.swing.JButton();
         chk_recordarUsuario = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
         btn_crearCuenta = new javax.swing.JButton();
         txt_clave = new javax.swing.JPasswordField();
+        lbl_verContraseña = new javax.swing.JLabel();
+        lbl_ocultarContraseña = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(242, 242, 242));
+        setType(java.awt.Window.Type.UTILITY);
 
-        jLabel1.setText("BIENVENIDO");
+        lbl_bienvenida.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        lbl_bienvenida.setText("BIENVENIDO");
 
-        jLabel2.setText("Usuario");
-
-        txt_usuario.putClientProperty("JTextField.placeholderText", "Ingrese su usuario");
-        txt_usuario.putClientProperty( "JComponent.roundRect" , true );
+        txt_usuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_usuarioActionPerformed(evt);
+            }
+        });
         txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_usuarioKeyReleased(evt);
             }
         });
-
-        jLabel3.setText("Clave");
 
         btn_ingresar.setText("Ingresar");
         btn_ingresar.putClientProperty("JButton.buttonType", "roundRect");
@@ -56,6 +107,11 @@ public class Vista_login extends javax.swing.JFrame {
         });
 
         chk_recordarUsuario.setText("Recordar Usuario");
+        chk_recordarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chk_recordarUsuarioActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("¿Olvido su contraseña?");
         jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -72,8 +128,6 @@ public class Vista_login extends javax.swing.JFrame {
             }
         });
 
-        txt_clave.putClientProperty("JComponent.roundRect", true);
-        txt_clave.putClientProperty("JTextField.placeholderText", "Ingrese su contraseña");
         txt_clave.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txt_claveFocusLost(evt);
@@ -85,60 +139,74 @@ public class Vista_login extends javax.swing.JFrame {
             }
         });
 
+        lbl_verContraseña.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/eye.png"))); // NOI18N
+        lbl_verContraseña.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_verContraseñaMouseClicked(evt);
+            }
+        });
+
+        lbl_ocultarContraseña.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/eye-slash.png"))); // NOI18N
+        lbl_ocultarContraseña.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_ocultarContraseñaMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(180, 180, 180)
-                .addComponent(jLabel1))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel2))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel3))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(txt_clave, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(chk_recordarUsuario))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(160, 160, 160)
-                .addComponent(btn_ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(jLabel4))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(130, 130, 130)
-                .addComponent(btn_crearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(chk_recordarUsuario))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(btn_ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(btn_crearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(txt_clave, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_verContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_ocultarContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(93, 93, 93)
+                        .addComponent(lbl_bienvenida))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(82, 82, 82)
+                        .addComponent(jLabel4)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel1)
+                .addGap(16, 16, 16)
+                .addComponent(lbl_bienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_clave, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_verContraseña)
+                    .addComponent(lbl_ocultarContraseña))
                 .addGap(24, 24, 24)
-                .addComponent(jLabel2)
-                .addGap(4, 4, 4)
-                .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
-                .addComponent(jLabel3)
-                .addGap(4, 4, 4)
-                .addComponent(txt_clave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
                 .addComponent(chk_recordarUsuario)
-                .addGap(0, 0, 0)
-                .addComponent(btn_ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addGap(14, 14, 14)
-                .addComponent(btn_crearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(4, 4, 4)
+                .addComponent(btn_crearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -174,15 +242,36 @@ public class Vista_login extends javax.swing.JFrame {
         vista_EnvioCorreo.setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
+    private void txt_usuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_usuarioActionPerformed
+
+    private void chk_recordarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chk_recordarUsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chk_recordarUsuarioActionPerformed
+
+    private void lbl_verContraseñaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_verContraseñaMouseClicked
+        txt_clave.setEchoChar((char) 0);
+        lbl_verContraseña.setVisible(false);
+        lbl_ocultarContraseña.setVisible(true);
+    }//GEN-LAST:event_lbl_verContraseñaMouseClicked
+
+    private void lbl_ocultarContraseñaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_ocultarContraseñaMouseClicked
+        // TODO add your handling code here:
+        txt_clave.setEchoChar('\u2022');
+        lbl_ocultarContraseña.setVisible(false);
+        lbl_verContraseña.setVisible(true);
+    }//GEN-LAST:event_lbl_ocultarContraseñaMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_crearCuenta;
     private javax.swing.JButton btn_ingresar;
     private javax.swing.JCheckBox chk_recordarUsuario;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel lbl_bienvenida;
+    private javax.swing.JLabel lbl_ocultarContraseña;
+    private javax.swing.JLabel lbl_verContraseña;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JPasswordField txt_clave;
     private javax.swing.JTextField txt_usuario;
@@ -236,13 +325,14 @@ public class Vista_login extends javax.swing.JFrame {
     }
 
     private void existeUsuarioRecordado() {
-    String usuarioIngresado = txt_usuario.getText();
-    LoginDAO loginDAO = new LoginDAO();
-    List<Usuario> usuariosRecord = loginDAO.obtenerUsuariosRecordados();
-    boolean existe = usuariosRecord.stream()
-            .anyMatch(usuario -> usuario.getUsuario().equals(usuarioIngresado));
-    chk_recordarUsuario.setSelected(existe);
-}
+        String usuarioIngresado = txt_usuario.getText();
+        LoginDAO loginDAO = new LoginDAO();
+        List<Usuario> usuariosRecord = loginDAO.obtenerUsuariosRecordados();
+        boolean existe = usuariosRecord.stream()
+                .anyMatch(usuario -> usuario.getUsuario().equals(usuarioIngresado));
+        chk_recordarUsuario.setSelected(existe);
+    }
+
     private void configurarAutoCompleter() {
         LoginDAO loginDAO = new LoginDAO();
         List<Usuario> usuariosRecord = loginDAO.obtenerUsuariosRecordados();

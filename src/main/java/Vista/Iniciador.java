@@ -18,5 +18,8 @@ public class Iniciador {
         java.awt.EventQueue.invokeLater(() -> {
             new Mantenimiento_Usuarios().setVisible(true);
         });
+//        java.awt.EventQueue.invokeLater(() -> {
+//            new Vista_bienvenida().setVisible(true);
+//        });
     }
 }

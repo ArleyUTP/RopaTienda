@@ -1,6 +1,5 @@
 package Vista;
 
-import Modelo.Modelo_CartaProducto;
 import Vista.Swing.ScrollBar;
 import Vista.Swing.WrapLayout;
 
@@ -14,7 +13,6 @@ public class Vista_Productos extends javax.swing.JPanel {
     private void iniciar(){
         panel.setLayout(new WrapLayout(WrapLayout.LEADING));
         jScrollPane1.setVerticalScrollBar(new ScrollBar());
-        panel.add(new CartaProduc(new Modelo_CartaProducto()));
         panel.revalidate();
         panel.repaint();
     }
