@@ -3,6 +3,7 @@ package Vista_Usuarios;
 import Modelo.Usuario;
 import Persistencia.UsuarioDAO;
 import Vista_Usuarios.table.CheckBoxTableHeaderRenderer;
+import Vista_Usuarios.table.ProfileTableRenderer;
 import Vista_Usuarios.table.TableHeaderAlignment;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -26,6 +27,8 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         init();
         cargarDatosTabla();
+        this.setExtendedState(this.MAXIMIZED_BOTH);
+        this.setMaximizedBounds(this.getGraphicsConfiguration().getBounds());
     }
 
     private void init() {
@@ -48,7 +51,6 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
                 + "cellFocusColor:$TableHeader.hoverBackground;"
                 + "selectionBackground:$TableHeader.hoverBackground;"
                 + "selectionForeground:$Table.foreground;");
-
         scroll.getVerticalScrollBar().putClientProperty(FlatClientProperties.STYLE, ""
                 + "trackArc:999;"
                 + "trackInsets:3,3,3,3;"
@@ -67,6 +69,7 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
                 + "background:$Panel.background");
         table.getColumnModel().getColumn(0).setHeaderRenderer(new CheckBoxTableHeaderRenderer(table, 0));
         table.getTableHeader().setDefaultRenderer(new TableHeaderAlignment(table));
+        table.getColumnModel().getColumn(2).setCellRenderer(new ProfileTableRenderer(table));
         testData();
     }
 
@@ -94,17 +97,17 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "SELECT", "#", "Nombre", "Apellido", "DNI", "Correo", "Usuario", "Estado", "Rol"
+                "SELECT", "#", "Nombre", "Apellido", "DNI", "Correo", "Usuario", "Rol"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, true, true, true
+                true, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -120,9 +123,8 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
         if (table.getColumnModel().getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setMaxWidth(40);
             table.getColumnModel().getColumn(1).setMaxWidth(40);
-            table.getColumnModel().getColumn(2).setPreferredWidth(100);
+            table.getColumnModel().getColumn(2).setPreferredWidth(200);
             table.getColumnModel().getColumn(3).setPreferredWidth(100);
-            table.getColumnModel().getColumn(7).setResizable(false);
         }
 
         lbl_titulo.setText("Usuarios");
@@ -243,28 +245,21 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
                         new SimplePopupBorder(crear, "Editar Usuario [" + usuario.getNombre() + "]", actions, (popupComponent, i) -> {
                             if (i == 1) { // Opción de "Actualizar"
                                 Usuario usuarioEditado = crear.obtenerDatos();
-                                try {
-                                    // Actualizar el usuario en la base de datos
-                                    UsuarioDAO usuarioDAO = new UsuarioDAO();
-                                    usuarioDAO.actualizarUsuario(usuarioEditado);
-                                    popupComponent.closePopup();
-                                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario actualizado exitosamente");
-                                    // Actualizar la tabla o recargar los datos
-                                    cargarDatosTabla();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    JOptionPane.showMessageDialog(null, "Error al actualizar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
-                                }
+                                UsuarioDAO usuarioDAO = new UsuarioDAO();
+                                usuarioDAO.actualizarUsuario(usuarioEditado);
+                                popupComponent.closePopup();
+                                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario actualizado exitosamente");
+                                cargarDatosTabla();
                             } else {
                                 popupComponent.closePopup(); // Cerrar el popup sin hacer nada
                             }
                         })
                 );
             } else {
-                JOptionPane.showMessageDialog(null, "Por favor, selecciona solo un usuario para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Seleccionar solo un Usuario para Editar");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Selecciona un usuario para editar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            Notifications.getInstance().show(Notifications.Type.WARNING, "Selecciona un usuario para editar");
         }
     }//GEN-LAST:event_btn_editarActionPerformed
 
@@ -306,7 +301,6 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
     }
 
     private void cargarDatosTabla() {
-        // Limpia los datos actuales de la tabla
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);  // Borra todas las filas actuales
         try {
@@ -316,17 +310,15 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
                 Object[] fila = new Object[]{
                     false, // Columna de selección (Checkbox)
                     usuario.getIdUsuario(), // ID del usuario
-                    usuario.getNombre(), // Nombre
+                    usuario,
                     usuario.getApellido(), // Apellido
                     usuario.getDni(), // DNI
                     usuario.getCorreo(), // Correo
                     usuario.getUsuario(), // Nombre de usuario
-                    usuario.getEstado(), // Estado (activo/inactivo)
-                    usuario.getRol(),};
+                    usuario.getRol()};
                 model.addRow(fila);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al cargar los datos en la tabla", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

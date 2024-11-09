@@ -9,7 +9,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.io.File;
 import java.sql.Date;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import javaswingdev.picturebox.DefaultPictureBoxRender;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -382,16 +382,14 @@ public class Crear extends javax.swing.JPanel {
         txt_nombre.setText(usuario.getNombre());
         txt_apellido.setText(usuario.getApellido());
         txt_dni.setText(usuario.getDni());
-
-        // Formatear y cargar la fecha de nacimiento en el campo de texto de fecha
         if (usuario.getFechaNacimiento() != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String fechaFormateada = usuario.getFechaNacimiento().toLocalDate().format(formatter);
-            txt_fechaNacimiento.setText(fechaFormateada);
+            LocalDate fechaNacimiento = usuario.getFechaNacimiento().toLocalDate();
+            System.out.println("Fecha convertida a LocalDate: " + fechaNacimiento);
+            datePicker.setSelectedDate(fechaNacimiento);
         } else {
-            txt_fechaNacimiento.setText(""); // Limpia el campo si no hay fecha
+            System.out.println("Fecha de nacimiento es nula.");
+            datePicker.clearSelectedDate();
         }
-
         txt_correo.setText(usuario.getCorreo());
         txt_usuario.setText(usuario.getUsuario());
         txt_clave.setText(Encriptar.decryptPassword(usuario.getClave()));
@@ -402,23 +400,19 @@ public class Crear extends javax.swing.JPanel {
         } else if (usuario.getRol().equalsIgnoreCase("vendedor")) {
             cbo_rol.setSelectedItem("Vendedor");
         }
-
         // Configurar el estado en los RadioButtons
         if (usuario.getEstado().equalsIgnoreCase("activo")) {
             btn_activo.setSelected(true);
         } else if (usuario.getEstado().equalsIgnoreCase("inactivo")) {
             btn_inactivo.setSelected(true);
         }
-
-        // Cargar la imagen en el componente correspondiente
-        if (usuario.getFoto() != null && !usuario.getFoto().isEmpty()) {
-            imagen.setImage(new ImageIcon(usuario.getFoto()));
+        ruta = usuario.getFoto();
+        if (ruta != null && !ruta.isEmpty()) {
+            imagen.setImage(new ImageIcon(ruta));
         } else {
-            imagen.setImage(null); // Limpia la imagen si no hay ninguna almacenada
+            imagen.setImage(null);
         }
     }
-
-// Método para obtener los datos modificados del usuario desde los campos de texto
     public Usuario obtenerDatos() {
         Usuario usuario = new Usuario();
         usuario.setIdUsuario(id);
@@ -426,7 +420,8 @@ public class Crear extends javax.swing.JPanel {
         usuario.setApellido(txt_apellido.getText());
         usuario.setDni(txt_dni.getText());
         Date fechaNacimiento = datePicker.isDateSelected() ? Date.valueOf(datePicker.getSelectedDate()) : null;
-        usuario.setFechaCreacion(fechaNacimiento);
+        System.out.println("El valor de la fecha de Nacimiento al obtener datos es: "+fechaNacimiento);
+        usuario.setFechaNacimiento(fechaNacimiento);
         usuario.setCorreo(txt_correo.getText());
         usuario.setUsuario(txt_usuario.getText());
         usuario.setClave(Encriptar.encryptPassword(txt_clave.getText()));
