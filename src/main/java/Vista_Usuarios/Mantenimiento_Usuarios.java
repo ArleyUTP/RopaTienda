@@ -17,6 +17,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import raven.popup.DefaultOption;
 import raven.popup.GlassPanePopup;
+import raven.popup.component.GlassPaneChild;
 import raven.popup.component.SimplePopupBorder;
 import raven.toast.Notifications;
 
@@ -25,10 +26,10 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
     public Mantenimiento_Usuarios() {
         initComponents();
         this.setLocationRelativeTo(null);
-        init();
-        cargarDatosTabla();
         this.setExtendedState(this.MAXIMIZED_BOTH);
         this.setMaximizedBounds(this.getGraphicsConfiguration().getBounds());
+        init();
+        cargarDatosTabla();
     }
 
     private void init() {

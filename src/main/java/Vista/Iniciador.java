@@ -15,8 +15,11 @@ public class Iniciador {
         System.out.println("Custom defaults registered from 'Temas'");
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatMacLightLaf.setup();
-        java.awt.EventQueue.invokeLater(() -> {
-            new Mantenimiento_Usuarios().setVisible(true);
+//        java.awt.EventQueue.invokeLater(() -> {
+//            new Mantenimiento_Usuarios().setVisible(true);
+//        });
+                java.awt.EventQueue.invokeLater(() -> {
+            new Menu_Principal().setVisible(true);
         });
 //        java.awt.EventQueue.invokeLater(() -> {
 //            new Vista_bienvenida().setVisible(true);

@@ -59,6 +59,11 @@ CREATE TABLE Productos (
     fecha_caducidad_promocion DATE,
 	foto NVARCHAR(MAX)
 );
+CREATE TABLE Fotos (
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
+    producto_id BIGINT FOREIGN KEY REFERENCES Productos(id),
+    url NVARCHAR(MAX) -- Almacena la URL o la ruta de la imagen
+);
 
 CREATE TABLE Pedidos (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
