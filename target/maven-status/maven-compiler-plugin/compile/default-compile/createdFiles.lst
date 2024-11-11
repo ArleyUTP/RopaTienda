@@ -2,6 +2,7 @@ Vista\Vista_bienvenida$1.class
 Vista\Vista_login$1.class
 Abstrac\DAO.class
 Vista_Usuarios\Crear$3.class
+Modelo\Profile.class
 Vista_Usuarios\TableCellProfile.class
 Vista\Swing\ModernScrollBarUI$InvisibleScrollBarButton.class
 Vista_Usuarios\Crear$6.class
@@ -35,12 +36,14 @@ Vista_Orden\Colores.class
 Vista_Orden\Talla$1.class
 Vista_Usuarios\Mantenimiento_Usuarios$3.class
 Vista_Usuarios\Crear$1.class
+Vista_Usuarios\Mantenimiento_Usuarios$7.class
 Vista\Vista_login$3.class
 Vista_Orden\Productos_Detalles$2.class
 Vista_Orden\Colores$1.class
 Vista_Usuarios\table\ProfileTableRenderer.class
 Vista_Orden\Orden.class
 Vista\Vista_EnvioCorreo$1.class
+Vista_Usuarios\Mantenimiento_Usuarios$6.class
 Vista_Usuarios\Crear$4.class
 Vista\Menu_Principal$2.class
 Vista_Usuarios\table\ButtonAction.class

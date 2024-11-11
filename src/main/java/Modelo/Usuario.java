@@ -1,10 +1,9 @@
-
 package Modelo;
 
 import java.sql.Date;
 
-
 public class Usuario {
+
     private int idUsuario;
     private String nombre;
     private String apellido;
@@ -17,6 +16,7 @@ public class Usuario {
     private Date fechaNacimiento;
     private String foto;
     private Date fechaCreacion;
+    private Profile profile;
 
     public Usuario() {
     }
@@ -29,7 +29,8 @@ public class Usuario {
         this.estado = estado;
         this.rol = rol;
     }
-    public Usuario( String nombre, String apellido, String dni, String correo, String usuario, String clave, String estado, String rol, Date fechaNacimiento,String foto) {
+
+    public Usuario(String nombre, String apellido, String dni, String correo, String usuario, String clave, String estado, String rol, Date fechaNacimiento, String foto) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -40,6 +41,7 @@ public class Usuario {
         this.rol = rol;
         this.fechaNacimiento = fechaNacimiento;
         this.foto = foto;
+        this.profile = new Profile(foto);
     }
 
     public int getIdUsuario() {
@@ -137,5 +139,18 @@ public class Usuario {
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
-    
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "idUsuario=" + idUsuario + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", correo=" + correo + ", usuario=" + usuario + ", clave=" + clave + ", estado=" + estado + ", rol=" + rol + ", fechaNacimiento=" + fechaNacimiento + ", foto=" + foto + ", fechaCreacion=" + fechaCreacion + '}';
+    }
+
 }

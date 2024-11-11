@@ -19,7 +19,7 @@ public class TableCellProfile extends javax.swing.JPanel {
         lbl_estado.setText(usuario.getEstado());
         lbl_estado.putClientProperty(FlatClientProperties.STYLE, ""
                 + "foreground:$Label.disabledForeground");
-        if (usuario.getFoto() != null) {
+        if (usuario.getFoto() != null && !usuario.getFoto().isEmpty()) {
             perfil.setImage(new ImageIcon(usuario.getFoto()));
         }
         perfil.setPictureBoxRender(new DefaultPictureBoxRender() {
@@ -28,15 +28,16 @@ public class TableCellProfile extends javax.swing.JPanel {
                 return new SuperEllipse2D(rec.x, rec.y, rec.width, rec.height, 3f).getShape();
             }
         });
+
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        perfil = new javaswingdev.picturebox.PictureBox();
         lbl_nombre = new javax.swing.JLabel();
         lbl_estado = new javax.swing.JLabel();
+        perfil = new javaswingdev.picturebox.PictureBox();
 
         lbl_nombre.setText("Nombre");
 
@@ -47,27 +48,25 @@ public class TableCellProfile extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(perfil, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(perfil, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lbl_nombre))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addComponent(lbl_estado)))
-                .addGap(0, 2, Short.MAX_VALUE))
+                    .addComponent(lbl_nombre)
+                    .addComponent(lbl_estado))
+                .addGap(0, 6, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(perfil, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbl_nombre)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbl_estado))
-                    .addComponent(perfil, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lbl_estado)))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -77,4 +76,10 @@ public class TableCellProfile extends javax.swing.JPanel {
     private javax.swing.JLabel lbl_nombre;
     private javaswingdev.picturebox.PictureBox perfil;
     // End of variables declaration//GEN-END:variables
+
+    public void setValue(Usuario usuario) {
+        lbl_nombre.setText(usuario.getNombre());
+        lbl_estado.setText(usuario.getEstado());
+        perfil.setImage(usuario.getProfile().getIcon());
+    }
 }

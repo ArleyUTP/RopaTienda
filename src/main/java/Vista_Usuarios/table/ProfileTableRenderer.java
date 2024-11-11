@@ -15,16 +15,19 @@ public class ProfileTableRenderer implements TableCellRenderer {
     }
 
     @Override
-    public Component getTableCellRendererComponent(JTable jtable, Object o, boolean isSelected, boolean hasFocus, int row, int column) {
-        Component com = oldCellRenderer.getTableCellRendererComponent(jtable, o, isSelected, hasFocus, row, column);
-        TableCellProfile cell = new TableCellProfile((Usuario) o, com.getFont());
+    public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
+        Component com = oldCellRenderer.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);
 
-        if (isSelected) {
-            cell.setBackground(jtable.getSelectionBackground());
-        } else {
-            cell.setBackground(jtable.getBackground());
+        // Solo crea un nuevo TableCellProfile si es necesario
+        if (!com.getClass().equals(TableCellProfile.class)) {
+            TableCellProfile cellProfile = new TableCellProfile((Usuario) o, com.getFont());
+            cellProfile.setBackground(com.getBackground());
+            return cellProfile;
         }
-        return cell;
-    }
 
+        // Si ya es un TableCellProfile, solo actualiza su contenido
+        TableCellProfile cellProfile = (TableCellProfile) com;
+        cellProfile.setValue((Usuario) o);
+        return cellProfile;
+    }
 }

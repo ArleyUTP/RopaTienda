@@ -65,11 +65,26 @@ CREATE TABLE Fotos (
     url NVARCHAR(MAX) -- Almacena la URL o la ruta de la imagen
 );
 
+CREATE TABLE Carritos(
+	id BIGINT PRIMARY KEY IDENTITY(1,1),
+	usuario_id BIGINT FOREIGN KEY REFERENCES Usuarios(id),
+	fecha_creacion DATETIME2 DEFAULT GETDATE(),
+	estado NVARCHAR(20) CHECK(estado IN ('activo','inactivo'))
+);
+
+CREATE TABLE DetalleCarrito(
+	id BIGINT PRIMARY KEY IDENTITY(1,1),
+	carrito_id BIGINT FOREIGN KEY REFERENCES Carritos(id),
+	producto_id BIGINT FOREIGN KEY REFERENCES Productos(id),
+	cantidad INT CHECK (cantidad>0),
+	precio_unitario DECIMAL(18,2) CHECK (precio_unitario >=0)
+);
 CREATE TABLE Pedidos (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     usuario_id BIGINT FOREIGN KEY REFERENCES Usuarios(id),
     fecha DATETIME2 DEFAULT GETDATE(),
     metodo_pago NVARCHAR(50),
+	codigo_orden NVARCHAR(50) UNIQUE,
     total DECIMAL(18, 2) CHECK (total >= 0)
 );
 
@@ -196,6 +211,7 @@ INSERT INTO Usuarios (nombre, apellido, dni, correo, usuario, clave, estado, rol
 VALUES ('Juan', 'Pérez', '12345678', 'juan.perez@example.com', 'juanp', 'claveSegura123', 'activo', 'admin', '1985-05-15', NULL);
 
 --PROCEDIMIENTO ALMACENADO PARA CREAR UN USUARIO:
+
 CREATE PROCEDURE CrearUsuario 
     @nombre NVARCHAR(MAX),
     @apellido NVARCHAR(MAX),
@@ -252,6 +268,8 @@ BEGIN
     END CATCH
 END;
 SELECT * FROM Usuarios;
+DELETE FROM Usuarios
+WHERE id = 10008;
 --Fucion para generar nombre se usuario:
 CREATE FUNCTION dbo.GenerarUsuario
 (
@@ -362,3 +380,13 @@ SELECT * FROM Usuarios;
 UPDATE Usuarios
 SET nombre = 'Jomina'
 WHERE id = 3
+
+CREATE PROCEDURE BuscarUsuario
+@Caracteres NVARCHAR(100)
+AS
+BEGIN
+	SELECT * FROM Usuarios
+	WHERE apellido LIKE '%'+@Caracteres+'%';
+END
+GO
+EXEC BuscarUsuario ''

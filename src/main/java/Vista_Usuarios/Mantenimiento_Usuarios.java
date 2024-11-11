@@ -13,11 +13,11 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import raven.popup.DefaultOption;
 import raven.popup.GlassPanePopup;
-import raven.popup.component.GlassPaneChild;
 import raven.popup.component.SimplePopupBorder;
 import raven.toast.Notifications;
 
@@ -68,10 +68,20 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
                 + "innerFocusWidth:0;"
                 + "margin:5,20,5,20;"
                 + "background:$Panel.background");
+        btn_crear.putClientProperty(FlatClientProperties.STYLE, ""
+                + "background:#39E079");
+        btn_editar.putClientProperty(FlatClientProperties.STYLE, ""
+                + "");
+        btn_eliminar.putClientProperty(FlatClientProperties.STYLE, ""
+                + "");
         table.getColumnModel().getColumn(0).setHeaderRenderer(new CheckBoxTableHeaderRenderer(table, 0));
         table.getTableHeader().setDefaultRenderer(new TableHeaderAlignment(table));
-        table.getColumnModel().getColumn(2).setCellRenderer(new ProfileTableRenderer(table));
+        cargarPerfiles();
         testData();
+    }
+
+    void cargarPerfiles() {
+        table.getColumnModel().getColumn(2).setCellRenderer(new ProfileTableRenderer(table));
     }
 
     private void testData() {
@@ -130,7 +140,18 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
 
         lbl_titulo.setText("Usuarios");
 
+        txt_busqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_busquedaKeyReleased(evt);
+            }
+        });
+
         btn_eliminar.setText("Eliminar");
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
 
         btn_editar.setText("Editar");
         btn_editar.addActionListener(new java.awt.event.ActionListener() {
@@ -206,7 +227,6 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearActionPerformed
-// TODO add your handling code here:
         Vista_Usuarios.Crear crear = new Crear();
         DefaultOption option = new DefaultOption() {
             @Override
@@ -219,6 +239,7 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
                 new SimplePopupBorder(crear, "Crear Usuario", actions, (pc, i) -> {
                     if (i == 1) {
                         Usuario usuario = crear.crearUsuario();
+                        System.out.println("Usuario devuelto del Poput: " + usuario.toString());
                         UsuarioDAO usuarioDAO = new UsuarioDAO();
                         usuarioDAO.crearUsuario(usuario);
                         pc.closePopup();
@@ -264,6 +285,31 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_editarActionPerformed
 
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        // TODO add your handling code here:
+        List<Usuario> selectedUsers = getSelectedUsers();
+        if (!selectedUsers.isEmpty()) {
+            int dialogResult = JOptionPane.showConfirmDialog(this, "¿Estás seguro de eliminar los usuarios seleccionados?", "Confirmación", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                UsuarioDAO usuarioDAO = new UsuarioDAO();
+                for (Usuario usuario : selectedUsers) {
+                    usuarioDAO.eliminar(usuario);
+                }
+                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario(s) eliminado(s) exitosamente");
+                cargarDatosTabla();
+            }
+        } else {
+            Notifications.getInstance().show(Notifications.Type.WARNING, "Debes seleccionar al menos un usuario para eliminar");
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
+    private void txt_busquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_busquedaKeyReleased
+        // TODO add your handling code here:
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        usuarioDAO.buscarUsuarios(txt_busqueda, table);
+        cargarPerfiles();
+    }//GEN-LAST:event_txt_busquedaKeyReleased
+
     public static void main(String args[]) {
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
@@ -303,24 +349,50 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
 
     private void cargarDatosTabla() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0);  // Borra todas las filas actuales
-        try {
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
-            List<Usuario> usuarios = usuarioDAO.obtenerTodosLosUsuarios();
-            for (Usuario usuario : usuarios) {
-                Object[] fila = new Object[]{
-                    false, // Columna de selección (Checkbox)
-                    usuario.getIdUsuario(), // ID del usuario
-                    usuario,
-                    usuario.getApellido(), // Apellido
-                    usuario.getDni(), // DNI
-                    usuario.getCorreo(), // Correo
-                    usuario.getUsuario(), // Nombre de usuario
-                    usuario.getRol()};
-                model.addRow(fila);
+        model.setRowCount(0); // Borra todas las filas actuales
+
+        // Deshabilitar botones de acción mientras se carga
+        btn_crear.setEnabled(false);
+        btn_editar.setEnabled(false);
+        btn_eliminar.setEnabled(false);
+
+        SwingWorker<List<Usuario>, Void> worker = new SwingWorker<List<Usuario>, Void>() {
+            @Override
+            protected List<Usuario> doInBackground() throws Exception {
+                UsuarioDAO usuarioDAO = new UsuarioDAO();
+                return usuarioDAO.obtenerTodosLosUsuarios();
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al cargar los datos en la tabla", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+
+            @Override
+            protected void done() {
+                try {
+                    List<Usuario> usuarios = get();
+                    DefaultTableModel model = (DefaultTableModel) table.getModel();
+                    for (Usuario usuario : usuarios) {
+                        Object[] fila = new Object[]{
+                            false, // Checkbox
+                            usuario.getIdUsuario(),
+                            usuario,
+                            usuario.getApellido(),
+                            usuario.getDni(),
+                            usuario.getCorreo(),
+                            usuario.getUsuario(),
+                            usuario.getRol()
+                        };
+                        model.addRow(fila);
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Error al cargar los datos en la tabla", "Error", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    // Rehabilitar los botones después de cargar
+                    btn_crear.setEnabled(true);
+                    btn_editar.setEnabled(true);
+                    btn_eliminar.setEnabled(true);
+                }
+            }
+        };
+
+        worker.execute();
     }
+
 }
