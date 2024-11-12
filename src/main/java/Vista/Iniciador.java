@@ -1,5 +1,6 @@
 package Vista;
 
+import Vista_Productos.coloas;
 import Vista_Usuarios.Mantenimiento_Usuarios;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
@@ -23,6 +24,9 @@ public class Iniciador {
         });
 //        java.awt.EventQueue.invokeLater(() -> {
 //            new Vista_bienvenida().setVisible(true);
+//        });
+//                java.awt.EventQueue.invokeLater(() -> {
+//            new coloas().setVisible(true);
 //        });
     }
 }

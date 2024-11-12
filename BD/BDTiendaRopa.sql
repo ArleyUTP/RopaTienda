@@ -25,24 +25,70 @@ CREATE TABLE UsuariosRecordados (
 
 CREATE TABLE Tallas (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
-    nombre NVARCHAR(10) UNIQUE CHECK (nombre IN ('S', 'M', 'L', 'XL'))
+    nombre NVARCHAR(10) UNIQUE CHECK (nombre IN ('S', 'M', 'L', 'XL','XXL'))
 );
-
+--PROCEDIMIENTO ALMACENDADO QUE ME PERMITE RECUPERAR TODAS TALLAS
+CREATE PROCEDURE ObtenerTodasLasTallas
+AS
+BEGIN
+	SELECT * FROM Tallas
+	ORDER BY id;
+END
+EXEC ObtenerTodasLasTallas
+INSERT INTO Tallas(nombre)
+VALUES ('S'),('M'),('L'),('XL'),('XXL');
 CREATE TABLE Categorias (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     nombre NVARCHAR(50) UNIQUE
 );
-
+INSERT INTO Categorias (nombre) VALUES 
+('Camisetas'),
+('Pantalones'),
+('Chaquetas'),
+('Vestidos'),
+('Faldas'),
+('Abrigos'),
+('Ropa Interior'),
+('Accesorios'),
+('Zapatos'),
+('Ropa de Deporte');
+SELECT * FROM Categorias;
+--PROCEDIMEINTO PARA OBTENER TODAS LAS CATEGORIAS
+CREATE PROCEDURE SP_ObtenerTodasLasCategorias
+AS
+BEGIN
+	SELECT * FROM Categorias
+	ORDER BY id;
+END
+EXEC SP_ObtenerTodasLasCategorias
 CREATE TABLE Generos (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
-    nombre NVARCHAR(20) UNIQUE CHECK (nombre IN ('hombre', 'niño', 'mujer', 'niña'))
+    nombre NVARCHAR(20) UNIQUE CHECK (nombre IN ('Hombre', 'Niño', 'Mujer', 'Niña'))
 );
 
+INSERT INTO Generos VALUES ('Hombre'),('Niño'),('Mujer'),('Niña');
+--PROCEDIMIENTO PARA OBTENR TODAS LOS GENEROS
+CREATE PROCEDURE SP_ObtenerTodosLosGeneros
+AS
+BEGIN
+	SELECT * FROM Generos
+	ORDER BY id;
+END
 CREATE TABLE Marcas (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     nombre NVARCHAR(50) UNIQUE
 );
-
+INSERT INTO Marcas (nombre) VALUES 
+('Gamarra Fashion'),
+('Moda Lima'),
+('Estilo Urbano'),
+('Ropa Chic'),
+('Tendencias Gamarra'),
+('Diseños Peruanos'),
+('Textiles del Perú'),
+('Gamarra Style'),
+('Prendas Únicas'),
+('Cultura Textil');
 CREATE TABLE Productos (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     codigo NVARCHAR(50) UNIQUE,

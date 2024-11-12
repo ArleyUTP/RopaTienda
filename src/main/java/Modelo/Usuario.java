@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Usuario {
 
-    private int idUsuario;
+    private int id;
     private String nombre;
     private String apellido;
     private String dni;
@@ -21,8 +21,8 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nombre, String apellido, String usuario, String estado, String rol) {
-        this.idUsuario = idUsuario;
+    public Usuario(int id, String nombre, String apellido, String usuario, String estado, String rol) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.usuario = usuario;
@@ -44,12 +44,12 @@ public class Usuario {
         this.profile = new Profile(foto);
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public int getid() {
+        return id;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setid(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -150,7 +150,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "idUsuario=" + idUsuario + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", correo=" + correo + ", usuario=" + usuario + ", clave=" + clave + ", estado=" + estado + ", rol=" + rol + ", fechaNacimiento=" + fechaNacimiento + ", foto=" + foto + ", fechaCreacion=" + fechaCreacion + '}';
+        return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", correo=" + correo + ", usuario=" + usuario + ", clave=" + clave + ", estado=" + estado + ", rol=" + rol + ", fechaNacimiento=" + fechaNacimiento + ", foto=" + foto + ", fechaCreacion=" + fechaCreacion + '}';
     }
 
 }

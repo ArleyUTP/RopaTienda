@@ -56,7 +56,7 @@ public class UsuarioDAO extends DAO<Usuario> {
                             rs.getDate("fecha_nacimiento"),
                             rs.getString("foto")
                     );
-                    usuario.setIdUsuario(rs.getInt("id"));
+                    usuario.setid(rs.getInt("id"));
                     usuario.setFechaCreacion(rs.getDate("fecha_creacion"));
                 }
             }
@@ -69,7 +69,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 
     public void actualizarUsuario(Usuario usuario) {
         try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC ActualizarUsuario ?,?,?,?,?,?,?,?,?,?,?")) {
-            cs.setInt(1, usuario.getIdUsuario());
+            cs.setInt(1, usuario.getid());
             cs.setString(2, usuario.getNombre());
             cs.setString(3, usuario.getApellido());
             cs.setString(4, usuario.getDni());
@@ -90,31 +90,7 @@ public class UsuarioDAO extends DAO<Usuario> {
     }
 
     public List<Usuario> obtenerTodosLosUsuarios() {
-        List<Usuario> usuarios = new ArrayList<>();
-
-        String sql = "EXEC ObtenerTodosLosUsuarios"; // Llamada al procedimiento almacenado
-        try (Connection con = getconection(); CallableStatement cs = con.prepareCall(sql); ResultSet rs = cs.executeQuery()) {
-            while (rs.next()) {
-                Usuario usuario = new Usuario(
-                        rs.getString("nombre"),
-                        rs.getString("apellido"),
-                        rs.getString("dni"),
-                        rs.getString("correo"),
-                        rs.getString("usuario"),
-                        null, // Clave no se necesita para mostrar en la tabla
-                        rs.getString("estado"),
-                        rs.getString("rol"),
-                        rs.getDate("fecha_nacimiento"),
-                        rs.getString("foto")
-                );
-                usuario.setIdUsuario(rs.getInt("id"));
-                usuario.setFechaCreacion(rs.getDate("fecha_creacion"));
-                usuarios.add(usuario);
-            }
-
-        } catch (SQLException e) {
-            manejarError("Error al obtener los usuarios", e);
-        }
+        List<Usuario> usuarios = listarTodo("ObtenerTodosLosUsuarios");
         return usuarios;
     }
 
@@ -134,7 +110,7 @@ public class UsuarioDAO extends DAO<Usuario> {
             try (ResultSet rs = cs.executeQuery()) {
                 while (rs.next()) {
                     Usuario usuario = new Usuario(); // Crear un nuevo objeto Usuario para cada fila
-                    usuario.setIdUsuario(rs.getInt("id"));
+                    usuario.setid(rs.getInt("id"));
                     usuario.setNombre(rs.getString("nombre"));
                     usuario.setApellido(rs.getString("apellido"));
                     usuario.setDni(rs.getString("dni"));
@@ -146,7 +122,7 @@ public class UsuarioDAO extends DAO<Usuario> {
                     
                     model.addRow(new Object[]{
                         false,
-                        usuario.getIdUsuario(),
+                        usuario.getid(),
                         usuario, // Cambié 'usuario' por 'usuario.getNombre()'
                         usuario.getApellido(),
                         usuario.getDni(),
@@ -161,5 +137,28 @@ public class UsuarioDAO extends DAO<Usuario> {
         }
         
         table.setModel(model);
+    }
+
+    @Override
+    public Usuario parsear(ResultSet rs) {
+        Usuario usuario = new Usuario();
+        try {
+            usuario.setid(rs.getInt("id"));
+            usuario.setNombre(rs.getString("nombre"));
+            usuario.setApellido(rs.getString("apellido"));
+            usuario.setDni(rs.getString("dni"));
+            usuario.setCorreo(rs.getString("correo"));
+            usuario.setUsuario(rs.getString("usuario"));
+            usuario.setClave(rs.getString("clave"));
+            usuario.setEstado(rs.getString("estado"));
+            usuario.setRol(rs.getString("rol"));
+            usuario.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+            usuario.setFoto(rs.getString("foto"));
+            usuario.setFechaCreacion(rs.getDate("fecha_creacion"));
+            return usuario;
+        } catch (SQLException e) {
+            manejarError("Error al parsear el ResultSet", e);
+        }
+        return null;
     }
 }

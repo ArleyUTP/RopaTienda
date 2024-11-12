@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public class LoginDAO extends DAO<Usuario> {
 
@@ -86,5 +85,10 @@ public class LoginDAO extends DAO<Usuario> {
         } catch (SQLException e) {
             manejarError("Error al eliminar usuario recordado", e);
         }
+    }
+
+    @Override
+    public Usuario parsear(ResultSet rs) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

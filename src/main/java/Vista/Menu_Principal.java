@@ -5,6 +5,7 @@
 package Vista;
 
 import Vista_Orden.Orden;
+import Vista_Productos.Mantenimiento_Productos;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import raven.popup.GlassPanePopup;
@@ -42,6 +43,7 @@ public class Menu_Principal extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,13 +67,22 @@ public class Menu_Principal extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        jButton2.setText("Llamar 2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(41, 41, 41)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
                 .addContainerGap())
@@ -81,7 +92,9 @@ public class Menu_Principal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jButton1)
-                .addContainerGap(487, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addContainerGap(445, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
@@ -107,6 +120,15 @@ public class Menu_Principal extends javax.swing.JFrame {
         Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado Correctamente");
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        Mantenimiento_Productos man = new Mantenimiento_Productos();
+        jPanel1.setLayout(new BorderLayout());
+        jPanel1.add(man, BorderLayout.CENTER);
+        jPanel1.revalidate();
+        jPanel1.repaint();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,6 +167,7 @@ public class Menu_Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
