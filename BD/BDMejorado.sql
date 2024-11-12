@@ -132,7 +132,8 @@ CREATE TABLE ProductosTallas (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     producto_id BIGINT FOREIGN KEY REFERENCES Productos(id),
     talla_id BIGINT FOREIGN KEY REFERENCES Tallas(id),
-    UNIQUE (producto_id, talla_id) -- Evita duplicados
+    cantidad INT CHECK (cantidad >= 0),
+    UNIQUE (producto_id, talla_id)
 );
 CREATE TABLE Generos (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
@@ -143,9 +144,9 @@ CREATE TABLE ProductosGeneros (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     producto_id BIGINT FOREIGN KEY REFERENCES Productos(id),
     genero_id BIGINT FOREIGN KEY REFERENCES Generos(id),
-    UNIQUE (producto_id, genero_id) -- Evita duplicados
+    cantidad INT CHECK (cantidad >= 0),
+    UNIQUE (producto_id, genero_id)
 );
-
 CREATE TABLE Marcas (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     nombre NVARCHAR(50) UNIQUE
@@ -155,7 +156,8 @@ CREATE TABLE ProductosMarcas (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     producto_id BIGINT FOREIGN KEY REFERENCES Productos(id),
     marca_id BIGINT FOREIGN KEY REFERENCES Marcas(id),
-    UNIQUE (producto_id, marca_id) -- Evita duplicados
+    cantidad INT CHECK (cantidad >= 0),
+    UNIQUE (producto_id, marca_id)
 );
 
 INSERT INTO Marcas (nombre) VALUES 
@@ -189,7 +191,8 @@ CREATE TABLE ProductosColores (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     producto_id BIGINT FOREIGN KEY REFERENCES Productos(id),
     color_id BIGINT FOREIGN KEY REFERENCES Colores(id),
-    UNIQUE (producto_id, color_id) -- Evita duplicados
+    cantidad INT CHECK (cantidad >= 0),
+    UNIQUE (producto_id, color_id)
 );
 CREATE TABLE Fotos (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
@@ -210,6 +213,15 @@ CREATE TABLE Productos (
     fecha_caducidad_promocion DATE,
     foto NVARCHAR(MAX)
 );
+INSERT INTO Productos 
+(codigo, nombre, categoria_id, stock, stockMinimo, precio_compra, precio_venta, estado_promocion, fecha_caducidad_promocion, foto)
+VALUES
+('PROD001', 'Camiseta Básica', 1, 100, 10, 20.50, 30.00, 0, NULL, 'C:\Users\user\Desktop\RopaTienda\src\main\resources\Perfiles\pexels-creationhill-1681010.png'),
+('PROD002', 'Pantalón Casual', 2, 50, 5, 35.00, 50.00, 1, '2024-12-31', 'C:\Users\user\Desktop\RopaTienda\src\main\resources\Perfiles\pexels-creationhill-1681010.png'),
+('PROD003', 'Chaqueta Ligera', 3, 20, 2, 60.00, 90.00, 0, NULL, 'C:\Users\user\Desktop\RopaTienda\src\main\resources\Perfiles\pexels-creationhill-1681010.png'),
+('PROD004', 'Vestido Elegante', 4, 30, 3, 45.00, 70.00, 1, '2024-11-30', 'C:\Users\user\Desktop\RopaTienda\src\main\resources\Perfiles\pexels-creationhill-1681010.png'),
+('PROD005', 'Falda Larga', 5, 25, 4, 25.00, 40.00, 0, NULL, 'C:\Users\user\Desktop\RopaTienda\src\main\resources\Perfiles\pexels-creationhill-1681010.png');
+SELECT * FROM Productos
 -------------------------------------PROCEDIMIENTO ALMACENDADOS----------------------------------------
 --CATEGORIAS
 
@@ -244,6 +256,14 @@ BEGIN
     DELETE FROM Categorias WHERE id = @id;
 END;
 
+CREATE PROCEDURE SP_OptenerCategoriaPorId
+@id BIGINT
+AS
+BEGIN
+	SELECT nombre
+	FROM Categorias
+	WHERE id = @id;
+END;
 --TALLAS
 
 CREATE PROCEDURE SP_InsertarTalla

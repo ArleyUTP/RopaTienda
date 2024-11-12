@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 public abstract class DAO<T> {
 
     protected Connection getconection() {
-        String url = "jdbc:sqlserver://localhost:1433;database=TiendaDeRopas;encrypt=false";
+        String url = "jdbc:sqlserver://localhost:1433;database=TiendaGamarra;encrypt=false";
         String username = "sa";
         String password = "12345";
         try {

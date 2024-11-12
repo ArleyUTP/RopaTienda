@@ -5,6 +5,7 @@ import java.util.*;
 
 import Abstrac.DAO;
 import Modelo.Categoria;
+import Modelo.Producto;
 
 public class CategoriaDAO extends DAO<Categoria>{
     /*Base de datos:
@@ -17,7 +18,21 @@ public class CategoriaDAO extends DAO<Categoria>{
         List<Categoria> categorias = listarTodo("SP_ObtenerTodasLasCategorias");
         return categorias;
     }
-
+    public String obtenerCategoriaPorId(Producto producto){
+        long id = producto.getId();
+        String nombreCategoria = "";
+        try (Connection con = getconection();
+                CallableStatement cs = con.prepareCall("EXEC SP_OptenerCategoriaPorId ? ")){
+            cs.setLong(1, id);
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()) {
+                nombreCategoria=rs.getString("nombre");
+            }
+        } catch (SQLException e) {
+            manejarError("Error al obtener nombre Categoria por ID", e);
+        }
+        return nombreCategoria;
+    }
     @Override
     public Categoria parsear(ResultSet rs) {
         try {

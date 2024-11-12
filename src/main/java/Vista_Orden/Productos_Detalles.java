@@ -4,6 +4,8 @@ import Modelo.ColorRopa;
 import Modelo.Producto;
 import Persistencia.ColorDAO;
 import Persistencia.ProductoDAO;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 
@@ -11,9 +13,11 @@ public class Productos_Detalles extends javax.swing.JPanel {
 
     private Producto producto;
     private List<ColorRopa> colores;
+    private List<Colores> coloresDisponibles = new ArrayList<>();
     private List<String> imagenes; // Lista de URLs de imágenes
     private int indiceActual = 0;  // Índice para recorrer las imágenes
     private int color_id;
+
     public Productos_Detalles(Producto producto) {
         initComponents();
         init();
@@ -33,10 +37,21 @@ public class Productos_Detalles extends javax.swing.JPanel {
         ProductoDAO productoDAO = new ProductoDAO();
         ColorDAO colorDAO = new ColorDAO();
         colores = colorDAO.obtenerColoresPorId(producto);
-        colores.forEach(color->{
+        colores.forEach(color -> {
             Colores coloresVista = new Colores(color);
-            contenedorColores.add(coloresVista);
+            coloresDisponibles.add(coloresVista);
         });
+        for (Colores colore : coloresDisponibles) {
+            colore.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    colore.seleccionar();
+                    color_id = colore.getidColor();
+                    System.out.println("Color seleccionado: " + color_id);
+                }
+            });
+            contenedorColores.add(colore);
+        }
         contenedorColores.revalidate();
         contenedorColores.repaint();
 //        contenedorColores.add(new Colores(ColorRopa.BLACK));

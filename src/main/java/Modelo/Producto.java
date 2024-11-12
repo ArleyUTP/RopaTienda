@@ -1,52 +1,37 @@
-package Modelo;
+    package Modelo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Producto {
 
     private long id;
     private String codigo;
     private String nombre;
-    private long categoriaId;
-    private long tallaId;
-    private long generoId;
-    private long marcaId;
-    private int stock;
-    private int stockMinimo;
+    private long idCategoria;
+    private long stock;
+    private long stockMinimo;
     private double precioCompra;
     private double precioVenta;
     private boolean estadoPromocion;
-    private Date fechaCaducidadPromocion;
+    private Date fechaCaducidadPromoción;
     private String foto;
 
     public Producto() {
     }
 
-    public Producto(String codigo, String nombre, long categoriaId, long tallaId, long generoId, long marcaId, int stock, int stockMinimo, double precioCompra, double precioVenta, boolean estadoPromocion, Date fechaCaducidadPromocion, String foto) {
+    public Producto(String codigo, String nombre, long idCategoria, long stock, long stockMinimo, double precioCompra, double precioVenta, boolean estadoPromocion, Date fechaCaducidadPromoción, String foto) {
         this.codigo = codigo;
         this.nombre = nombre;
-        this.categoriaId = categoriaId;
-        this.tallaId = tallaId;
-        this.generoId = generoId;
-        this.marcaId = marcaId;
+        this.idCategoria = idCategoria;
         this.stock = stock;
         this.stockMinimo = stockMinimo;
         this.precioCompra = precioCompra;
         this.precioVenta = precioVenta;
         this.estadoPromocion = estadoPromocion;
-        this.fechaCaducidadPromocion = fechaCaducidadPromocion;
+        this.fechaCaducidadPromoción = fechaCaducidadPromoción;
         this.foto = foto;
     }
 
-    public Producto(long id, String nombre, double precioVenta, String foto) {
-        this.id = id;
-        this.nombre = nombre;
-        this.precioVenta = precioVenta;
-        this.foto = foto;
-    }
-
-    
-    // Getters y Setters
     public long getId() {
         return id;
     }
@@ -71,51 +56,27 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public long getCategoriaId() {
-        return categoriaId;
+    public long getIdCategoria() {
+        return idCategoria;
     }
 
-    public void setCategoriaId(long categoriaId) {
-        this.categoriaId = categoriaId;
+    public void setIdCategoria(long idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
-    public long getTallaId() {
-        return tallaId;
-    }
-
-    public void setTallaId(long tallaId) {
-        this.tallaId = tallaId;
-    }
-
-    public long getGeneroId() {
-        return generoId;
-    }
-
-    public void setGeneroId(long generoId) {
-        this.generoId = generoId;
-    }
-
-    public long getMarcaId() {
-        return marcaId;
-    }
-
-    public void setMarcaId(long marcaId) {
-        this.marcaId = marcaId;
-    }
-
-    public int getStock() {
+    public long getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(long stock) {
         this.stock = stock;
     }
 
-    public int getStockMinimo() {
+    public long getStockMinimo() {
         return stockMinimo;
     }
 
-    public void setStockMinimo(int stockMinimo) {
+    public void setStockMinimo(long stockMinimo) {
         this.stockMinimo = stockMinimo;
     }
 
@@ -135,7 +96,7 @@ public class Producto {
         this.precioVenta = precioVenta;
     }
 
-    public boolean isEstadoPromocion() {
+    public boolean getEstadoPromocion() {
         return estadoPromocion;
     }
 
@@ -143,12 +104,12 @@ public class Producto {
         this.estadoPromocion = estadoPromocion;
     }
 
-    public Date getFechaCaducidadPromocion() {
-        return fechaCaducidadPromocion;
+    public Date getFechaCaducidadPromoción() {
+        return fechaCaducidadPromoción;
     }
 
-    public void setFechaCaducidadPromocion(Date fechaCaducidadPromocion) {
-        this.fechaCaducidadPromocion = fechaCaducidadPromocion;
+    public void setFechaCaducidadPromoción(Date fechaCaducidadPromoción) {
+        this.fechaCaducidadPromoción = fechaCaducidadPromoción;
     }
 
     public String getFoto() {
@@ -158,4 +119,5 @@ public class Producto {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+    
 }
