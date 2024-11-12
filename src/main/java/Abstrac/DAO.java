@@ -43,4 +43,20 @@ public abstract class DAO<T> {
     }
     //Funcion abstracta
     public abstract T parsear(ResultSet rs);
+
+    public List<T> listarPorId(long id,String procedure){
+        List<T> lista = new ArrayList<>();
+        try (Connection con = getconection();
+        CallableStatement cs = con.prepareCall("EXEC "+procedure+" ?")){
+            cs.setLong(1,id);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()) {
+                T objeto = parsear(rs);
+                lista.add(objeto);
+            }
+        } catch (Exception e) {
+            manejarError("Error al Listar Por Id", e);
+        }
+        return lista;
+    }
 }

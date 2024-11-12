@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 import Abstrac.DAO;
+import Modelo.Producto;
 import Modelo.Talla;
 
 public class TallaDAO extends DAO<Talla>{
@@ -31,4 +32,9 @@ public class TallaDAO extends DAO<Talla>{
         return null;
     }
     
+    public List<Talla> obtenerTallasPorId(Producto producto){
+        long id = producto.getId();
+        List<Talla> tallas = listarPorId(id,"SP_ObtenerTallasPorProducto");
+        return tallas;
+    }
 }

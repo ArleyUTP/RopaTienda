@@ -1,19 +1,23 @@
 package Vista_Orden;
 
+import Modelo.ColorRopa;
 import Modelo.Producto;
+import Persistencia.ColorDAO;
 import Persistencia.ProductoDAO;
-import java.awt.Color;
 import java.util.List;
 import javax.swing.ImageIcon;
 
 public class Productos_Detalles extends javax.swing.JPanel {
 
+    private Producto producto;
+    private List<ColorRopa> colores;
     private List<String> imagenes; // Lista de URLs de imágenes
     private int indiceActual = 0;  // Índice para recorrer las imágenes
-
+    private int color_id;
     public Productos_Detalles(Producto producto) {
         initComponents();
         init();
+        this.producto = producto;
         lbl_nombre.setText(producto.getNombre());
         lbl_precio.setText(String.valueOf(producto.getPrecioVenta()));
         imagen.setImage(new ImageIcon(producto.getFoto()));
@@ -26,13 +30,22 @@ public class Productos_Detalles extends javax.swing.JPanel {
     }
 
     private void init() {
-        contenedorColores.add(new Colores(Color.BLACK));
-        contenedorColores.add(new Colores(Color.CYAN));
-        contenedorColores.add(new Colores(Color.MAGENTA));
-        contenedorColores.add(new Colores(Color.ORANGE));
-        contenedorColores.add(new Colores(Color.pink));
+        ProductoDAO productoDAO = new ProductoDAO();
+        ColorDAO colorDAO = new ColorDAO();
+        colores = colorDAO.obtenerColoresPorId(producto);
+        colores.forEach(color->{
+            Colores coloresVista = new Colores(color);
+            contenedorColores.add(coloresVista);
+        });
         contenedorColores.revalidate();
         contenedorColores.repaint();
+//        contenedorColores.add(new Colores(ColorRopa.BLACK));
+//        contenedorColores.add(new Colores(ColorRopa.CYAN));
+//        contenedorColores.add(new Colores(ColorRopa.MAGENTA));
+//        contenedorColores.add(new Colores(ColorRopa.ORANGE));
+//        contenedorColores.add(new Colores(ColorRopa.pink));
+//        contenedorColores.revalidate();
+//        contenedorColores.repaint();
         contenedorTallas.add(new Talla("S"));
         contenedorTallas.add(new Talla("M"));
         contenedorTallas.add(new Talla("L"));

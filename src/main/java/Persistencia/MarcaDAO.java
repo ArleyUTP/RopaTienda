@@ -4,6 +4,8 @@ import java.util.List;
 
 import Abstrac.DAO;
 import Modelo.Marca;
+import Modelo.Producto;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -23,11 +25,16 @@ public class MarcaDAO extends DAO<Marca>{
     public Marca parsear(ResultSet rs) {
         try {
             Marca marca = new Marca(rs.getString("nombre"));
-            marca.setId(rs.getInt("id"));
+            marca.setId(rs.getLong("id"));
             return marca;
         } catch (SQLException e) {
             manejarError("Error al Parsear Marca", e);
         }
         return null;
+    }
+    public List<Marca> obtenerMarcaPorId(Producto producto){
+        long id = producto.getId();
+        List<Marca> marcas = listarPorId(id,"SP_ObtenerMarcasPorProducto");
+        return marcas;
     }
 }

@@ -1,6 +1,7 @@
 C:\Users\user\Desktop\RopaTienda\src\main\java\Abstrac\DAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Autogenerar.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Categoria.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ColorRopa.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Encriptar.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Genero.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Marca.java
@@ -9,6 +10,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Profile.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Talla.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Usuario.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\CategoriaDAO.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ColorDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\GeneroDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\LoginDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\MarcaDAO.java
@@ -30,7 +32,6 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Orden.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Productos_Detalles.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Talla.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Productos\coloas.java
-C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Productos\Elegir_Color.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Productos\Mantenimiento_Productos.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Usuarios\Crear.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Usuarios\Mantenimiento_Usuarios.java

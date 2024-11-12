@@ -4,6 +4,7 @@
  */
 package Vista_Orden;
 
+import Modelo.ColorRopa;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
@@ -14,11 +15,21 @@ import javax.swing.border.Border;
  */
 public class Colores extends javax.swing.JPanel {
 
+    private ColorRopa colorRopa;
     private static Colores panelSeleccionado;
 
-    public Colores(Color color) {
+    public Colores(ColorRopa colorRopa) {
         initComponents();
-        this.setBackground(color);
+        this.colorRopa = colorRopa;
+        establecerColorDeFondo();
+    }
+
+    private void establecerColorDeFondo() {
+        if (colorRopa.getNombre() != null && !colorRopa.getNombre().isEmpty()) {
+            String colorHex = colorRopa.getNombre();
+            Color color = Color.decode(colorHex);
+            this.setBackground(color);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -44,6 +55,20 @@ public class Colores extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+//
+//        // Si hay un panel seleccionado, quitar la selección
+//        if (panelSeleccionado != null) {
+//            panelSeleccionado.setBorder(null); // Quitar borde del panel previamente seleccionado
+//            panelSeleccionado.setBackground(panelSeleccionado.getBackground().brighter()); // Restaurar color de fondo
+//        }
+//        // Seleccionar el nuevo panel
+//        panelSeleccionado = this; // Actualizar el panel seleccionado
+//        Border border = BorderFactory.createLineBorder(ColorRopa.DARK_GRAY, 3);
+//        this.setBorder(border); // Cambiar borde del panel seleccionado
+//        this.setBackground(this.getBackground().darker()); // Cambiar color de fondo al seleccionar
+    }//GEN-LAST:event_formMouseClicked
+
+    public void seleccionar() {
 
         // Si hay un panel seleccionado, quitar la selección
         if (panelSeleccionado != null) {
@@ -55,8 +80,7 @@ public class Colores extends javax.swing.JPanel {
         Border border = BorderFactory.createLineBorder(Color.DARK_GRAY, 3);
         this.setBorder(border); // Cambiar borde del panel seleccionado
         this.setBackground(this.getBackground().darker()); // Cambiar color de fondo al seleccionar
-    }//GEN-LAST:event_formMouseClicked
-
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

@@ -16,6 +16,7 @@ CREATE TABLE Usuarios (
     foto NVARCHAR(MAX),
     fecha_creacion DATETIME2 DEFAULT GETDATE()
 );
+SELECT * FROM Usuarios;
 CREATE TABLE UsuariosRecordados (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     usuario_id BIGINT FOREIGN KEY REFERENCES Usuarios(id),
@@ -95,8 +96,9 @@ CREATE TABLE Productos (
     nombre NVARCHAR(MAX),
     categoria_id BIGINT FOREIGN KEY REFERENCES Categorias(id),
     talla_id BIGINT FOREIGN KEY REFERENCES Tallas(id),
+	color_id BIGINT FOREIGN KEY REFERENCES Colores(id),
     genero_id BIGINT FOREIGN KEY REFERENCES Generos(id),
-    marca_id BIGINT FOREIGN KEY REFERENCES Marcas(id),
+    marca_id BIGINT FOREIGN KEY REFERENCES Marcas(id),	
     stock INT CHECK (stock >= 0),
     stockMinimo INT CHECK (stockMinimo >= 0),
     precio_compra DECIMAL(18, 2),
@@ -105,6 +107,35 @@ CREATE TABLE Productos (
     fecha_caducidad_promocion DATE,
 	foto NVARCHAR(MAX)
 );
+
+SELECT * FROM Categorias;
+SELECT * FROM Tallas;
+SELECT * FROM Colores;
+SELECT * FROM Generos;
+SELECT * FROM Marcas;
+CREATE TABLE Colores (
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
+    nombre NVARCHAR(50) UNIQUE,
+	codigo_hexdecimal NVARCHAR(50)UNIQUE
+);
+INSERT INTO Colores (nombre, codigo_hexdecimal) VALUES ('Rojo', '#FF0000');
+INSERT INTO Colores (nombre, codigo_hexdecimal) VALUES ('Verde', '#00FF00');
+INSERT INTO Colores (nombre, codigo_hexdecimal) VALUES ('Azul', '#0000FF');
+INSERT INTO Colores (nombre, codigo_hexdecimal) VALUES ('Negro', '#000000');
+INSERT INTO Colores (nombre, codigo_hexdecimal) VALUES ('Blanco', '#FFFFFF');
+INSERT INTO Colores (nombre, codigo_hexdecimal) VALUES ('Amarillo', '#FFFF00');
+INSERT INTO Colores (nombre, codigo_hexdecimal) VALUES ('Cyan', '#00FFFF');
+INSERT INTO Colores (nombre, codigo_hexdecimal) VALUES ('Magenta', '#FF00FF');
+INSERT INTO Colores (nombre, codigo_hexdecimal) VALUES ('Gris', '#808080');
+INSERT INTO Colores (nombre, codigo_hexdecimal) VALUES ('Naranja', '#FFA500');
+SELECT * FROM Colores;
+CREATE TABLE ProductosColores (
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
+    producto_id BIGINT FOREIGN KEY REFERENCES Productos(id),
+    color_id BIGINT FOREIGN KEY REFERENCES Colores(id),
+    UNIQUE (producto_id, color_id) -- Evita duplicados
+);
+
 CREATE TABLE Fotos (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     producto_id BIGINT FOREIGN KEY REFERENCES Productos(id),

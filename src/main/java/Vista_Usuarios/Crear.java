@@ -378,7 +378,7 @@ public class Crear extends javax.swing.JPanel {
 // Método para cargar los datos del usuario en los campos de texto
 
     public void cargarDatos(Usuario usuario) {
-        id = usuario.getIdUsuario();
+        id = usuario.getid();
         txt_nombre.setText(usuario.getNombre());
         txt_apellido.setText(usuario.getApellido());
         txt_dni.setText(usuario.getDni());
@@ -415,7 +415,7 @@ public class Crear extends javax.swing.JPanel {
     }
     public Usuario obtenerDatos() {
         Usuario usuario = new Usuario();
-        usuario.setIdUsuario(id);
+        usuario.setid(id);
         usuario.setNombre(txt_nombre.getText());
         usuario.setApellido(txt_apellido.getText());
         usuario.setDni(txt_dni.getText());

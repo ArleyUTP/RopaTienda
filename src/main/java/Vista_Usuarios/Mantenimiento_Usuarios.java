@@ -371,7 +371,7 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
                     for (Usuario usuario : usuarios) {
                         Object[] fila = new Object[]{
                             false, // Checkbox
-                            usuario.getIdUsuario(),
+                            usuario.getid(),
                             usuario,
                             usuario.getApellido(),
                             usuario.getDni(),
