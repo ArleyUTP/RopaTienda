@@ -9,6 +9,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
@@ -256,7 +257,6 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
         // Lista para almacenar los usuarios seleccionados en la tabla
         List<Usuario> selectedUsers = getSelectedUsers();
-        // Verificar si hay algún usuario seleccionado
         if (!selectedUsers.isEmpty()) {
             if (selectedUsers.size() == 1) {
                 Usuario usuario = selectedUsers.get(0);
@@ -351,7 +351,6 @@ public class Mantenimiento_Usuarios extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0); // Borra todas las filas actuales
 
-        // Deshabilitar botones de acción mientras se carga
         btn_crear.setEnabled(false);
         btn_editar.setEnabled(false);
         btn_eliminar.setEnabled(false);

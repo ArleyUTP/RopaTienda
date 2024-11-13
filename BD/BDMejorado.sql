@@ -21,6 +21,74 @@ VALUES ('Juan','Pérez','12345678','juan.perez@example.com','juanp','U1OPrUN/rq/3
 ('Juan','Marie','12345678','juan.pereexample.com','juandimal','sqVCc8aI2eFKJTJ6h2wgpoAkycOSSOPm/LgUaTfrXnY=','activo','vendedor','1990-01-01','C:\Users\user\Desktop\RopaTienda\src\main\resources\Perfiles\pexels-creationhill-1681010.png'),
 ('Jomina','Manani','76222323','jose@utp.edu.pe','josem23','6CSqB7KfYmXg22BGTahXtQ==','activo','vendedor','2024-01-01','C:\Users\user\Desktop\UTP\pinterest\e66ba99a5662ca8657205394a6e11b95.jpg'),
 ('Esperanza','Josema','83883838','josema@utp.edu.pe','esperanzaj38','m1aMe3UTE/5V3G2CAGKt1Q==','activo','vendedor','2024-02-14','C:\Users\user\Desktop\UTP\pinterest\e66ba99a5662ca8657205394a6e11b95.jpg')
+CREATE PROCEDURE SP_ObtenerTodosLosUsuarios
+AS
+BEGIN
+    SELECT 
+        id,
+        nombre,
+        apellido,
+        dni,
+        correo,
+        usuario,
+        estado,
+        rol,
+        fecha_nacimiento,
+        foto,
+        fecha_creacion
+    FROM Usuarios;
+END;
+CREATE PROCEDURE SP_ActualizarUsuario
+    @Id BIGINT,
+    @Nombre NVARCHAR(MAX),
+    @Apellido NVARCHAR(MAX),
+    @DNI NVARCHAR(50),
+    @Correo NVARCHAR(255),
+    @Usuario NVARCHAR(50),
+    @Clave NVARCHAR(255),
+    @Estado NVARCHAR(20),
+    @Rol NVARCHAR(20),
+    @FechaNacimiento DATE,
+    @Foto NVARCHAR(MAX)
+AS
+BEGIN
+    UPDATE Usuarios
+    SET 
+        nombre = @Nombre,
+        apellido = @Apellido,
+        dni = @DNI,
+        correo = @Correo,
+        usuario = @Usuario,
+        clave = @Clave,
+        estado = @Estado,
+        rol = @Rol,
+        fecha_nacimiento = @FechaNacimiento,
+        foto = @Foto
+    WHERE 
+	id = @Id;
+END;
+CREATE PROCEDURE SP_ObtenerUsuarioPorId
+    @Id BIGINT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        id,
+        nombre,
+        apellido,
+        dni,
+        correo,
+        usuario,
+        clave,
+        estado,
+        rol,
+        fecha_nacimiento,
+        foto,
+        fecha_creacion
+    FROM Usuarios
+    WHERE id = @Id;
+END;
 CREATE TABLE UsuariosRecordados (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     usuario_id BIGINT FOREIGN KEY REFERENCES Usuarios(id),

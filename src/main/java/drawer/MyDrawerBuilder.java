@@ -1,6 +1,7 @@
 package drawer;
 
 import Vista_Orden.Orden;
+import Vista_Usuarios.Man_Usuarios;
 import Vista_Usuarios.Mantenimiento_Usuarios;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -90,8 +91,12 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
                             } else if (subIndex == 1) {
 
                             } else if (subIndex == 2) {
-                                Mantenimiento_Usuarios mantenimiento_Usuarios = new Mantenimiento_Usuarios();
-                                mantenimiento_Usuarios.setVisible(true);
+                                Man_Usuarios man_Usuarios = new Man_Usuarios();
+                                contenedor.setLayout(new BorderLayout());
+                                contenedor.removeAll(); // Asegúrate de limpiar antes de añadir
+                                contenedor.add(man_Usuarios, BorderLayout.CENTER);
+                                contenedor.revalidate();
+                                contenedor.repaint();
                             }
                         } else if (index == 2) {
                             if (subIndex == 0) {

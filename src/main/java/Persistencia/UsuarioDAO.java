@@ -40,27 +40,25 @@ public class UsuarioDAO extends DAO<Usuario> {
 
     public Usuario obtenerUsuarioPorId(int id) {
         Usuario usuario = null;
-        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC ObtenerUsuarioPorId ?")) {
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_ObtenerUsuarioPorId ?")) {
             cs.setInt(1, id);
             try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
-                    usuario = new Usuario(
-                            rs.getString("nombre"),
-                            rs.getString("apellido"),
-                            rs.getString("dni"),
-                            rs.getString("correo"),
-                            rs.getString("usuario"),
-                            rs.getString("clave"),
-                            rs.getString("estado"),
-                            rs.getString("rol"),
-                            rs.getDate("fecha_nacimiento"),
-                            rs.getString("foto")
-                    );
+                    usuario = new Usuario();
+                    usuario.setNombre( rs.getString("nombre"));
+                    usuario.setApellido(rs.getString("apellido"));
+                    usuario.setDni(rs.getString("dni"));
+                    usuario.setCorreo(rs.getString("correo"));
+                    usuario.setUsuario(rs.getString("usuario"));
+                    usuario.setClave(rs.getString("clave"));
+                    usuario.setEstado(rs.getString("estado"));
+                    usuario.setRol(rs.getString("rol"));
+                    usuario.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+                    usuario.setFoto(rs.getString("foto"));
                     usuario.setid(rs.getInt("id"));
                     usuario.setFechaCreacion(rs.getDate("fecha_creacion"));
                 }
             }
-
         } catch (SQLException e) {
             manejarError("Error al obtener el usuario", e);
         }
@@ -68,7 +66,7 @@ public class UsuarioDAO extends DAO<Usuario> {
     }
 
     public void actualizarUsuario(Usuario usuario) {
-        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC ActualizarUsuario ?,?,?,?,?,?,?,?,?,?,?")) {
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_ActualizarUsuario ?,?,?,?,?,?,?,?,?,?,?")) {
             cs.setInt(1, usuario.getid());
             cs.setString(2, usuario.getNombre());
             cs.setString(3, usuario.getApellido());
@@ -90,7 +88,7 @@ public class UsuarioDAO extends DAO<Usuario> {
     }
 
     public List<Usuario> obtenerTodosLosUsuarios() {
-        List<Usuario> usuarios = listarTodo("ObtenerTodosLosUsuarios");
+        List<Usuario> usuarios = listarTodo("SP_ObtenerTodosLosUsuarios");
         return usuarios;
     }
 
@@ -149,7 +147,6 @@ public class UsuarioDAO extends DAO<Usuario> {
             usuario.setDni(rs.getString("dni"));
             usuario.setCorreo(rs.getString("correo"));
             usuario.setUsuario(rs.getString("usuario"));
-            usuario.setClave(rs.getString("clave"));
             usuario.setEstado(rs.getString("estado"));
             usuario.setRol(rs.getString("rol"));
             usuario.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
