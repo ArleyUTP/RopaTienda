@@ -31,6 +31,7 @@ Vista_Orden\Colores$1.class
 Vista_Orden\Orden.class
 Vista\Vista_EnvioCorreo$1.class
 Vista_Usuarios\Mantenimiento_Usuarios$6.class
+drawer\MyDrawerBuilder.class
 Vista\Menu_Principal$2.class
 Vista_Usuarios\table\ButtonAction.class
 Vista\Vista_login$7.class
@@ -47,6 +48,7 @@ Vista_Usuarios\Crear$8.class
 Vista\Vista_bienvenida$1.class
 Vista\Vista_login$1.class
 Modelo\Talla.class
+Vista\Menu_Principal$4.class
 Vista_Productos\Mantenimiento_Productos$1.class
 Modelo\Profile.class
 Vista_Productos\Mantenimiento_Productos.class
@@ -84,6 +86,7 @@ Persistencia\TallaDAO.class
 Vista_Usuarios\Crear$4.class
 Vista_Orden\CartaProductos$2.class
 Vista_Orden\Productos_Detalles$1.class
+Vista\Menu_Principal$5.class
 Modelo\Encriptar.class
 Vista\Vista_EnvioCorreo.class
 Vista_Productos\Mantenimiento_Productos$2.class
