@@ -19,6 +19,13 @@ public class Producto {
     public Producto() {
     }
 
+    public Producto(long id, String nombre, double precioVenta, String foto) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precioVenta = precioVenta;
+        this.foto = foto;
+    }
+
     public Producto(String codigo, String nombre, long idCategoria, long stock, long stockMinimo, double precioCompra, double precioVenta, boolean estadoPromocion, Date fechaCaducidadPromoción, String foto) {
         this.codigo = codigo;
         this.nombre = nombre;

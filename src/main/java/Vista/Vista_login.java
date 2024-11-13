@@ -2,13 +2,20 @@ package Vista;
 
 import Modelo.Usuario;
 import Persistencia.LoginDAO;
+import Persistencia.UsuarioDAO;
+import Vista_Usuarios.Crear;
 import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import raven.popup.DefaultOption;
+import raven.popup.GlassPanePopup;
+import raven.popup.component.SimplePopupBorder;
+import raven.toast.Notifications;
 
 public class Vista_login extends javax.swing.JFrame {
 
@@ -23,6 +30,8 @@ public class Vista_login extends javax.swing.JFrame {
     }
 
     private void init() {
+        GlassPanePopup.install(this);
+        Notifications.getInstance().setJFrame(this);
         txt_usuario.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Usuario");
         txt_usuario.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:15;" // Bordes redondeados
@@ -79,12 +88,14 @@ public class Vista_login extends javax.swing.JFrame {
         txt_clave = new javax.swing.JPasswordField();
         lbl_verContraseña = new javax.swing.JLabel();
         lbl_ocultarContraseña = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(242, 242, 242));
         setType(java.awt.Window.Type.UTILITY);
 
         lbl_bienvenida.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        lbl_bienvenida.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_bienvenida.setText("BIENVENIDO");
 
         txt_usuario.addActionListener(new java.awt.event.ActionListener() {
@@ -153,15 +164,15 @@ public class Vista_login extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Icon Login");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(chk_recordarUsuario))
@@ -179,34 +190,38 @@ public class Vista_login extends javax.swing.JFrame {
                             .addComponent(lbl_verContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_ocultarContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(lbl_bienvenida))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(82, 82, 82)
-                        .addComponent(jLabel4)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txt_usuario, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                            .addComponent(lbl_bienvenida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(17, 17, 17)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(22, 22, 22)
                 .addComponent(lbl_bienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_clave, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_verContraseña)
-                    .addComponent(lbl_ocultarContraseña))
-                .addGap(24, 24, 24)
+                .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lbl_ocultarContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_verContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_clave, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addComponent(chk_recordarUsuario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(30, 30, 30)
                 .addComponent(btn_ingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel4)
-                .addGap(4, 4, 4)
+                .addGap(30, 30, 30)
                 .addComponent(btn_crearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(102, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -229,7 +244,38 @@ public class Vista_login extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_claveKeyReleased
 
     private void btn_crearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearCuentaActionPerformed
-        // TODO add your handling code here:
+// Guardamos el tamaño original del JFrame
+        Dimension originalSize = this.getSize();
+// Redimensionamos el JFrame antes de mostrar el Popup
+        this.setSize(this.getWidth(), 600); // Asegúrate de que el tamaño sea suficiente para mostrar el Popup
+
+        Vista_Usuarios.Crear crear = new Crear();
+        DefaultOption option = new DefaultOption() {
+            @Override
+            public boolean closeWhenClickOutside() {
+                return true;
+            }
+        };
+        String actions[] = new String[]{"Cancelar", "Guardar"};
+        GlassPanePopup.showPopup(
+                new SimplePopupBorder(crear, "Crear Usuario", actions, (pc, i) -> {
+                    if (i == 1) {
+                        // Lógica para crear el usuario
+                        Usuario usuario = crear.crearUsuario();
+                        System.out.println("Usuario devuelto del Popup: " + usuario.toString());
+                        UsuarioDAO usuarioDAO = new UsuarioDAO();
+                        usuarioDAO.crearUsuario(usuario);
+                        pc.closePopup();
+                        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado correctamente");
+                    } else {
+                        pc.closePopup();
+                    }
+                    // Restauramos el tamaño original del JFrame después de interactuar con el Popup
+                    this.setSize(originalSize);
+                }),
+                option
+        );
+
     }//GEN-LAST:event_btn_crearCuentaActionPerformed
 
     private void txt_claveFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_claveFocusLost
@@ -268,6 +314,7 @@ public class Vista_login extends javax.swing.JFrame {
     private javax.swing.JButton btn_crearCuenta;
     private javax.swing.JButton btn_ingresar;
     private javax.swing.JCheckBox chk_recordarUsuario;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lbl_bienvenida;
     private javax.swing.JLabel lbl_ocultarContraseña;
@@ -280,7 +327,6 @@ public class Vista_login extends javax.swing.JFrame {
         LoginDAO loginDAO = new LoginDAO();
         String usuario = txt_usuario.getText(); // Eliminamos espacios en blanco
         String clave = new String(txt_clave.getPassword());
-
         if (usuario.isEmpty() || clave.isEmpty()) {
             return;
         }

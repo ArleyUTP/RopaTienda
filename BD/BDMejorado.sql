@@ -1,12 +1,11 @@
 CREATE DATABASE TiendaGamarra;
 USE TiendaGamarra;
-
 -------------------------------------------USUARIOS----------------------------------------------------
 CREATE TABLE Usuarios (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     nombre NVARCHAR(MAX),
     apellido NVARCHAR(MAX),
-    dni NVARCHAR(50),
+    dni NVARCHAR(50) UNIQUE,
     correo NVARCHAR(255) UNIQUE,
     usuario NVARCHAR(50) UNIQUE,
     clave NVARCHAR(255),
@@ -16,13 +15,21 @@ CREATE TABLE Usuarios (
     foto NVARCHAR(MAX),
     fecha_creacion DATETIME2 DEFAULT GETDATE()
 );
+SELECT * FROM Usuarios
+INSERT INTO Usuarios (nombre,apellido,dni,correo,usuario,clave,estado,rol,fecha_creacion,foto)
+VALUES ('Juan','Pérez','12345678','juan.perez@example.com','juanp','U1OPrUN/rq/3YQozAWv7vw==','activo','admin','1985-05-16','C:\Users\user\Desktop\RopaTienda\src\main\resources\Perfiles\pexels-creationhill-1681010.png'),
+('Juan','Marie','12345678','juan.pereexample.com','juandimal','sqVCc8aI2eFKJTJ6h2wgpoAkycOSSOPm/LgUaTfrXnY=','activo','vendedor','1990-01-01','C:\Users\user\Desktop\RopaTienda\src\main\resources\Perfiles\pexels-creationhill-1681010.png'),
+('Jomina','Manani','76222323','jose@utp.edu.pe','josem23','6CSqB7KfYmXg22BGTahXtQ==','activo','vendedor','2024-01-01','C:\Users\user\Desktop\UTP\pinterest\e66ba99a5662ca8657205394a6e11b95.jpg'),
+('Esperanza','Josema','83883838','josema@utp.edu.pe','esperanzaj38','m1aMe3UTE/5V3G2CAGKt1Q==','activo','vendedor','2024-02-14','C:\Users\user\Desktop\UTP\pinterest\e66ba99a5662ca8657205394a6e11b95.jpg')
 CREATE TABLE UsuariosRecordados (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     usuario_id BIGINT FOREIGN KEY REFERENCES Usuarios(id),
     fecha_recordado DATETIME2 DEFAULT GETDATE(),
     UNIQUE (usuario_id)  -- Para evitar duplicados
 );
-CREATE PROCEDURE InsertarUsuarioRecordado
+INSERT INTO UsuariosRecordados (usuario_id)
+VALUES(2)
+CREATE PROCEDURE SP_InsertarUsuarioRecordado
     @usuario NVARCHAR(50)
 AS
 BEGIN
@@ -48,7 +55,7 @@ BEGIN
 END;
 
 --PROCEDIMIENTO ALMACENDAO QUE PERMITE EL RECUPERAR LOS USUARIOS RECORDADOS
-CREATE PROC ObtenerUsuariosRecordados
+CREATE PROCEDURE SP_ObtenerUsuariosRecordados
 AS
 BEGIN
 	SELECT U.usuario
@@ -56,7 +63,7 @@ BEGIN
 	INNER JOIN Usuarios U ON UR.usuario_id=U.id
 END
 --PROCEDIMIENTO ALMACENADO QUE PERMITE EL ELIMINAR UN USUARIO RECORDADO
-CREATE PROC EliminarUsuarioRecordado
+CREATE PROC SP_EliminarUsuarioRecordado
 @usuario NVARCHAR(50)
 AS
 BEGIN
@@ -79,7 +86,7 @@ BEGIN
 END;
 --PROCEDIMIENTO ALMACENADO QUE PERMITE VALIDAR EL INGREDO DE DATOS EN EL LOGIN Y ME PERMITE CAPTURAR DATOS DEL
 --USUARIO ACTUAL
-CREATE PROC validarCredenciales
+CREATE PROC SP_validarCredenciales
 @Usuario NVARCHAR(50),
 @Clave NVARCHAR(255)
 AS
@@ -92,7 +99,7 @@ BEGIN
 END;
 
 --PROCEDIMIENTO ALMACENADO QUE ME PERMITE INGRESAR UN USUARIO PARA RECORDAR USUARIO
-CREATE PROC InsertarUsuarioRecordado
+CREATE PROCEDURE SP_InsertarUsuarioRecordado
 @usuario NVARCHAR(50)
 AS
 BEGIN
@@ -101,6 +108,49 @@ BEGIN
 			FROM Usuarios
 			WHERE usuario = @usuario)
 END;
+CREATE PROC SP_VerificarAdmin
+@usuario NVARCHAR(50),
+@clave NVARCHAR(255)
+AS
+BEGIN
+	SELECT rol FROM Usuarios
+	WHERE usuario = @usuario AND clave = @clave;
+END
+--GENERAR
+--USUARIO
+CREATE PROCEDURE SP_GenerarUsuarioUnico
+    @nombre NVARCHAR(50),
+    @apellido NVARCHAR(50),
+    @dni NVARCHAR(50),
+    @usuarioGenerado NVARCHAR(50) OUTPUT
+AS
+BEGIN
+	DECLARE @usuarioBase NVARCHAR(50) = GenerarUsuario(@nombre, @apellido, @dni);
+	DECLARE @Contador INT = 1;
+
+	--Verificar si existe
+	WHILE EXISTS(SELECT 1 FROM Usuarios WHERE usuario = @usuarioBase)
+	BEGIN
+		SET @usuarioBase = GenerarUsuario(@nombre, @apellido, @dni) + CAST(@contador AS NVARCHAR(10));
+        SET @contador = @contador + 1
+	END
+	--Asignar el usuario generado a la variable de salida
+	SET @usuarioGenerado=@usuarioBase
+END;
+CREATE FUNCTION GenerarUsuario
+(
+	@nombre NVARCHAR(50),
+	@apellido NVARCHAR(50),
+	@dni NVARCHAR(50)
+)
+RETURNS NVARCHAR(50)
+AS
+BEGIN
+	DECLARE @usuarioGenerado NVARCHAR(50);
+	SET @usuarioGenerado = LOWER(@nombre+LEFT(@apellido,1)+RIGHT(@dni,2));
+	RETURN @usuarioGenerado;
+END;
+--PASSWORD
 
 ------------------------------------------PRODUCTOS-----------------------------------------------------
 CREATE TABLE Categorias (

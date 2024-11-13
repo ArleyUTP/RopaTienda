@@ -16,7 +16,7 @@ public class LoginDAO extends DAO<Usuario> {
     }
 
     public boolean esUsuarioAdmin(String usuario, String clave) {
-        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC VerificarAdmin ?, ?")) {
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_VerificarAdmin ?, ?")) {
             cs.setString(1, usuario);
             cs.setString(2, clave);
 
@@ -57,7 +57,7 @@ public class LoginDAO extends DAO<Usuario> {
         return usuarioAutenticado;
     }
     public  void agregarUsuarioRecordado(String usuario){
-        try(Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC InsertarUsuarioRecordado ?")) {
+        try(Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC SP_InsertarUsuarioRecordado ?")) {
             cs.setString(1, usuario);
             cs.executeUpdate();
         } catch (SQLException e) {
@@ -66,7 +66,7 @@ public class LoginDAO extends DAO<Usuario> {
     }
     public List<Usuario> obtenerUsuariosRecordados(){
         List<Usuario> usuariosRecordados = new ArrayList<>();
-        try (Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC ObtenerUsuariosRecordados")){
+        try (Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC SP_ObtenerUsuariosRecordados")){
             ResultSet rs = cs.executeQuery();
             while(rs.next()){
                 Usuario usuario = new Usuario();
@@ -79,7 +79,7 @@ public class LoginDAO extends DAO<Usuario> {
         return usuariosRecordados;
     }
     public void eliminarUsuarioRecordado(String usuario){
-        try(Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC EliminarUsuarioRecordado ?")) {
+        try(Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC SP_EliminarUsuarioRecordado ?")) {
             cs.setString(1, usuario);
             cs.executeUpdate();
         } catch (SQLException e) {

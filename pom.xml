@@ -133,6 +133,11 @@
             <artifactId>superellipse</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>raven.swing</groupId>
+            <artifactId>spinner-progress</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>

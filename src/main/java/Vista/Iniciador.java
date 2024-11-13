@@ -19,14 +19,11 @@ public class Iniciador {
 //        java.awt.EventQueue.invokeLater(() -> {
 //            new Mantenimiento_Usuarios().setVisible(true);
 //        });
-                java.awt.EventQueue.invokeLater(() -> {
-            new Menu_Principal().setVisible(true);
-        });
-//        java.awt.EventQueue.invokeLater(() -> {
-//            new Vista_bienvenida().setVisible(true);
-//        });
 //                java.awt.EventQueue.invokeLater(() -> {
-//            new coloas().setVisible(true);
+//            new Menu_Principal().setVisible(true);
 //        });
+        java.awt.EventQueue.invokeLater(() -> {
+            new Vista_bienvenida().setVisible(true);
+        });
     }
 }

@@ -14,12 +14,30 @@ public class Orden extends javax.swing.JPanel {
         contenedor.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Table.background");
-//        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-//        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-//        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-//        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-//        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-//        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
         contenedor.revalidate();
         contenedor.repaint();
     }
@@ -32,7 +50,7 @@ public class Orden extends javax.swing.JPanel {
         contenedor = new javax.swing.JPanel();
 
         contenedor.setOpaque(false);
-        contenedor.setLayout(new java.awt.GridLayout(1, 6, 2, 2));
+        contenedor.setLayout(new java.awt.GridLayout(0, 6, 2, 2));
         jScrollPane1.setViewportView(contenedor);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
