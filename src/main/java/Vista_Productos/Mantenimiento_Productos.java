@@ -220,7 +220,7 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
             }
             
             Notifications.getInstance().show(Notifications.Type.SUCCESS, "Producto(s) eliminado(s) exitosamente");
-            cargarDatosTabla(); 
+            cargaDatosTabla();
         }
             } else {
         Notifications.getInstance().show(Notifications.Type.WARNING, "Debes seleccionar al menos un producto para eliminar");

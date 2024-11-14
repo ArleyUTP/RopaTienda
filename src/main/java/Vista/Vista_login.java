@@ -18,7 +18,7 @@ import raven.popup.component.SimplePopupBorder;
 import raven.toast.Notifications;
 
 public class Vista_login extends javax.swing.JFrame {
-    
+
     public Vista_login() {
         initComponents();
         init();
@@ -28,8 +28,10 @@ public class Vista_login extends javax.swing.JFrame {
         this.setResizable(false);
         lbl_ocultarContraseña.setVisible(false);
     }
-    
+
     private void init() {
+        GlassPanePopup.install(this);
+        Notifications.getInstance().setJFrame(this);
         txt_usuario.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Usuario");
         txt_usuario.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:15;" // Bordes redondeados
@@ -39,7 +41,7 @@ public class Vista_login extends javax.swing.JFrame {
                 + "focusColor:#39E079;" // Verde esmeralda al enfocar
                 + "margin:5,20,5,20;" // Margen interno
                 + "background:$TextField.background;");
-        
+
         txt_clave.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Contraseña");
         txt_clave.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:15;" // Bordes redondeados
@@ -49,7 +51,7 @@ public class Vista_login extends javax.swing.JFrame {
                 + "focusColor:#39E079;" // Verde esmeralda al enfocar
                 + "margin:5,20,5,20;" // Margen interno
                 + "background:$TextField.background;");
-        
+
         btn_ingresar.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:15;" // Bordes redondeados
                 + "borderWidth:0;" // Sin borde
@@ -69,9 +71,9 @@ public class Vista_login extends javax.swing.JFrame {
 
         lbl_bienvenida.putClientProperty(FlatClientProperties.STYLE, ""
                 + "foreground:#000000;");
-        
+
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -235,7 +237,7 @@ public class Vista_login extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
     private void txt_usuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyReleased
-        
+
         verificarAccesoAdministrador();
         existeUsuarioRecordado();
     }//GEN-LAST:event_txt_usuarioKeyReleased
@@ -338,7 +340,7 @@ public class Vista_login extends javax.swing.JFrame {
             });
         }).start();
     }
-    
+
     private void validar() {
         LoginDAO loginDAO = new LoginDAO();
         String usuario = txt_usuario.getText();
@@ -356,7 +358,7 @@ public class Vista_login extends javax.swing.JFrame {
             this.dispose();
         }
     }
-    
+
     private void recordarUsuario() {
         LoginDAO loginDAO = new LoginDAO();
         String usuario = txt_usuario.getText();
@@ -366,7 +368,7 @@ public class Vista_login extends javax.swing.JFrame {
             loginDAO.agregarUsuarioRecordado(usuario);
         }
     }
-    
+
     private void desactivarRecordarUsuario() {
         LoginDAO loginDAO = new LoginDAO();
         String usuario = txt_usuario.getText();
@@ -376,7 +378,7 @@ public class Vista_login extends javax.swing.JFrame {
             loginDAO.eliminarUsuarioRecordado(usuario);
         }
     }
-    
+
     private void existeUsuarioRecordado() {
         String usuarioIngresado = txt_usuario.getText();
         LoginDAO loginDAO = new LoginDAO();
@@ -385,7 +387,7 @@ public class Vista_login extends javax.swing.JFrame {
                 .anyMatch(usuario -> usuario.getUsuario().equals(usuarioIngresado));
         chk_recordarUsuario.setSelected(existe);
     }
-    
+
     private void configurarAutoCompleter() {
         LoginDAO loginDAO = new LoginDAO();
         List<Usuario> usuariosRecord = loginDAO.obtenerUsuariosRecordados();

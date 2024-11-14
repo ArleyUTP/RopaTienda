@@ -45,6 +45,12 @@ public class ProductoDAO extends DAO<Producto>{
         }
         return producto;
     }
+
+
+    public Producto obtenerProductoPorId(int productId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'obtenerProductoPorId'");
+    }
     
     
 }
