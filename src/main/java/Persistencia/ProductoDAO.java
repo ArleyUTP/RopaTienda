@@ -5,6 +5,7 @@ import java.util.*;
 
 import Abstrac.DAO;
 import Modelo.Producto;
+import Modelo.Usuario;
 
 public class ProductoDAO extends DAO<Producto>{
 
@@ -12,6 +13,12 @@ public class ProductoDAO extends DAO<Producto>{
         List<Producto> productos = listarTodo("SP_ObtenerTodosLosProductos");
         return productos;
     }
+    
+    
+    public void eliminar(Producto producto) {
+       
+    }
+    
     public List<String> obtenerImagenesPorId(Producto producto){
         long id = producto.getId();
         List<String> imagenes = new ArrayList<>();
@@ -38,4 +45,6 @@ public class ProductoDAO extends DAO<Producto>{
         }
         return producto;
     }
+    
+    
 }
