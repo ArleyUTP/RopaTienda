@@ -8,9 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JTextField;
 
 public class LoginDAO extends DAO<Usuario> {
-
 
     public LoginDAO() {
     }
@@ -34,7 +34,7 @@ public class LoginDAO extends DAO<Usuario> {
 
     public Usuario validarCredenciales(String usuario, String clave) {
         Usuario usuarioAutenticado = null;
-        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC validarCredenciales ?,?")) {
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_validarCredenciales ?,?")) {
             cs.setString(1, usuario);
             cs.setString(2, clave);
             try (ResultSet rs = cs.executeQuery();) {
@@ -56,19 +56,21 @@ public class LoginDAO extends DAO<Usuario> {
         }
         return usuarioAutenticado;
     }
-    public  void agregarUsuarioRecordado(String usuario){
-        try(Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC SP_InsertarUsuarioRecordado ?")) {
+
+    public void agregarUsuarioRecordado(String usuario) {
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_InsertarUsuarioRecordado ?")) {
             cs.setString(1, usuario);
             cs.executeUpdate();
         } catch (SQLException e) {
             manejarError("Error al agregar usuario recordado", e);
         }
     }
-    public List<Usuario> obtenerUsuariosRecordados(){
+
+    public List<Usuario> obtenerUsuariosRecordados() {
         List<Usuario> usuariosRecordados = new ArrayList<>();
-        try (Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC SP_ObtenerUsuariosRecordados")){
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_ObtenerUsuariosRecordados")) {
             ResultSet rs = cs.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Usuario usuario = new Usuario();
                 usuario.setUsuario(rs.getString("usuario"));
                 usuariosRecordados.add(usuario);
@@ -78,8 +80,9 @@ public class LoginDAO extends DAO<Usuario> {
         }
         return usuariosRecordados;
     }
-    public void eliminarUsuarioRecordado(String usuario){
-        try(Connection con = getconection();CallableStatement cs = con.prepareCall("EXEC SP_EliminarUsuarioRecordado ?")) {
+
+    public void eliminarUsuarioRecordado(String usuario) {
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_EliminarUsuarioRecordado ?")) {
             cs.setString(1, usuario);
             cs.executeUpdate();
         } catch (SQLException e) {
@@ -90,5 +93,13 @@ public class LoginDAO extends DAO<Usuario> {
     @Override
     public Usuario parsear(ResultSet rs) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public boolean validarIngreso(JTextField... campos) {
+        // Validación para el campo Usuario
+        if (ValidarCamposVacios(campos[0], "El campo Usuario no puede estar vacío")) {
+            return false;
+        }
+        return true;
     }
 }

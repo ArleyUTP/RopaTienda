@@ -5,6 +5,7 @@ Persistencia\ColorDAO.class
 Vista_Usuarios\Crear$6.class
 Vista\Vista_login$8.class
 Modelo\Categoria.class
+Validaciones\ValidarCamposVacios.class
 Vista_Productos\coloas$2.class
 Vista_Usuarios\table\CheckBoxTableHeaderRenderer.class
 Vista\Vista_login$5.class
@@ -42,6 +43,7 @@ Vista_Usuarios\Crear$2.class
 Vista_Usuarios\table\CheckBoxTableHeaderRenderer$1.class
 Vista\Vista_login.class
 Vista\Swing\ScrollBar.class
+Abstrac\Validador.class
 Vista_Productos\Mantenimiento_Productos$5.class
 Vista\Menu_Principal$1.class
 Persistencia\LoginDAO.class

@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-public abstract class DAO<T> {
+public abstract class DAO<T> extends Validador{
 
     protected Connection getconection() {
         String url = "jdbc:sqlserver://localhost:1433;database=TiendaGamarra;encrypt=false";
@@ -32,7 +32,6 @@ public abstract class DAO<T> {
         } catch (Exception e) {
             manejarError("Error al Listar Todo", e);
         }
-
         return lista;
     }
     protected void manejarError(String mensaje, Exception e) {
@@ -59,4 +58,5 @@ public abstract class DAO<T> {
         }
         return lista;
     }
+
 }
