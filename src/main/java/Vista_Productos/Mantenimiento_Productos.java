@@ -8,7 +8,9 @@ import Vista_Usuarios.table.TableHeaderAlignment;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import raven.popup.DefaultOption;
 import raven.popup.GlassPanePopup;
@@ -203,6 +205,26 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
     }//GEN-LAST:event_txt_busquedaKeyReleased
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        List<Producto> selectedProducts = getSelectedProducts();
+    
+    // Verificar si hay productos seleccionados
+    if (!selectedProducts.isEmpty()) {
+        int dialogResult = JOptionPane.showConfirmDialog(this, "¿Estás seguro de eliminar los productos seleccionados?", "Confirmación", JOptionPane.YES_NO_OPTION);
+        
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            ProductoDAO productoDAO = new ProductoDAO();
+            
+            // Eliminar cada producto seleccionado
+            for (Producto producto : selectedProducts) {
+                productoDAO.eliminar(producto);
+            }
+            
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Producto(s) eliminado(s) exitosamente");
+            cargarDatosTabla(); 
+        }
+            } else {
+        Notifications.getInstance().show(Notifications.Type.WARNING, "Debes seleccionar al menos un producto para eliminar");
+        }
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
@@ -255,6 +277,22 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
     private javax.swing.JTextField txt_busqueda;
     // End of variables declaration//GEN-END:variables
 
+    private List<Producto> getSelectedProducts() throws NullPointerException {
+    List<Producto> selectedProducts = new ArrayList<>();
+    ProductoDAO productoDAO = new ProductoDAO();
+
+    for (int i = 0; i < table.getRowCount(); i++) {
+        Boolean isSelected = (Boolean) table.getValueAt(i, 0); // Columna de selección (Checkbox)
+        if (isSelected != null && isSelected) {
+            int productId = (Integer) table.getValueAt(i, 1); // Columna del ID del producto
+            Producto producto = productoDAO.obtenerProductoPorId(productId); // Obtener el producto de la base de datos
+            selectedProducts.add(producto);
+        }
+    }
+        return selectedProducts;
+    }
+
+    
     public void cargaDatosTabla() {
         ProductoDAO productoDAO = new ProductoDAO();
         CategoriaDAO categoriaDAO = new CategoriaDAO();
