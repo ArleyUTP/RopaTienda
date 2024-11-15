@@ -11,8 +11,11 @@ import Vista_Usuarios.table.ProfileTableRenderer;
 import Vista_Usuarios.table.TableHeaderAlignment;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
@@ -131,6 +134,10 @@ public class Man_Usuarios extends javax.swing.JPanel {
         });
         table.getTableHeader().setReorderingAllowed(false);
         scroll.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setMaxWidth(40);
+            table.getColumnModel().getColumn(2).setPreferredWidth(200);
+        }
 
         lbl_titulo.setText("Usuarios");
 
@@ -167,14 +174,14 @@ public class Man_Usuarios extends javax.swing.JPanel {
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
+                    .addComponent(scroll)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_titulo)
                             .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(300, 367, Short.MAX_VALUE)
                         .addComponent(btn_crear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -205,10 +212,7 @@ public class Man_Usuarios extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(27, 27, 27))
+            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,7 +261,11 @@ public class Man_Usuarios extends javax.swing.JPanel {
                             if (i == 1) { // Opción de "Actualizar"
                                 Usuario usuarioEditado = crear.obtenerDatos();
                                 UsuarioDAO usuarioDAO = new UsuarioDAO();
-                                usuarioDAO.actualizarUsuario(usuarioEditado);
+                                try {
+                                    usuarioDAO.actualizarUsuario(usuarioEditado);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Man_Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                                 popupComponent.closePopup();
                                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario actualizado exitosamente");
                                 cargarDatosTabla();
@@ -289,7 +297,12 @@ public class Man_Usuarios extends javax.swing.JPanel {
                         Usuario usuario = crear.crearUsuario();
                         System.out.println("Usuario devuelto del Poput: " + usuario.toString());
                         UsuarioDAO usuarioDAO = new UsuarioDAO();
-                        usuarioDAO.crearUsuario(usuario);
+                        try {
+                            usuarioDAO.crearUsuario(usuario);
+                        } catch (IOException ex) {
+                            System.out.println("Error al crear usuario");
+                            Logger.getLogger(Man_Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         pc.closePopup();
                         cargarDatosTabla();
                         Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado Correctamente");
@@ -350,7 +363,7 @@ private List<Usuario> getSelectedUsers() throws NullPointerException {
                     for (Usuario usuario : usuarios) {
                         Object[] fila = new Object[]{
                             false, // Checkbox
-                            usuario.getid(),
+                            usuario.getId(),
                             usuario,
                             usuario.getApellido(),
                             usuario.getDni(),

@@ -1,12 +1,14 @@
 package Vista_Usuarios;
 
 import Modelo.Autogenerar;
-import Modelo.Encriptar;
+import Modelo.Perfil;
 import Modelo.Usuario;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.util.UIScale;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -17,10 +19,10 @@ import javax.swing.SwingUtilities;
 import jnafilechooser.api.JnaFileChooser;
 
 public class Crear extends javax.swing.JPanel {
-
+    
     private String ruta;
     private int id;
-
+    
     public Crear() {
         initComponents();
         datePicker.setCloseAfterSelected(true);
@@ -30,13 +32,25 @@ public class Crear extends javax.swing.JPanel {
             public Shape render(Rectangle rectangle) {
                 return createRound(rectangle, UIScale.scale(10));
             }
-
+            
         });
         panelImagen.putClientProperty(FlatClientProperties.STYLE, ""
                 + "border:0,0,0,0,$Component.borderColor,,10;"
                 + "background:$TextArea.background");
+        chb_generar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Autogenerar autogenerar = new Autogenerar();
+                if (chb_generar.isSelected()) {
+                    txt_clave.setText(autogenerar.generarClave());
+                } else {
+                    txt_clave.setText("");
+                }
+            }
+            
+        });
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -69,6 +83,7 @@ public class Crear extends javax.swing.JPanel {
         jToolBar1 = new javax.swing.JToolBar();
         btn_seleccionar = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
+        chb_generar = new javax.swing.JCheckBox();
 
         jLabel1.setText("Nombre");
 
@@ -161,7 +176,7 @@ public class Crear extends javax.swing.JPanel {
         imagenLayout.setHorizontalGroup(
             imagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagenLayout.createSequentialGroup()
-                .addGap(0, 34, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         imagenLayout.setVerticalGroup(
@@ -172,6 +187,13 @@ public class Crear extends javax.swing.JPanel {
         );
 
         panelImagen.add(imagen, java.awt.BorderLayout.CENTER);
+
+        chb_generar.setText("Generar");
+        chb_generar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chb_generarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -196,7 +218,7 @@ public class Crear extends javax.swing.JPanel {
                         .addComponent(btn_activo)
                         .addGap(18, 18, 18)
                         .addComponent(btn_inactivo)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(panelImagen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -209,8 +231,10 @@ public class Crear extends javax.swing.JPanel {
                             .addComponent(txt_usuario, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_clave, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(chb_generar))
+                        .addGap(26, 26, 26))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,7 +272,9 @@ public class Crear extends javax.swing.JPanel {
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
-                    .addComponent(cbo_rol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cbo_rol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(chb_generar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
@@ -270,7 +296,7 @@ public class Crear extends javax.swing.JPanel {
     }//GEN-LAST:event_cbo_rolActionPerformed
 
     private void txt_nombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombreKeyReleased
-
+        
         generarUsuario();
     }//GEN-LAST:event_txt_nombreKeyReleased
 
@@ -297,17 +323,20 @@ public class Crear extends javax.swing.JPanel {
         boolean act = ch.showOpenDialog(SwingUtilities.getWindowAncestor(this));
         if (act) {
             File file = ch.getSelectedFile();
-            ruta = file.getAbsolutePath();
-            System.out.println("La ruta es: " + ruta);
-            imagen.setImage(new ImageIcon(ruta));
+            imagen.setImage(new ImageIcon(file.getAbsolutePath()));
+            perfil = new Perfil(file);
         }
     }//GEN-LAST:event_btn_seleccionarActionPerformed
-
+    
+    private Perfil perfil;
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
-        // Establece la ruta como null al eliminar la imagen
-        ruta = null;
         imagen.setImage(null);
+        perfil = null;
     }//GEN-LAST:event_btn_eliminarActionPerformed
+
+    private void chb_generarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chb_generarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chb_generarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -316,6 +345,7 @@ public class Crear extends javax.swing.JPanel {
     private javax.swing.JRadioButton btn_inactivo;
     private javax.swing.JButton btn_seleccionar;
     private javax.swing.JComboBox<String> cbo_rol;
+    private javax.swing.JCheckBox chb_generar;
     private raven.datetime.component.date.DatePicker datePicker;
     private javax.swing.ButtonGroup grupoEstado;
     private javaswingdev.picturebox.PictureBox imagen;
@@ -352,7 +382,7 @@ public class Crear extends javax.swing.JPanel {
         String usuarioGenerado = autogenerar.generarUsuario(nombre, apellido, dni);
         txt_usuario.setText(usuarioGenerado);
     }
-
+    
     public Usuario crearUsuario() {
         String nombre = txt_nombre.getText().trim();
         String apellido = txt_apellido.getText().trim();
@@ -363,22 +393,29 @@ public class Crear extends javax.swing.JPanel {
         String contraseña = txt_clave.getText().trim();
         String rol = cbo_rol.getSelectedItem() != null ? cbo_rol.getSelectedItem().toString().toLowerCase() : "";
         String estado = btn_activo.isSelected() ? "activo" : (btn_inactivo.isSelected() ? "inactivo" : null);
-        String foto = ruta;
+        
         if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() || correo.isEmpty()
                 || usuarioString.isEmpty() || contraseña.isEmpty() || estado == null || fechaNacimiento == null || rol.isEmpty()) {
-
             JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
-        Encriptar encriptar = new Encriptar();
-        String contraseñaEncriptada = encriptar.encryptPassword(contraseña);
-        Usuario usuario = new Usuario(nombre, apellido, dni, correo, usuarioString, contraseñaEncriptada, estado, rol, fechaNacimiento, foto);
+        Usuario usuario = new Usuario();
+        usuario.setNombre(nombre);
+        usuario.setApellido(apellido);
+        usuario.setDni(dni);
+        usuario.setCorreo(correo);
+        usuario.setUsuario(usuarioString);
+        usuario.setClave(contraseña);
+        usuario.setEstado(estado);
+        usuario.setRol(rol);
+        usuario.setFechaNacimiento(fechaNacimiento);
+        usuario.setPerfil(perfil);  // Asignar el perfil con la imagen
         return usuario;
     }
-// Método para cargar los datos del usuario en los campos de texto
 
+// Método para cargar los datos del usuario en los campos de texto
     public void cargarDatos(Usuario usuario) {
-        id = usuario.getid();
+        id = usuario.getId();
         txt_nombre.setText(usuario.getNombre());
         txt_apellido.setText(usuario.getApellido());
         txt_dni.setText(usuario.getDni());
@@ -392,7 +429,7 @@ public class Crear extends javax.swing.JPanel {
         }
         txt_correo.setText(usuario.getCorreo());
         txt_usuario.setText(usuario.getUsuario());
-        txt_clave.setText(Encriptar.decryptPassword(usuario.getClave()));
+        txt_clave.setText(usuario.getClave());
 
         // Configurar el rol en el ComboBox
         if (usuario.getRol().equalsIgnoreCase("admin")) {
@@ -406,34 +443,29 @@ public class Crear extends javax.swing.JPanel {
         } else if (usuario.getEstado().equalsIgnoreCase("inactivo")) {
             btn_inactivo.setSelected(true);
         }
-        ruta = usuario.getFoto();
-        if (ruta != null && !ruta.isEmpty()) {
-            imagen.setImage(new ImageIcon(ruta));
+        perfil = usuario.getPerfil();
+        if (perfil != null && perfil.getIcon() != null) {
+            imagen.setImage(perfil.getIcon());
         } else {
             imagen.setImage(null);
         }
     }
+    
     public Usuario obtenerDatos() {
         Usuario usuario = new Usuario();
-        usuario.setid(id);
+        usuario.setId(id);
         usuario.setNombre(txt_nombre.getText());
         usuario.setApellido(txt_apellido.getText());
         usuario.setDni(txt_dni.getText());
         Date fechaNacimiento = datePicker.isDateSelected() ? Date.valueOf(datePicker.getSelectedDate()) : null;
-        System.out.println("El valor de la fecha de Nacimiento al obtener datos es: "+fechaNacimiento);
+        System.out.println("El valor de la fecha de Nacimiento al obtener datos es: " + fechaNacimiento);
         usuario.setFechaNacimiento(fechaNacimiento);
         usuario.setCorreo(txt_correo.getText());
         usuario.setUsuario(txt_usuario.getText());
-        usuario.setClave(Encriptar.encryptPassword(txt_clave.getText()));
+        usuario.setClave(txt_clave.getText());
         usuario.setRol(cbo_rol.getSelectedItem().toString().toLowerCase());
-        if (btn_activo.isSelected()) {
-            usuario.setEstado("activo");
-        } else if (btn_inactivo.isSelected()) {
-            usuario.setEstado("inactivo");
-        } else {
-            usuario.setEstado(null);
-        }
-        usuario.setFoto(ruta);
+        usuario.setEstado(btn_activo.isSelected() ? "activo" : "inactivo");
+        usuario.setPerfil(perfil);  // Asignar el perfil directamente
         return usuario;
     }
 }

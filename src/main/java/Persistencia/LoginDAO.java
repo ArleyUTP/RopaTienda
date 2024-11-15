@@ -96,10 +96,6 @@ public class LoginDAO extends DAO<Usuario> {
     }
 
     public boolean validarIngreso(JTextField... campos) {
-        // Validación para el campo Usuario
-        if (ValidarCamposVacios(campos[0], "El campo Usuario no puede estar vacío")) {
-            return false;
-        }
-        return true;
+        return !ValidarCamposVacios(campos[0], "El campo Usuario no puede estar vacío");
     }
 }

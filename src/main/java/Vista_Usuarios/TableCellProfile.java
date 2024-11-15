@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import javaswingdev.picturebox.DefaultPictureBoxRender;
-import javax.swing.ImageIcon;
 
 public class TableCellProfile extends javax.swing.JPanel {
 
@@ -19,8 +18,8 @@ public class TableCellProfile extends javax.swing.JPanel {
         lbl_estado.setText(usuario.getEstado());
         lbl_estado.putClientProperty(FlatClientProperties.STYLE, ""
                 + "foreground:$Label.disabledForeground");
-        if (usuario.getFoto() != null && !usuario.getFoto().isEmpty()) {
-            perfil.setImage(new ImageIcon(usuario.getFoto()));
+        if (usuario.getPerfil() != null) {
+            perfil.setImage(usuario.getPerfil().getIcon());
         }
         perfil.setPictureBoxRender(new DefaultPictureBoxRender() {
             @Override
@@ -80,6 +79,6 @@ public class TableCellProfile extends javax.swing.JPanel {
     public void setValue(Usuario usuario) {
         lbl_nombre.setText(usuario.getNombre());
         lbl_estado.setText(usuario.getEstado());
-        perfil.setImage(usuario.getProfile().getIcon());
+        perfil.setImage(usuario.getPerfil().getIcon());
     }
 }

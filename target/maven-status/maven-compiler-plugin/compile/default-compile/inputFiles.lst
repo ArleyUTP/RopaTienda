@@ -8,8 +8,8 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ColorRopa.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Encriptar.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Genero.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Marca.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Perfil.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Producto.java
-C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Profile.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Talla.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Usuario.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\CategoriaDAO.java
@@ -40,7 +40,6 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Productos\Crear.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Productos\Mantenimiento_Productos.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Usuarios\Crear.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Usuarios\Man_Usuarios.java
-C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Usuarios\Mantenimiento_Usuarios.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Usuarios\table\ButtonAction.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Usuarios\table\CheckBoxTableHeaderRenderer.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Usuarios\table\ProfileTableRenderer.java

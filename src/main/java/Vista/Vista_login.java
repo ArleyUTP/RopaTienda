@@ -6,6 +6,7 @@ import Persistencia.UsuarioDAO;
 import Vista_Usuarios.Crear;
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.Dimension;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.SwingUtilities;
@@ -227,11 +228,11 @@ public class Vista_login extends javax.swing.JFrame {
 
     private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
         LoginDAO loginDAO = new LoginDAO();
-        if (loginDAO.validarIngreso(txt_usuario, txt_clave)) {
+        if (loginDAO.validarIngreso(txt_usuario)) {
+            validar();
             recordarUsuario();
             desactivarRecordarUsuario();
         }
-        validar();
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
     private void txt_usuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyReleased
@@ -265,7 +266,10 @@ public class Vista_login extends javax.swing.JFrame {
                         Usuario usuario = crear.crearUsuario();
                         System.out.println("Usuario devuelto del Popup: " + usuario.toString());
                         UsuarioDAO usuarioDAO = new UsuarioDAO();
-                        usuarioDAO.crearUsuario(usuario);
+                        try {
+                            usuarioDAO.crearUsuario(usuario);
+                        } catch (IOException ex) {
+                        }
                         pc.closePopup();
                         Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado correctamente");
                     } else {

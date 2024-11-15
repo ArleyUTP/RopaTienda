@@ -1,95 +1,98 @@
 CREATE DATABASE TiendaGamarra;
 USE TiendaGamarra;
+USE TiendaDeRopas;
+SELECT * FROM Usuarios;
+DELETE FROM Usuarios
+WHERE id = 2;
 -------------------------------------------USUARIOS----------------------------------------------------
 CREATE TABLE Usuarios (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
-    nombre NVARCHAR(MAX),
-    apellido NVARCHAR(MAX),
-    dni NVARCHAR(50) UNIQUE,
-    correo NVARCHAR(255) UNIQUE,
-    usuario NVARCHAR(50) UNIQUE,
-    clave NVARCHAR(255),
-    estado NVARCHAR(20) CHECK (estado IN ('activo', 'inactivo')),
-    rol NVARCHAR(20) CHECK (rol IN ('admin', 'vendedor')),
-    fecha_nacimiento DATE,
-    foto NVARCHAR(MAX),
+    nombre NVARCHAR(MAX) NOT NULL,
+    apellido NVARCHAR(MAX) NOT NULL,
+    dni NVARCHAR(50) UNIQUE NOT NULL,
+    correo NVARCHAR(255) UNIQUE NOT NULL,
+    usuario NVARCHAR(50) UNIQUE NOT NULL,
+    clave NVARCHAR(255) NOT NULL,
+    estado NVARCHAR(20) CHECK (estado IN ('activo', 'inactivo')) NOT NULL,
+    rol NVARCHAR(20) CHECK (rol IN ('admin', 'vendedor')) NOT NULL,
+    fecha_nacimiento DATE CHECK(fecha_nacimiento < GETDATE()) NOT NULL,
+    foto VARBINARY(MAX),
     fecha_creacion DATETIME2 DEFAULT GETDATE()
 );
-SELECT * FROM Usuarios
-INSERT INTO Usuarios (nombre,apellido,dni,correo,usuario,clave,estado,rol,fecha_creacion,foto)
-VALUES ('Juan','Pérez','12345678','juan.perez@example.com','juanp','U1OPrUN/rq/3YQozAWv7vw==','activo','admin','1985-05-16','C:\Users\user\Desktop\RopaTienda\src\main\resources\Perfiles\pexels-creationhill-1681010.png'),
-('Juan','Marie','12345678','juan.pereexample.com','juandimal','sqVCc8aI2eFKJTJ6h2wgpoAkycOSSOPm/LgUaTfrXnY=','activo','vendedor','1990-01-01','C:\Users\user\Desktop\RopaTienda\src\main\resources\Perfiles\pexels-creationhill-1681010.png'),
-('Jomina','Manani','76222323','jose@utp.edu.pe','josem23','6CSqB7KfYmXg22BGTahXtQ==','activo','vendedor','2024-01-01','C:\Users\user\Desktop\UTP\pinterest\e66ba99a5662ca8657205394a6e11b95.jpg'),
-('Esperanza','Josema','83883838','josema@utp.edu.pe','esperanzaj38','m1aMe3UTE/5V3G2CAGKt1Q==','activo','vendedor','2024-02-14','C:\Users\user\Desktop\UTP\pinterest\e66ba99a5662ca8657205394a6e11b95.jpg')
-CREATE PROCEDURE SP_ObtenerTodosLosUsuarios
-AS
-BEGIN
-    SELECT 
-        id,
-        nombre,
-        apellido,
-        dni,
-        correo,
-        usuario,
-        estado,
-        rol,
-        fecha_nacimiento,
-        foto,
-        fecha_creacion
-    FROM Usuarios;
-END;
-CREATE PROCEDURE SP_ActualizarUsuario
-    @Id BIGINT,
-    @Nombre NVARCHAR(MAX),
-    @Apellido NVARCHAR(MAX),
-    @DNI NVARCHAR(50),
-    @Correo NVARCHAR(255),
-    @Usuario NVARCHAR(50),
-    @Clave NVARCHAR(255),
-    @Estado NVARCHAR(20),
-    @Rol NVARCHAR(20),
-    @FechaNacimiento DATE,
-    @Foto NVARCHAR(MAX)
-AS
-BEGIN
-    UPDATE Usuarios
-    SET 
-        nombre = @Nombre,
-        apellido = @Apellido,
-        dni = @DNI,
-        correo = @Correo,
-        usuario = @Usuario,
-        clave = @Clave,
-        estado = @Estado,
-        rol = @Rol,
-        fecha_nacimiento = @FechaNacimiento,
-        foto = @Foto
-    WHERE 
-	id = @Id;
-END;
-CREATE PROCEDURE SP_ObtenerUsuarioPorId
-    @Id BIGINT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT 
-        id,
-        nombre,
-        apellido,
-        dni,
-        correo,
-        usuario,
-        clave,
-        estado,
-        rol,
-        fecha_nacimiento,
-        foto,
-        fecha_creacion
-    FROM Usuarios
-    WHERE id = @Id;
-END;
 CREATE TABLE UsuariosRecordados (
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
+    usuario_id BIGINT FOREIGN KEY REFERENCES Usuarios(id),
+    fecha_recordado DATETIME2 DEFAULT GETDATE(),
+    UNIQUE (usuario_id)  -- Para evitar duplicados
+);
+CREATE PROCEDURE SP_CrearUsuario 
+    @nombre NVARCHAR(MAX),
+    @apellido NVARCHAR(MAX),
+    @dni NVARCHAR(50),
+    @correo NVARCHAR(255),
+    @usuario NVARCHAR(50),
+    @clave NVARCHAR(255),
+    @estado NVARCHAR(20),
+    @rol NVARCHAR(20),
+    @fecha_nacimiento DATE,
+    @foto VARBINARY(MAX) -- Cambiar a VARBINARY
+AS
+BEGIN
+    BEGIN TRY
+        INSERT INTO Usuarios (
+            nombre, 
+            apellido, 
+            dni, 
+            correo, 
+            usuario, 
+            clave, 
+            estado, 
+            rol, 
+            fecha_nacimiento, 
+            foto
+        ) VALUES (
+            @nombre, 
+            @apellido, 
+            @dni, 
+            @correo, 
+            @usuario, 
+            @clave, 
+            @estado, 
+            @rol, 
+            @fecha_nacimiento, 
+            @foto
+        );
+        
+        PRINT 'Usuario creado exitosamente';
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
+
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
+
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
+
+CREATE PROCEDURE SP_EliminarUsuario
+@id BIGINT
+AS
+BEGIN
+	DELETE FROM Usuarios
+	WHERE id = @id;
+END;
+SELECT * FROM Usuarios
+INSERT INTO Usuarios (nombre,apellido,dni,correo,usuario,clave,estado,rol,fecha_nacimiento,foto)
+VALUES ('Juan','Pérez','12345678','juan.perez@example.com','juanp','claveSegura123','activo','admin','1985-05-16',NULL),
+('Juan','Marie','12334438','juan.pereexample.com','juandimal','vidaer45','activo','vendedor','1990-01-01',NULL),
+('Jomina','Manani','76222323','jose@utp.edu.pe','josem23','Qu3?8Ln%','activo','vendedor','2024-01-01', NULL),
+('Esperanza','Josema','83883838','josema@utp.edu.pe','esperanzaj38','PU2v+8?3','activo','vendedor','2024-01-01',NULL)
+CREATE TABLE SP_UsuariosRecordados (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     usuario_id BIGINT FOREIGN KEY REFERENCES Usuarios(id),
     fecha_recordado DATETIME2 DEFAULT GETDATE(),
@@ -131,7 +134,7 @@ BEGIN
 	INNER JOIN Usuarios U ON UR.usuario_id=U.id
 END
 --PROCEDIMIENTO ALMACENADO QUE PERMITE EL ELIMINAR UN USUARIO RECORDADO
-CREATE PROC SP_EliminarUsuarioRecordado
+ALTER PROC SP_EliminarUsuarioRecordado
 @usuario NVARCHAR(50)
 AS
 BEGIN
@@ -144,7 +147,7 @@ BEGIN
     IF @usuarioId IS NOT NULL
 	BEGIN
 		DELETE FROM UsuariosRecordados
-		WHERE id = @usuarioID;
+		WHERE usuario_id = @usuarioID;
 	END
 	ELSE
 	BEGIN
@@ -193,19 +196,19 @@ CREATE PROCEDURE SP_GenerarUsuarioUnico
     @usuarioGenerado NVARCHAR(50) OUTPUT
 AS
 BEGIN
-	DECLARE @usuarioBase NVARCHAR(50) = GenerarUsuario(@nombre, @apellido, @dni);
+	DECLARE @usuarioBase NVARCHAR(50) = dbo.GenerarUsuario(@nombre, @apellido, @dni);
 	DECLARE @Contador INT = 1;
 
 	--Verificar si existe
 	WHILE EXISTS(SELECT 1 FROM Usuarios WHERE usuario = @usuarioBase)
 	BEGIN
-		SET @usuarioBase = GenerarUsuario(@nombre, @apellido, @dni) + CAST(@contador AS NVARCHAR(10));
+		SET @usuarioBase = dbo.GenerarUsuario(@nombre, @apellido, @dni) + CAST(@contador AS NVARCHAR(10));
         SET @contador = @contador + 1
 	END
 	--Asignar el usuario generado a la variable de salida
 	SET @usuarioGenerado=@usuarioBase
 END;
-CREATE FUNCTION GenerarUsuario
+CREATE FUNCTION SP_GenerarUsuario
 (
 	@nombre NVARCHAR(50),
 	@apellido NVARCHAR(50),
