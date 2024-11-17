@@ -354,7 +354,9 @@ public class Vista_login extends javax.swing.JFrame {
             return;
         }
         if (usuarioAutenticado != null) {
-            Menu_Principal menu = new Menu_Principal();
+            System.out.println("El usaurio autenificado pasado por el Menu principal es: "+usuarioAutenticado.toString()
+            );
+            Menu_Principal menu = new Menu_Principal(usuarioAutenticado);
             menu.setVisible(true);
             Notifications.getInstance().show(Notifications.Type.SUCCESS, "Credenciales Correctas");
             this.dispose();

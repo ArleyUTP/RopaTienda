@@ -1,33 +1,68 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Vista;
 
-import drawer.MyDrawerBuilder;
-import raven.drawer.Drawer;
+import Modelo.Usuario;
+import Vista_Usuarios.Man_Usuarios;
+import drawer.Encabezado;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javaswingdev.drawer.Drawer;
+import javaswingdev.drawer.DrawerController;
+import javaswingdev.drawer.DrawerItem;
+import javaswingdev.drawer.EventDrawer;
+import javax.swing.ImageIcon;
 import raven.popup.GlassPanePopup;
 import raven.toast.Notifications;
 
 public class Menu_Principal extends javax.swing.JFrame {
 
-    public Menu_Principal() {
+    private DrawerController drawer;
+
+    public Menu_Principal(Usuario usuario) {
+        System.out.println("Usuario en el menu principal es: " + usuario.toString());
         GlassPanePopup.install(this);
         initComponents();
         this.setExtendedState(this.MAXIMIZED_BOTH);
         this.setMaximizedBounds(this.getGraphicsConfiguration().getBounds());
-        MyDrawerBuilder myDrawerBuilder = new MyDrawerBuilder(contenedor);
-        Drawer drawer = Drawer.getInstance();
-        drawer.setDrawerBuilder(myDrawerBuilder);
-        javax.swing.JPanel drawerPanel = drawer.getDrawerPanel();
-        if (drawerPanel != null) {
-            drawerPanel.setBackground(new java.awt.Color(80, 200, 120)); // Verde esmeralda
-        }
         init();
+        this.drawer = Drawer.newDrawer(this)
+                .header(new Encabezado(usuario))
+                .separator(2, Color.BLACK)
+                .background(Color.WHITE) // Color verde esmeralda
+                .drawerBackground(Color.decode("#00FF7F")) // Fondo blanco
+                .enableScroll(true)
+                .space(3)
+                .duration(300) // Animación más rápida
+                .resolution(20) // Mejora la suavidad de la animación
+                .itemHeight(50)
+                .addChild(new DrawerItem("Menu Principal").icon(new ImageIcon(getClass().getResource(""))).build())
+                .addChild(new DrawerItem("Usuarios").icon(new ImageIcon(getClass().getResource(""))).build())
+                .addChild(new DrawerItem("Menu Principal").icon(new ImageIcon(getClass().getResource(""))).build())
+                .addFooter(new DrawerItem("Exit").icon(new ImageIcon(getClass().getResource(""))).build())
+                .event(new EventDrawer() {
+                    @Override
+                    public void selected(int i, DrawerItem di) {
+                        switch (i) {
+                            case 1 -> {
+                                Man_Usuarios man_Usuarios = new Man_Usuarios();
+                                contenedor.setLayout(new BorderLayout());
+                                contenedor.removeAll(); // Asegúrate de limpiar antes de añadir
+                                contenedor.add(man_Usuarios, BorderLayout.CENTER);
+                                contenedor.revalidate();
+                                contenedor.repaint();
+                            }
+                            case 2 -> {
+                            }
+                        }
+                    }
+                })
+                .build();
+        cargarCajon();
+    }
+
+    private void cargarCajon() {
     }
 
     private void init() {
-        GlassPanePopup.install(this);
         Notifications.getInstance().setJFrame(this);
     }
 
@@ -87,43 +122,48 @@ public class Menu_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
-        Drawer.getInstance().showDrawer();
+        if (drawer.isShow()) {
+            drawer.hide();
+        } else {
+            drawer.show();
+        }
+
     }//GEN-LAST:event_jMenu1MouseClicked
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Menu_Principal().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new Menu_Principal().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contenedor;

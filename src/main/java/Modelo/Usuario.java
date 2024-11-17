@@ -177,7 +177,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "Id=" + Id + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", correo=" + correo + ", usuario=" + usuario + ", clave=" + clave + ", estado=" + estado + ", rol=" + rol + ", fechaNacimiento=" + fechaNacimiento + ", perfil=" + perfil + ", foto=" + foto + ", fechaCreacion=" + fechaCreacion + '}';
+        return "Usuario{" + "Id=" + Id + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", correo=" + correo + ", usuario=" + usuario + ", clave=" + clave + ", estado=" + estado + ", rol=" + rol + ", fechaNacimiento=" + fechaNacimiento + ", perfil=" + perfil.toString() + ", foto=" + foto + ", fechaCreacion=" + fechaCreacion + '}';
     }
     
 }

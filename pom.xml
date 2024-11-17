@@ -138,6 +138,16 @@
             <artifactId>spinner-progress</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>swingdrawer.s</groupId>
+            <artifactId>swingdrawer</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>timeframe</groupId>
+            <artifactId>timeframeWord</artifactId>
+            <version>0.55</version>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>

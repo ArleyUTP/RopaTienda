@@ -22,6 +22,7 @@ public class Perfil {
     public Perfil(Icon icon) {
         this.icon = icon;
     }
+
     public Icon getIcon() {
         return icon;
     }
@@ -42,5 +43,5 @@ public class Perfil {
     public String toString() {
         return "Perfil{" + "icon=" + icon + ", ruta=" + ruta + '}';
     }
-    
+
 }

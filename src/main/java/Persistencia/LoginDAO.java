@@ -1,6 +1,7 @@
 package Persistencia;
 
 import Abstrac.DAO;
+import Modelo.Perfil;
 import Modelo.Usuario;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -41,10 +42,7 @@ public class LoginDAO extends DAO<Usuario> {
                 if (rs.next()) {
                     String estado = rs.getString("estado");
                     if ("activo".equalsIgnoreCase(estado)) {
-                        usuarioAutenticado = new Usuario(
-                                rs.getInt("id"),
-                                rs.getString("nombre"), rs.getString("apellido"),
-                                usuario, estado, rs.getString("rol"));
+                        usuarioAutenticado = parsear(rs);
                         mensaje("Credenciales correctas");
                     } else {
                         mensaje("El estado de esta cuenta es inactivo");
@@ -92,7 +90,21 @@ public class LoginDAO extends DAO<Usuario> {
 
     @Override
     public Usuario parsear(ResultSet rs) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       Usuario usuario = new Usuario();
+        try {
+            usuario.setId(rs.getInt("id"));
+            usuario.setNombre(rs.getString("nombre"));
+            usuario.setApellido(rs.getString("apellido"));
+            usuario.setCorreo(rs.getString("correo"));
+            usuario.setEstado(rs.getString("estado"));
+            usuario.setRol(rs.getString("rol"));
+            Perfil perfil = new Perfil(rs.getBytes("foto"));
+            usuario.setPerfil(perfil);
+            System.out.println("El pasarseo bota: "+usuario.toString());
+        } catch (SQLException e) {
+            manejarError("Error al parsear el ResultSet", e);
+        }
+        return usuario;
     }
 
     public boolean validarIngreso(JTextField... campos) {

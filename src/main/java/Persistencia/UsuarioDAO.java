@@ -77,7 +77,7 @@ public class UsuarioDAO extends DAO<Usuario> {
             cs.setDate(10, usuario.getFechaNacimiento());
 
             Perfil perfil = usuario.getPerfil();
-            if (perfil != null && perfil.getRuta()!= null) {
+            if (perfil != null && perfil.getRuta() != null) {
                 cs.setBytes(11, getByteImagen(perfil.getRuta()));
             } else {
                 cs.setNull(11, java.sql.Types.VARBINARY);
@@ -145,7 +145,6 @@ public class UsuarioDAO extends DAO<Usuario> {
             usuario.setFechaCreacion(rs.getDate("fecha_creacion"));
             Perfil perfil = new Perfil(rs.getBytes("foto"));
             usuario.setPerfil(perfil);
-
         } catch (SQLException e) {
             manejarError("Error al parsear el ResultSet", e);
         }

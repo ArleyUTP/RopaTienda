@@ -1,7 +1,8 @@
 C:\Users\user\Desktop\RopaTienda\src\main\java\Abstrac\DAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Abstrac\pruevba.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Abstrac\Validador.java
-C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\MyDrawerBuilder.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\Encabezado.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\ImageAvatar.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Autogenerar.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Categoria.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ColorRopa.java
@@ -37,6 +38,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Productos_Detalles.ja
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Talla.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Productos\coloas.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Productos\Crear.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Productos\CrearVariantes.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Productos\Mantenimiento_Productos.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Usuarios\Crear.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Usuarios\Man_Usuarios.java
