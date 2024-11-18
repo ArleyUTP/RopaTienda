@@ -19,6 +19,27 @@ CREATE TABLE Usuarios (
     foto VARBINARY(MAX),
     fecha_creacion DATETIME2 DEFAULT GETDATE()
 );
+ALTER TABLE Usuarios
+ADD fecha_desactivacion DATETIME2;
+CREATE PROCEDURE SP_DescativarCuentaTemporalmente
+@usuario NVARCHAR(50)
+AS
+BEGIN
+	UPDATE Usuarios
+	SET estado = 'inactivo',
+	fecha_desactivacion = DATEADD(HOUR,24,GETDATE())
+	WHERE usuario = @usuario;
+END;
+CREATE PROCEDURE SP_ReactivarCuenta
+@usuario NVARCHAR(50)
+AS
+BEGIN
+	UPDATE Usuarios
+	SET estado = 'activo'
+	WHERE usuario=@usuario
+	AND estado = 'inactivo'
+	AND fecha_desactivacion <= GETDATE();
+END;
 CREATE TABLE UsuariosRecordados (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     usuario_id BIGINT FOREIGN KEY REFERENCES Usuarios(id),

@@ -1,11 +1,14 @@
 Vista_Usuarios\Man_Usuarios$2.class
+Componentes\Carta.class
 Abstrac\DAO.class
+Dashboard\Dashboard.class
 Vista_Usuarios\Crear$3.class
 Modelo\Marca.class
 Persistencia\ColorDAO.class
 Vista_Usuarios\Crear$6.class
 Vista\Vista_login$8.class
 Modelo\Categoria.class
+Vista\Notifications.class
 Validaciones\ValidarCamposVacios.class
 Vista_Productos\coloas$2.class
 Vista_Usuarios\table\CheckBoxTableHeaderRenderer.class
@@ -16,7 +19,6 @@ Modelo\Perfil.class
 Vista\Iniciador.class
 Vista_Orden\Talla.class
 Vista_Usuarios\Crear$9.class
-Vista\Vista_bienvenida$2.class
 Vista\Vista_login$2.class
 Vista_Orden\CartaProductos$1.class
 Persistencia\ProductoDAO.class
@@ -29,7 +31,7 @@ Persistencia\CategoriaDAO.class
 Persistencia\UsuarioDAO.class
 Abstrac\pruevba.class
 Vista\Swing\WrapLayout.class
-Vista\Menu_Principal$3.class
+drawer\CustomDrawer.class
 Vista_Productos\Mantenimiento_Productos$3.class
 Modelo\Autogenerar.class
 Vista_Usuarios\TableCellProfile$1.class
@@ -52,9 +54,7 @@ Abstrac\Validador.class
 Vista_Productos\Mantenimiento_Productos$5.class
 Vista\Menu_Principal$1.class
 Persistencia\LoginDAO.class
-Vista\Vista_bienvenida.class
 Vista_Usuarios\Crear$8.class
-Vista\Vista_bienvenida$1.class
 Vista\Vista_login$1.class
 Modelo\Talla.class
 drawer\Encabezado.class
@@ -98,6 +98,7 @@ Vista_Orden\Productos_Detalles$1.class
 Modelo\Encriptar.class
 Vista\Vista_EnvioCorreo.class
 Vista_Productos\Mantenimiento_Productos$2.class
+drawer\CustomDrawer$1.class
 Vista_Productos\Crear$2.class
 Vista_Usuarios\table\SuperEllipse2D.class
 Vista\Vista_login$4.class

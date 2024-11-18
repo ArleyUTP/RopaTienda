@@ -12,6 +12,5 @@ public interface ValidarCamposVacios {
             return false;
         }
     }
-
     public abstract void mostrarMensajeError(String mensaje);
 }

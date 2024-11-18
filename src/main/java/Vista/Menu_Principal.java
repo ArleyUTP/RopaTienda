@@ -1,69 +1,25 @@
 package Vista;
 
+import Dashboard.Dashboard;
 import Modelo.Usuario;
 import Vista_Usuarios.Man_Usuarios;
 import drawer.Encabezado;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import javaswingdev.drawer.Drawer;
-import javaswingdev.drawer.DrawerController;
-import javaswingdev.drawer.DrawerItem;
-import javaswingdev.drawer.EventDrawer;
-import javax.swing.ImageIcon;
+import java.awt.Dimension;
 import raven.popup.GlassPanePopup;
-import raven.toast.Notifications;
 
 public class Menu_Principal extends javax.swing.JFrame {
 
-    private DrawerController drawer;
+    private Usuario usuario;
 
     public Menu_Principal(Usuario usuario) {
-        System.out.println("Usuario en el menu principal es: " + usuario.toString());
         GlassPanePopup.install(this);
+        this.usuario = usuario;
         initComponents();
         this.setExtendedState(this.MAXIMIZED_BOTH);
         this.setMaximizedBounds(this.getGraphicsConfiguration().getBounds());
-        init();
-        this.drawer = Drawer.newDrawer(this)
-                .header(new Encabezado(usuario))
-                .separator(2, Color.BLACK)
-                .background(Color.WHITE) // Color verde esmeralda
-                .drawerBackground(Color.decode("#00FF7F")) // Fondo blanco
-                .enableScroll(true)
-                .space(3)
-                .duration(300) // Animación más rápida
-                .resolution(20) // Mejora la suavidad de la animación
-                .itemHeight(50)
-                .addChild(new DrawerItem("Menu Principal").icon(new ImageIcon(getClass().getResource(""))).build())
-                .addChild(new DrawerItem("Usuarios").icon(new ImageIcon(getClass().getResource(""))).build())
-                .addChild(new DrawerItem("Menu Principal").icon(new ImageIcon(getClass().getResource(""))).build())
-                .addFooter(new DrawerItem("Exit").icon(new ImageIcon(getClass().getResource(""))).build())
-                .event(new EventDrawer() {
-                    @Override
-                    public void selected(int i, DrawerItem di) {
-                        switch (i) {
-                            case 1 -> {
-                                Man_Usuarios man_Usuarios = new Man_Usuarios();
-                                contenedor.setLayout(new BorderLayout());
-                                contenedor.removeAll(); // Asegúrate de limpiar antes de añadir
-                                contenedor.add(man_Usuarios, BorderLayout.CENTER);
-                                contenedor.revalidate();
-                                contenedor.repaint();
-                            }
-                            case 2 -> {
-                            }
-                        }
-                    }
-                })
-                .build();
-        cargarCajon();
-    }
-
-    private void cargarCajon() {
-    }
-
-    private void init() {
-        Notifications.getInstance().setJFrame(this);
+        this.setExtendedState(this.MAXIMIZED_BOTH);
+        this.setMaximizedBounds(this.getGraphicsConfiguration().getBounds());
     }
 
     @SuppressWarnings("unchecked")
@@ -71,64 +27,101 @@ public class Menu_Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         contenedor = new javax.swing.JPanel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         contenedor.setPreferredSize(new java.awt.Dimension(782, 631));
+        contenedor.setLayout(new java.awt.CardLayout());
 
-        javax.swing.GroupLayout contenedorLayout = new javax.swing.GroupLayout(contenedor);
-        contenedor.setLayout(contenedorLayout);
-        contenedorLayout.setHorizontalGroup(
-            contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 750, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
         );
-        contenedorLayout.setVerticalGroup(
-            contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 356, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("Menu");
-        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu1MouseClicked(evt);
-            }
-        });
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+        jPanel2.setLayout(new java.awt.GridLayout());
+        Encabezado encabezado = new Encabezado(usuario);
+        encabezado.setPreferredSize(new Dimension(200, 200)); // Establecer el tamaño preferido
+        jPanel2.add(encabezado); // Agregar el encabezado al panel
+        jPanel2.revalidate(); // Revalidar el panel para que se actualice el diseño
+        jPanel2.repaint(); // Repintar el panel
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
-        jMenuBar1.add(jMenu1);
 
-        setJMenuBar(jMenuBar1);
+        jButton2.setText("jButton2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contenedor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+            .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-    }//GEN-LAST:event_jMenu1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Dashboard dashboard = new Dashboard();
+        contenedor.setLayout(new BorderLayout());
+        contenedor.removeAll(); // Asegúrate de limpiar antes de añadir
+        contenedor.add(dashboard, BorderLayout.CENTER);
+        contenedor.revalidate();
+        contenedor.repaint();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
-        if (drawer.isShow()) {
-            drawer.hide();
-        } else {
-            drawer.show();
-        }
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Man_Usuarios usuarios = new Man_Usuarios();
+        contenedor.setLayout(new BorderLayout());
+        contenedor.removeAll(); // Asegúrate de limpiar antes de añadir
+        contenedor.add(usuarios, BorderLayout.CENTER);
+        contenedor.revalidate();
+        contenedor.repaint();
 
-    }//GEN-LAST:event_jMenu1MouseClicked
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,7 +160,9 @@ public class Menu_Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contenedor;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

@@ -87,6 +87,8 @@ public class Crear extends javax.swing.JPanel {
 
         jLabel1.setText("Nombre");
 
+        txt_nombre.setToolTipText("Nombre");
+        txt_nombre.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txt_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_nombreKeyReleased(evt);
@@ -289,6 +291,9 @@ public class Crear extends javax.swing.JPanel {
                     .addComponent(panelImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        txt_nombre.getAccessibleContext().setAccessibleName("");
+        txt_nombre.getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbo_rolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_rolActionPerformed

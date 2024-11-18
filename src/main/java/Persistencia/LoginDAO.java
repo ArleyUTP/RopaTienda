@@ -90,7 +90,7 @@ public class LoginDAO extends DAO<Usuario> {
 
     @Override
     public Usuario parsear(ResultSet rs) {
-       Usuario usuario = new Usuario();
+        Usuario usuario = new Usuario();
         try {
             usuario.setId(rs.getInt("id"));
             usuario.setNombre(rs.getString("nombre"));
@@ -100,11 +100,29 @@ public class LoginDAO extends DAO<Usuario> {
             usuario.setRol(rs.getString("rol"));
             Perfil perfil = new Perfil(rs.getBytes("foto"));
             usuario.setPerfil(perfil);
-            System.out.println("El pasarseo bota: "+usuario.toString());
+            System.out.println("El pasarseo bota: " + usuario.toString());
         } catch (SQLException e) {
             manejarError("Error al parsear el ResultSet", e);
         }
         return usuario;
+    }
+
+    public void desactivarCuenta(String usuario) {
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_DescativarCuentaTemporalmente ?")) {
+            cs.setString(1, usuario);
+            cs.executeUpdate();
+        } catch (SQLException e) {
+            manejarError("Error al descativar cuenta Temporalmente", e);
+        }
+    }
+
+    public void reactivarCuenta(String usuario) {
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_ReactivarCuenta ?")) {
+            cs.setString(1, usuario);
+            cs.executeUpdate();
+        } catch (SQLException e) {
+            manejarError("Error al reactivar cuenta Temporalmente", e);
+        }
     }
 
     public boolean validarIngreso(JTextField... campos) {

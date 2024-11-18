@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package Vista_Usuarios;
 
 import Modelo.Usuario;
@@ -13,9 +9,11 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
@@ -24,15 +22,10 @@ import raven.popup.GlassPanePopup;
 import raven.popup.component.SimplePopupBorder;
 import raven.toast.Notifications;
 
-/**
- *
- * @author user
- */
+
 public class Man_Usuarios extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Man_Usuarios
-     */
+
     public Man_Usuarios() {
         initComponents();
         init();
@@ -179,9 +172,12 @@ public class Man_Usuarios extends javax.swing.JPanel {
                     .addGroup(panelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_titulo)
-                            .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(300, 367, Short.MAX_VALUE)
+                            .addGroup(panelLayout.createSequentialGroup()
+                                .addComponent(lbl_titulo)
+                                .addGap(300, 516, Short.MAX_VALUE))
+                            .addGroup(panelLayout.createSequentialGroup()
+                                .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 367, Short.MAX_VALUE)))
                         .addComponent(btn_crear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -294,18 +290,15 @@ public class Man_Usuarios extends javax.swing.JPanel {
         GlassPanePopup.showPopup(
                 new SimplePopupBorder(crear, "Crear Usuario", actions, (pc, i) -> {
                     if (i == 1) {
+                        // Lógica para crear el usuario
                         Usuario usuario = crear.crearUsuario();
-                        System.out.println("Usuario devuelto del Poput: " + usuario.toString());
                         UsuarioDAO usuarioDAO = new UsuarioDAO();
                         try {
                             usuarioDAO.crearUsuario(usuario);
                         } catch (IOException ex) {
-                            System.out.println("Error al crear usuario");
-                            Logger.getLogger(Man_Usuarios.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         pc.closePopup();
-                        cargarDatosTabla();
-                        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado Correctamente");
+                        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado correctamente");
                     } else {
                         pc.closePopup();
                     }
@@ -313,7 +306,6 @@ public class Man_Usuarios extends javax.swing.JPanel {
                 option
         );
     }//GEN-LAST:event_btn_crearActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Vista_Usuarios.table.ButtonAction btn_crear;
