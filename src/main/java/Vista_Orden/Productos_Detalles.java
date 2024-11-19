@@ -24,10 +24,10 @@ public class Productos_Detalles extends javax.swing.JPanel {
         this.producto = producto;
         lbl_nombre.setText(producto.getNombre());
         lbl_precio.setText(String.valueOf(producto.getPrecioVenta()));
-        imagen.setImage(new ImageIcon(producto.getFoto()));
+//        imagen.setImage(new ImageIcon(producto.getFoto()));
         ProductoDAO proDAO = new ProductoDAO();
-        this.imagenes = proDAO.obtenerImagenesPorId(producto);
-        imagenes.add(producto.getFoto());
+//        this.imagenes = proDAO.obtenerImagenesPorId(producto);
+//        imagenes.add(producto.getFoto());
         if (!imagenes.isEmpty()) {
             cargarMiniaturas(imagenes);
         }

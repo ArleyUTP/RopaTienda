@@ -14,17 +14,17 @@ public class ColorDAO extends DAO<ColorRopa>{
 
     
     public List<ColorRopa> obtenerColoresPorId(Producto producto){
-        Long id = producto.getId();
+        int id = producto.getId();
         List<ColorRopa> colores = new ArrayList<>();
         try (Connection con = getconection();
-        CallableStatement cs = con.prepareCall("EXEC SP_BuscarColoresPorId ?")){
-            cs.setLong(1, id);
-            ResultSet rs = cs.executeQuery();
-            while (rs.next()) {
-                ColorRopa color = new ColorRopa(rs.getString("nombre"),rs.getString("codigo_hexdecimal"));
-                color.setId(rs.getInt("id"));
-                colores.add(color);
-            }            
+        CallableStatement cs = con.prepareCall("EXEC SP_ObtenerColoresPorIdProducto ?")){
+            cs.setInt(1, id);
+            try (ResultSet rs = cs.executeQuery()) {
+                while (rs.next()) {
+                    ColorRopa color = parsear(rs);
+                    colores.add(color);
+                }
+            }          
         } catch (Exception e) {
             manejarError("Error al obtener colores por id", e);
         }
@@ -32,8 +32,15 @@ public class ColorDAO extends DAO<ColorRopa>{
     }
     @Override
     public ColorRopa parsear(ResultSet rs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'parsear'");
+        ColorRopa color = new ColorRopa();
+        try {
+            color.setId(rs.getInt("id"));
+            color.setNombre(rs.getString("nombre"));
+            color.setCodigo_hexdecimal(rs.getString("valor_hex"));
+        } catch (Exception e) {
+            manejarError("Error al parsear el Color Ropa", e);
+        }
+        return color;
     }
     
 }

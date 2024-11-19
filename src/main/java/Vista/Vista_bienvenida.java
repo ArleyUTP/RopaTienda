@@ -13,7 +13,7 @@ public class Vista_bienvenida extends javax.swing.JFrame {
                 + "foreground:#E3F2FD;");  // Azul Claro Suave
         this.setLocationRelativeTo(null);
 // Configurar Temporizador para 20 segundos
-    Timer timer = new Timer(20000, new ActionListener() {
+    Timer timer = new Timer(20, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             // Cerrar el Jframe actual y abrir el siguiente login
@@ -29,7 +29,7 @@ public class Vista_bienvenida extends javax.swing.JFrame {
     barraDeCarga.setIndeterminate(false); // Desactiva el modo indeterminado
 
     // Temporizador para actualizar la barra de progreso cada 200 ms
-    Timer progressTimer = new Timer(200, new ActionListener() {
+    Timer progressTimer = new Timer(20, new ActionListener() {
         private int progress = 0;
 
         @Override

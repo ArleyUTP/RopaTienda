@@ -4,25 +4,20 @@ import java.sql.*;
 import java.util.*;
 
 import Abstrac.DAO;
+import Modelo.Perfil;
 import Modelo.Producto;
-import Modelo.Usuario;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import net.coobird.thumbnailator.Thumbnails;
 
-public class ProductoDAO extends DAO<Producto>{
+public class ProductoDAO extends DAO<Producto> {
 
-    public List<Producto> obtenerTodosLosProductos(){
+    public List<Producto> obtenerTodosLosProductos() {
         List<Producto> productos = listarTodo("SP_ObtenerTodosLosProductos");
         return productos;
-    }
-    
-    
-    public void eliminar(Producto producto) {
-       
-    }
-    
-    public List<String> obtenerImagenesPorId(Producto producto){
-        long id = producto.getId();
-        List<String> imagenes = new ArrayList<>();
-        return  imagenes;
     }
 
     @Override
@@ -30,27 +25,52 @@ public class ProductoDAO extends DAO<Producto>{
         Producto producto = new Producto();
         try {
             producto.setId(rs.getInt("id"));
-            producto.setCodigo(rs.getString("codigo"));
             producto.setNombre(rs.getString("nombre"));
-            producto.setIdCategoria(rs.getLong("categoria_id"));
-            producto.setStock(rs.getInt("stock"));
-            producto.setStockMinimo(rs.getInt("stockMinimo"));
+            producto.setDescripcion(rs.getString("descripcion"));
+            producto.setIdCategoria(rs.getInt("categoria_id"));
             producto.setPrecioCompra(rs.getDouble("precio_compra"));
             producto.setPrecioVenta(rs.getDouble("precio_venta"));
-            producto.setEstadoPromocion(rs.getBoolean("estado_promocion"));
-            producto.setFechaCaducidadPromoción(rs.getDate("fecha_caducidad_promocion"));
-            producto.setFoto(rs.getString("foto"));
         } catch (SQLException e) {
             manejarError("Error al parcear Producto", e);
         }
         return producto;
     }
 
-
     public Producto obtenerProductoPorId(int productId) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'obtenerProductoPorId'");
     }
-    
-    
+
+    public void importarFotoPrueba(Producto producto) {
+        int id = producto.getId();
+        Perfil perfil = producto.getFoto_principal();
+        try (Connection con = getconection();
+        CallableStatement cs = con.prepareCall("EXEC SP_ImagenesPrueba ?,?")){
+            cs.setInt(1, id);
+            if (perfil != null && perfil.getRuta() != null) {
+                cs.setBytes(2, getByteImagen(perfil.getRuta()));
+            }else{
+                cs.setNull(2, java.sql.Types.VARBINARY);
+            }
+            cs.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error al importa imagen: "+e.toString());
+        }
+    }
+    private byte[] getByteImagen(File file) throws IOException {
+        BufferedImage imagen = Thumbnails.of(file)
+                .width(500)
+                .outputQuality(0.7f)
+                .asBufferedImage();
+        ByteArrayOutputStream out = null;
+        try {
+            out = new ByteArrayOutputStream();
+            ImageIO.write(imagen, "jpg", out);
+            byte[] data = out.toByteArray();
+            return data;
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+        }
+    }
 }

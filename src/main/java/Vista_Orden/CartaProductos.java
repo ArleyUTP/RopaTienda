@@ -17,9 +17,9 @@ public class CartaProductos extends javax.swing.JPanel {
         init();
         lbl_nombre.setText(producto.getNombre());
         lbl_precio.setText(String.valueOf(producto.getPrecioVenta()));
-        if (producto.getFoto() != null) {
-            imagen.setImage(new ImageIcon(producto.getFoto()));
-        }
+//        if (producto.getFoto() != null) {
+//            imagen.setImage(new ImageIcon(producto.getFoto()));
+//        }
         this.producto = producto;
     }
 

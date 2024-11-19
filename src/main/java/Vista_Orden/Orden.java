@@ -1,6 +1,6 @@
 package Vista_Orden;
 
-import Modelo.Producto;
+
 import com.formdev.flatlaf.FlatClientProperties;
 
 public class Orden extends javax.swing.JPanel {
@@ -14,30 +14,7 @@ public class Orden extends javax.swing.JPanel {
         contenedor.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Table.background");
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
-        contenedor.add(new CartaProductos(new Producto(1, "Jeans", 2000.0, "C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png")));
+        
         contenedor.revalidate();
         contenedor.repaint();
     }

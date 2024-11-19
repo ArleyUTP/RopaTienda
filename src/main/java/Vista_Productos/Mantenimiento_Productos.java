@@ -23,7 +23,7 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
     public Mantenimiento_Productos() {
         initComponents();
         init();
-        cargaDatosTabla();
+//        cargaDatosTabla();
     }
 
     private void init() {
@@ -216,11 +216,11 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
             
             // Eliminar cada producto seleccionado
             for (Producto producto : selectedProducts) {
-                productoDAO.eliminar(producto);
+              //
             }
             
             Notifications.getInstance().show(Notifications.Type.SUCCESS, "Producto(s) eliminado(s) exitosamente");
-            cargaDatosTabla();
+//            cargaDatosTabla();
         }
             } else {
         Notifications.getInstance().show(Notifications.Type.WARNING, "Debes seleccionar al menos un producto para eliminar");
@@ -293,27 +293,27 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
     }
 
     
-    public void cargaDatosTabla() {
-        ProductoDAO productoDAO = new ProductoDAO();
-        CategoriaDAO categoriaDAO = new CategoriaDAO();
-        DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-        modelo.setRowCount(0);
-        List<Producto> productos = productoDAO.obtenerTodosLosProductos();
-        productos.forEach(producto -> {
-            modelo.addRow(new Object[]{
-                false,
-                producto.getId(),
-                producto.getCodigo(),
-                producto.getNombre(),
-                categoriaDAO.obtenerCategoriaPorId(producto),
-                producto.getStock(),
-                producto.getStockMinimo(),
-                producto.getPrecioCompra(),
-                producto.getPrecioVenta(),
-                producto.getEstadoPromocion(),
-                producto.getFechaCaducidadPromoción(),
-                producto.getFoto()
-            });
-        });
-    }
+//    public void cargaDatosTabla() {
+//        ProductoDAO productoDAO = new ProductoDAO();
+//        CategoriaDAO categoriaDAO = new CategoriaDAO();
+//        DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+//        modelo.setRowCount(0);
+//        List<Producto> productos = productoDAO.obtenerTodosLosProductos();
+//        productos.forEach(producto -> {
+//            modelo.addRow(new Object[]{
+//                false,
+//                producto.getId(),
+//                producto.getCodigo(),
+//                producto.getNombre(),
+//                categoriaDAO.obtenerCategoriaPorId(producto),
+//                producto.getStock(),
+//                producto.getStockMinimo(),
+//                producto.getPrecioCompra(),
+//                producto.getPrecioVenta(),
+//                producto.getEstadoPromocion(),
+//                producto.getFechaCaducidadPromoción(),
+//                producto.getFoto()
+//            });
+//        });
+//    }
 }
