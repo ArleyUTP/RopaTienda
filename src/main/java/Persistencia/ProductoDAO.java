@@ -15,8 +15,8 @@ import net.coobird.thumbnailator.Thumbnails;
 
 public class ProductoDAO extends DAO<Producto> {
 
-    public List<Producto> obtenerTodosLosProductos() {
-        List<Producto> productos = listarTodo("SP_ObtenerTodosLosProductos");
+    public List<Producto> obtenerTodosLosProductosDisponibles() {
+        List<Producto> productos = listarTodo("SP_ObtenerProDisponibles");
         return productos;
     }
 
@@ -30,6 +30,8 @@ public class ProductoDAO extends DAO<Producto> {
             producto.setIdCategoria(rs.getInt("categoria_id"));
             producto.setPrecioCompra(rs.getDouble("precio_compra"));
             producto.setPrecioVenta(rs.getDouble("precio_venta"));
+            Perfil perfil = new Perfil(rs.getBytes("Foto_Principal"));
+            producto.setFoto_principal(perfil);
         } catch (SQLException e) {
             manejarError("Error al parcear Producto", e);
         }
@@ -43,21 +45,22 @@ public class ProductoDAO extends DAO<Producto> {
     public void importarFotoPrueba(Producto producto) {
         int id = producto.getId();
         Perfil perfil = producto.getFoto_principal();
-        try (Connection con = getconection();
-        CallableStatement cs = con.prepareCall("EXEC SP_ImagenesPrueba ?,?")){
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_ImagenesPrueba ?,?")) {
             cs.setInt(1, id);
             if (perfil != null && perfil.getRuta() != null) {
                 cs.setBytes(2, getByteImagen(perfil.getRuta()));
-            }else{
+            } else {
                 cs.setNull(2, java.sql.Types.VARBINARY);
             }
             cs.executeUpdate();
         } catch (Exception e) {
-            System.out.println("Error al importa imagen: "+e.toString());
+            System.out.println("Error al importa imagen: " + e.toString());
         }
     }
+
     private byte[] getByteImagen(File file) throws IOException {
         BufferedImage imagen = Thumbnails.of(file)
+                .height(500)
                 .width(500)
                 .outputQuality(0.7f)
                 .asBufferedImage();

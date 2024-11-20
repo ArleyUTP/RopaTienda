@@ -9,6 +9,7 @@ import java.util.List;
 import Abstrac.DAO;
 import Modelo.ColorRopa;
 import Modelo.Producto;
+import Modelo.Talla;
 
 public class ColorDAO extends DAO<ColorRopa>{
 
@@ -29,6 +30,27 @@ public class ColorDAO extends DAO<ColorRopa>{
             manejarError("Error al obtener colores por id", e);
         }
         return colores;
+    }
+    
+    public List<Modelo.Talla>  obtenerTallasParaUnColor(Producto producto,ColorRopa color){
+        int idColor = color.getId();
+        int idProducto = producto.getId();
+        TallaDAO tallaDAO = new TallaDAO();
+        List<Modelo.Talla> tallas = new ArrayList<>();
+        try (Connection con = getconection();
+                CallableStatement cs = con.prepareCall("EXEC SP_TallasParaEsteColor ?,?")){
+            cs.setInt(1, idColor);
+            cs.setInt(2, idProducto);
+            try(ResultSet rs =cs.executeQuery()){
+                while (rs.next()) {                    
+                    Talla talla = tallaDAO.parsear(rs);
+                    tallas.add(talla);
+                }
+            }
+        } catch (Exception e) {
+            manejarError("Error al obtener tallar para un color", e);
+        }
+        return tallas;
     }
     @Override
     public ColorRopa parsear(ResultSet rs) {
