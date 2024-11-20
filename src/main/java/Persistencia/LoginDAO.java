@@ -43,9 +43,8 @@ public class LoginDAO extends DAO<Usuario> {
                     String estado = rs.getString("estado");
                     if ("activo".equalsIgnoreCase(estado)) {
                         usuarioAutenticado = parsear(rs);
-                        mensaje("Credenciales correctas");
                     } else {
-                        mensaje("El estado de esta cuenta es inactivo");
+                        mensajeDeError("El estado de esta cuenta es inactivo");
                     }
                 }
             }
@@ -107,25 +106,39 @@ public class LoginDAO extends DAO<Usuario> {
         return usuario;
     }
 
-    public void desactivarCuenta(String usuario) {
-        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_DescativarCuentaTemporalmente ?")) {
-            cs.setString(1, usuario);
+    public String desactivarCuenta(String usuario) {
+        String mensaje = null;
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC  SP_DescativarCuentaTemporalmente ?,? ")) {
+            cs.setString(1, usuario); // Usuario
+            cs.registerOutParameter(2, java.sql.Types.NVARCHAR); // Mensaje de salida
             cs.executeUpdate();
+            mensaje = cs.getString(2);
         } catch (SQLException e) {
-            manejarError("Error al descativar cuenta Temporalmente", e);
+            manejarError("Error al desactivar cuenta temporalmente", e);
         }
+        return mensaje; // Retorna el mensaje
     }
 
     public void reactivarCuenta(String usuario) {
         try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_ReactivarCuenta ?")) {
+
             cs.setString(1, usuario);
-            cs.executeUpdate();
+            int filasAfectadas = cs.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                System.out.println("La cuenta ha sido reactivada correctamente.");
+            } else {
+            }
+
         } catch (SQLException e) {
-            manejarError("Error al reactivar cuenta Temporalmente", e);
+            manejarError("Error al reactivar la cuenta", e);
         }
     }
 
     public boolean validarIngreso(JTextField... campos) {
-        return !ValidarCamposVacios(campos[0], "El campo Usuario no puede estar vacío");
+        if (ValidarCamposVacios(campos[0], campos[0].getToolTipText())) {
+            return false;
+        }
+        return true;
     }
 }

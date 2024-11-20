@@ -34,7 +34,6 @@ Persistencia\CategoriaDAO.class
 Persistencia\UsuarioDAO.class
 Abstrac\pruevba.class
 Vista\Swing\WrapLayout.class
-drawer\CustomDrawer.class
 Vista_Productos\Mantenimiento_Productos$3.class
 Modelo\Autogenerar.class
 Vista_Usuarios\TableCellProfile$1.class
@@ -112,7 +111,6 @@ Componentes\Menu_Desplegable.class
 Vista\Vista_EnvioCorreo.class
 Vista_Productos\Mantenimiento_Productos$2.class
 Componentes\Encabezado.class
-drawer\CustomDrawer$1.class
 Vista_Productos\Crear$2.class
 Vista_Usuarios\table\SuperEllipse2D.class
 Vista\Vista_login$4.class

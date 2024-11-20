@@ -2,22 +2,26 @@ package Vista_Usuarios;
 
 import Modelo.Usuario;
 import Vista_Usuarios.table.SuperEllipse2D;
-import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import javaswingdev.picturebox.DefaultPictureBoxRender;
 
 public class TableCellProfile extends javax.swing.JPanel {
-
+    
     public TableCellProfile(Usuario usuario, Font font) {
         initComponents();
         lbl_nombre.setFont(font);
         lbl_estado.setFont(font);
         lbl_nombre.setText(usuario.getNombre());
         lbl_estado.setText(usuario.getEstado());
-        lbl_estado.putClientProperty(FlatClientProperties.STYLE, ""
-                + "foreground:$Label.disabledForeground");
+        if (usuario.getEstado().equals("activo")) {
+            lbl_estado.setForeground(Color.decode("#39E079"));
+        }
+        if (usuario.getEstado().equals("inactivo")) {
+            lbl_estado.setForeground(Color.decode("#FF1E1E"));
+        }
         if (usuario.getPerfil() != null) {
             perfil.setImage(usuario.getPerfil().getIcon());
         }
@@ -27,9 +31,9 @@ public class TableCellProfile extends javax.swing.JPanel {
                 return new SuperEllipse2D(rec.x, rec.y, rec.width, rec.height, 3f).getShape();
             }
         });
-
+        
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -40,6 +44,7 @@ public class TableCellProfile extends javax.swing.JPanel {
 
         lbl_nombre.setText("Nombre");
 
+        lbl_estado.setBackground(new java.awt.Color(0, 0, 0));
         lbl_estado.setText("Estado");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

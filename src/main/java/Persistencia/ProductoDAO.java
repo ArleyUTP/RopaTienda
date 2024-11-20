@@ -60,8 +60,7 @@ public class ProductoDAO extends DAO<Producto> {
 
     private byte[] getByteImagen(File file) throws IOException {
         BufferedImage imagen = Thumbnails.of(file)
-                .height(500)
-                .width(500)
+                .size(600, 600) // Ajustar a un tamaño moderado
                 .outputQuality(0.7f)
                 .asBufferedImage();
         ByteArrayOutputStream out = null;

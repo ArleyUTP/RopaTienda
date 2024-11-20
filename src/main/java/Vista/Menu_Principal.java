@@ -1,8 +1,9 @@
 package Vista;
 
 import Modelo.Usuario;
-import Vista_Orden.Orden;
-import java.awt.BorderLayout;
+import drawer.MyDrawerBuilder;
+import drawer.MyDrawerBuilder1;
+import raven.drawer.Drawer;
 import raven.popup.GlassPanePopup;
 
 public class Menu_Principal extends javax.swing.JFrame {
@@ -13,11 +14,25 @@ public class Menu_Principal extends javax.swing.JFrame {
         GlassPanePopup.install(this);
         this.usuario = usuario;
         initComponents();
-        
         this.setExtendedState(this.MAXIMIZED_BOTH);
         this.setMaximizedBounds(this.getGraphicsConfiguration().getBounds());
-        this.setExtendedState(this.MAXIMIZED_BOTH);
-        this.setMaximizedBounds(this.getGraphicsConfiguration().getBounds());
+        if (usuario.getRol().equals("admin")) {
+            MyDrawerBuilder myDrawerBuilder = new MyDrawerBuilder(contenedor);
+            Drawer drawer = Drawer.getInstance();
+            drawer.setDrawerBuilder(myDrawerBuilder);
+            javax.swing.JPanel drawerPanel = drawer.getDrawerPanel();
+            if (drawerPanel != null) {
+                drawerPanel.setBackground(new java.awt.Color(80, 200, 120));
+            }
+        } else if (usuario.getRol().equals("vendedor")) {
+            MyDrawerBuilder1 myDrawerBuilder1 = new MyDrawerBuilder1(contenedor);
+            Drawer drawer = Drawer.getInstance();
+            drawer.setDrawerBuilder(myDrawerBuilder1);
+            javax.swing.JPanel drawerPanel = drawer.getDrawerPanel();
+            if (drawerPanel != null) {
+                drawerPanel.setBackground(new java.awt.Color(80, 200, 120));
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -25,49 +40,61 @@ public class Menu_Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         contenedor = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel1 = new javax.swing.JPanel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         contenedor.setPreferredSize(new java.awt.Dimension(782, 631));
         contenedor.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setText("Orden");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 46, Short.MAX_VALUE)
+        );
+
+        jMenu1.setText("File");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
             }
         });
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contenedor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 651, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 1366, Short.MAX_VALUE)
+            .addComponent(jSeparator1)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       Orden orden = new Orden();
-       contenedor.setLayout(new BorderLayout());
-       contenedor.add(orden,BorderLayout.CENTER);
-       contenedor.revalidate();
-       contenedor.repaint();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        Drawer.getInstance().showDrawer();
+    }//GEN-LAST:event_jMenu1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -106,6 +133,9 @@ public class Menu_Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contenedor;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

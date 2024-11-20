@@ -8,13 +8,22 @@ public class Perfil {
 
     Icon icon;
     File ruta;
+    byte[] bytes;
 
+    public byte[] getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
+    }
     public Perfil(File ruta) {
         this.ruta = ruta;
     }
 
     public Perfil(byte[] bytes) {
         if (bytes != null) {
+            this.bytes=bytes;
             icon = new ImageIcon(bytes);
         }
     }

@@ -3,6 +3,7 @@ package Vista_Usuarios;
 import Modelo.Autogenerar;
 import Modelo.Perfil;
 import Modelo.Usuario;
+import Persistencia.UsuarioDAO;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.util.UIScale;
 import java.awt.Rectangle;
@@ -10,8 +11,11 @@ import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javaswingdev.picturebox.DefaultPictureBoxRender;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -20,7 +24,7 @@ import jnafilechooser.api.JnaFileChooser;
 
 public class Crear extends javax.swing.JPanel {
     
-    private String ruta;
+    private Perfil perfil;
     private int id;
     
     public Crear() {
@@ -323,17 +327,23 @@ public class Crear extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btn_seleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_seleccionarActionPerformed
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         JnaFileChooser ch = new JnaFileChooser();
         ch.addFilter("Image", "png", "jpg");
         boolean act = ch.showOpenDialog(SwingUtilities.getWindowAncestor(this));
         if (act) {
             File file = ch.getSelectedFile();
-            imagen.setImage(new ImageIcon(file.getAbsolutePath()));
-            perfil = new Perfil(file);
+            try {
+                if (usuarioDAO.validarImagen(file)) {
+                    imagen.setImage(new ImageIcon(file.getAbsolutePath()));
+                    perfil = new Perfil(file);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Crear.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btn_seleccionarActionPerformed
-    
-    private Perfil perfil;
+
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         imagen.setImage(null);
         perfil = null;

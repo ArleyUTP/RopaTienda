@@ -2,6 +2,7 @@ package Vista_Orden;
 
 import Persistencia.ProductoDAO;
 import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 public class Orden extends javax.swing.JPanel {
@@ -12,7 +13,6 @@ public class Orden extends javax.swing.JPanel {
     }
 
     private void init() {
-        contenedor.setLayout(new GridLayout(0, 4, 30, 30));
         contenedor.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Table.background");
@@ -22,12 +22,13 @@ public class Orden extends javax.swing.JPanel {
     private void CargarDatos() {
         ProductoDAO productoDAO = new ProductoDAO();
         var productoDisponibles = productoDAO.obtenerTodosLosProductosDisponibles();
-
+        contenedor.setLayout(new GridLayout(0, 4, 50, 50));  // Configura GridLayout (3 columnas y márgenes de 30px)
         productoDisponibles.forEach(producto -> {
             CartaProductos carta = new CartaProductos(producto);
-//            carta.setPreferredSize(new Dimension(352, 508)); // Ajusta a tus necesidades
+            carta.setPreferredSize(new java.awt.Dimension(300, 500));  // Ajusta el tamaño preferido de cada carta
             contenedor.add(carta);
         });
+
         contenedor.revalidate();  // Reorganiza el layout
         contenedor.repaint();     // Redibuja los componentes
     }

@@ -5,11 +5,12 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Componentes\Carta.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Componentes\Encabezado.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Componentes\Menu_Desplegable.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Dashboard\Dashboard.java
-C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\CustomDrawer.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\EventMenu.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\ImageAvatar.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\Menu.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\MenuButton.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\MyDrawerBuilder.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\MyDrawerBuilder1.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\SystemTheme.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Autogenerar.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Categoria.java
@@ -32,6 +33,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\UsuarioDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Validaciones\ValidarCamposNumericos.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Validaciones\ValidarCamposVacios.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Validaciones\ValidarCampoTexto.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Validaciones\ValidarImagen.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista\Iniciador.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista\Menu_Principal.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista\Notifications.java

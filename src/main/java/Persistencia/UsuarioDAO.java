@@ -75,14 +75,14 @@ public class UsuarioDAO extends DAO<Usuario> {
             cs.setString(8, usuario.getEstado());
             cs.setString(9, usuario.getRol());
             cs.setDate(10, usuario.getFechaNacimiento());
-
             Perfil perfil = usuario.getPerfil();
             if (perfil != null && perfil.getRuta() != null) {
                 cs.setBytes(11, getByteImagen(perfil.getRuta()));
+            } else if (perfil != null && perfil.getBytes() != null) {
+                cs.setBytes(11, perfil.getBytes());
             } else {
                 cs.setNull(11, java.sql.Types.VARBINARY);
             }
-
             cs.executeUpdate();
             mensaje("Usuario actualizado correctamente");
         } catch (SQLException e) {
@@ -102,8 +102,7 @@ public class UsuarioDAO extends DAO<Usuario> {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         String usuarioBuscado = txt_buscador.getText();
-
-        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC BuscarUsuario ?")) {
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_BuscarUsuario ?")) {
             cs.setString(1, usuarioBuscado);
             try (ResultSet rs = cs.executeQuery()) {
                 while (rs.next()) {
@@ -111,14 +110,12 @@ public class UsuarioDAO extends DAO<Usuario> {
                     model.addRow(new Object[]{
                         false,
                         usuario.getId(),
-                        usuario.getNombre(),
+                        usuario,
                         usuario.getApellido(),
                         usuario.getDni(),
                         usuario.getCorreo(),
                         usuario.getUsuario(),
-                        usuario.getRol(),
-                        usuario.getPerfil().getIcon() != null ? "Foto disponible" : "Sin foto"
-                    });
+                        usuario.getRol(),});
                 }
             }
         } catch (SQLException e) {

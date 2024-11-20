@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import raven.toast.Notifications;
 
-public abstract class DAO<T> extends Validador{
+public abstract class DAO<T> extends Validador {
 
     protected Connection getconection() {
         String url = "jdbc:sqlserver://localhost:1433;database=TiendaGamarra;encrypt=false";
@@ -20,11 +21,9 @@ public abstract class DAO<T> extends Validador{
         return null;
     }
 
-    public List<T> listarTodo(String procedure){
+    public List<T> listarTodo(String procedure) {
         List<T> lista = new ArrayList<>();
-        try (Connection con = getconection();
-        CallableStatement cs = con.prepareCall("EXEC " + procedure);
-        ResultSet rs = cs.executeQuery()) {
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC " + procedure); ResultSet rs = cs.executeQuery()) {
             while (rs.next()) {
                 T objeto = parsear(rs);
                 lista.add(objeto);
@@ -34,20 +33,23 @@ public abstract class DAO<T> extends Validador{
         }
         return lista;
     }
+
     protected void manejarError(String mensaje, Exception e) {
         System.err.println(mensaje + " : " + e.getMessage());
     }
-        protected void mensaje(String mensaje) {
+
+    protected void mensaje(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
     }
-    //Funcion abstracta
+    public  void mensajeDeError(String mensaje){
+        Notifications.getInstance().show(Notifications.Type.ERROR, mensaje);
+    }
     public abstract T parsear(ResultSet rs);
 
-    public List<T> listarPorId(long id,String procedure){
+    public List<T> listarPorId(long id, String procedure) {
         List<T> lista = new ArrayList<>();
-        try (Connection con = getconection();
-        CallableStatement cs = con.prepareCall("EXEC "+procedure+" ?")){
-            cs.setLong(1,id);
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC " + procedure + " ?")) {
+            cs.setLong(1, id);
             ResultSet rs = cs.executeQuery();
             while (rs.next()) {
                 T objeto = parsear(rs);

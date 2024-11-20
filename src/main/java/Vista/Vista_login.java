@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import raven.popup.DefaultOption;
@@ -98,6 +99,11 @@ public class Vista_login extends javax.swing.JFrame {
         lbl_bienvenida.setText("BIENVENIDO");
 
         txt_usuario.setToolTipText("Usuario");
+        txt_usuario.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_usuarioFocusLost(evt);
+            }
+        });
         txt_usuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_usuarioActionPerformed(evt);
@@ -236,7 +242,7 @@ public class Vista_login extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
     private void txt_usuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyReleased
-        reactivarCuenta();
+
         verificarAccesoAdministrador();
         existeUsuarioRecordado();
     }//GEN-LAST:event_txt_usuarioKeyReleased
@@ -311,6 +317,10 @@ public class Vista_login extends javax.swing.JFrame {
         lbl_verContraseña.setVisible(true);
     }//GEN-LAST:event_lbl_ocultarContraseñaMouseClicked
 
+    private void txt_usuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_usuarioFocusLost
+        reactivarCuenta();
+    }//GEN-LAST:event_txt_usuarioFocusLost
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_crearCuenta;
@@ -342,24 +352,31 @@ public class Vista_login extends javax.swing.JFrame {
     private int intentos = 0;
 
     private void validar() {
-        intentos += 1;
-        LoginDAO loginDAO = new LoginDAO();
         String usuario = txt_usuario.getText();
         String clave = new String(txt_clave.getPassword());
-        System.out.println("La clave es: " + clave);
-        Usuario usuarioAutenticado = loginDAO.validarCredenciales(usuario, clave);
+        LoginDAO loginDAO = new LoginDAO();
+
         if (clave.isEmpty()) {
-            loginDAO.mostrarMensajeError("EL campo clave no puede estar vacio");
+            loginDAO.mostrarMensajeError("El campo clave no puede estar vacío");
             return;
         }
+
+        Usuario usuarioAutenticado = loginDAO.validarCredenciales(usuario, clave);
+
         if (usuarioAutenticado != null) {
+            intentos = 0;
             Menu_Principal menu = new Menu_Principal(usuarioAutenticado);
             menu.setVisible(true);
-            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Credenciales Correctas");
+            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Credenciales correctas");
             this.dispose();
         } else {
+            intentos++;
             if (intentos == 3) {
-                loginDAO.desactivarCuenta(usuario);
+                String mensaje = loginDAO.desactivarCuenta(usuario);
+                JOptionPane.showMessageDialog(null, mensaje, "Cuenta bloqueada", JOptionPane.ERROR_MESSAGE);
+                intentos = 0;
+            } else {
+                Notifications.getInstance().show(Notifications.Type.ERROR, "Credenciales incorrectas");
             }
         }
     }
@@ -369,14 +386,15 @@ public class Vista_login extends javax.swing.JFrame {
         String usuario = txt_usuario.getText();
         String clave = new String(txt_clave.getPassword());
         Usuario usuarioAutenticado = loginDAO.validarCredenciales(usuario, clave);
-        List<Usuario> usuariosRecord = loginDAO.obtenerUsuariosRecordados();
+
         if (usuarioAutenticado != null && chk_recordarUsuario.isSelected()) {
-            usuariosRecord.forEach((Usuario usu) -> {
-                if (!usuario.equals(usu)) {
-                    loginDAO.agregarUsuarioRecordado(usuario);
-                }
-                System.out.println("Esta en los usarios existentes");
-            });
+            List<Usuario> usuariosRecord = loginDAO.obtenerUsuariosRecordados();
+
+            boolean usuarioYaRecordado = usuariosRecord.stream()
+                    .anyMatch(usu -> usuario.equals(usu.getUsuario()));
+            if (!usuarioYaRecordado) {
+                loginDAO.agregarUsuarioRecordado(usuario);
+            }
         }
     }
 
