@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Usuario {
 
-    private int id;
+    private int Id;
     private String nombre;
     private String apellido;
     private String dni;
@@ -14,15 +14,35 @@ public class Usuario {
     private String estado;
     private String rol;
     private Date fechaNacimiento;
-    private String foto;
+    private Perfil perfil;
+
+    public Usuario(String nombre, String apellido, String dni, String correo, String usuario, String clave, String estado, String rol, Date fechaNacimiento) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.correo = correo;
+        this.usuario = usuario;
+        this.clave = clave;
+        this.estado = estado;
+        this.rol = rol;
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
+    private byte[] foto;
     private Date fechaCreacion;
-    private Profile profile;
 
     public Usuario() {
     }
 
-    public Usuario(int id, String nombre, String apellido, String usuario, String estado, String rol) {
-        this.id = id;
+    public Usuario(int Id, String nombre, String apellido, String usuario, String estado, String rol) {
+        this.Id = Id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.usuario = usuario;
@@ -30,7 +50,7 @@ public class Usuario {
         this.rol = rol;
     }
 
-    public Usuario(String nombre, String apellido, String dni, String correo, String usuario, String clave, String estado, String rol, Date fechaNacimiento, String foto) {
+    public Usuario(String nombre, String apellido, String dni, String correo, String usuario, String clave, String estado, String rol, Date fechaNacimiento, byte[] foto, Date fechaCreacion) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -41,15 +61,22 @@ public class Usuario {
         this.rol = rol;
         this.fechaNacimiento = fechaNacimiento;
         this.foto = foto;
-        this.profile = new Profile(foto);
+        this.fechaCreacion = fechaCreacion;
     }
 
-    public int getid() {
-        return id;
-    }
-
-    public void setid(int id) {
-        this.id = id;
+    public Usuario(String nombre, String apellido, String dni, String correo, String usuario, String clave, String estado, String rol, Date fechaNacimiento, Perfil perfil, byte[] foto, Date fechaCreacion) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.correo = correo;
+        this.usuario = usuario;
+        this.clave = clave;
+        this.estado = estado;
+        this.rol = rol;
+        this.fechaNacimiento = fechaNacimiento;
+        this.perfil = perfil;
+        this.foto = foto;
+        this.fechaCreacion = fechaCreacion;
     }
 
     public String getNombre() {
@@ -124,12 +151,20 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int Id) {
+        this.Id = Id;
     }
 
     public Date getFechaCreacion() {
@@ -140,17 +175,9 @@ public class Usuario {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
-
     @Override
     public String toString() {
-        return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", correo=" + correo + ", usuario=" + usuario + ", clave=" + clave + ", estado=" + estado + ", rol=" + rol + ", fechaNacimiento=" + fechaNacimiento + ", foto=" + foto + ", fechaCreacion=" + fechaCreacion + '}';
+        return "Usuario{" + "Id=" + Id + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", correo=" + correo + ", usuario=" + usuario + ", clave=" + clave + ", estado=" + estado + ", rol=" + rol + ", fechaNacimiento=" + fechaNacimiento + ", perfil=" + perfil.toString() + ", foto=" + foto + ", fechaCreacion=" + fechaCreacion + '}';
     }
-
+    
 }

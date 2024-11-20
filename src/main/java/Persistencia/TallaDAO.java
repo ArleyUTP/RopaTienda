@@ -3,38 +3,46 @@ package Persistencia;
 import java.sql.*;
 import java.util.*;
 
+
 import Abstrac.DAO;
 import Modelo.Producto;
 import Modelo.Talla;
 
 public class TallaDAO extends DAO<Talla>{
     
-    /*Base de datos:
-     * CREATE TABLE Tallas (
-    id BIGINT PRIMARY KEY IDENTITY(1,1),
-    nombre NVARCHAR(10) UNIQUE CHECK (nombre IN ('S', 'M', 'L', 'XL','XXL'))
-);
-     */
+
     public List<Talla> obtenerTodasLasTallas(){
         List<Talla> obtenerTodasLasTallas = listarTodo("ObtenerTodasLasTallas");
         return obtenerTodasLasTallas;
     }
-
+    
     @Override
     public Talla parsear(ResultSet rs) {
+        Talla talla = new Talla();
         try {
-            Talla talla = new Talla(rs.getString("nombre"));
             talla.setId(rs.getInt("id"));
-            return talla;
+            talla.setNombre(rs.getString("nombre"));
         } catch (SQLException e) {
             manejarError("Error al parsear talla", e);
         }
-        return null;
+        return talla;
     }
     
     public List<Talla> obtenerTallasPorId(Producto producto){
-        long id = producto.getId();
-        List<Talla> tallas = listarPorId(id,"SP_ObtenerTallasPorProducto");
+        int id = producto.getId();
+        List<Talla> tallas = new ArrayList<>();
+        try (Connection con = getconection();
+        CallableStatement cs = con.prepareCall("EXEC SP_ObtenerTallasPorIdProducto ?")){
+            cs.setInt(1, id);
+            try(ResultSet rs = cs.executeQuery()){
+                while (rs.next()) {
+                    Talla talla = parsear(rs);
+                    tallas.add(talla);
+                }
+            }
+        } catch (Exception e) {
+            manejarError("Error al obtener tallas por id", e);
+        }
         return tallas;
     }
 }

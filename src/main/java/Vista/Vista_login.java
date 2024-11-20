@@ -6,10 +6,9 @@ import Persistencia.UsuarioDAO;
 import Vista_Usuarios.Crear;
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.Dimension;
-import java.awt.Image;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import raven.popup.DefaultOption;
@@ -98,6 +97,7 @@ public class Vista_login extends javax.swing.JFrame {
         lbl_bienvenida.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_bienvenida.setText("BIENVENIDO");
 
+        txt_usuario.setToolTipText("Usuario");
         txt_usuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_usuarioActionPerformed(evt);
@@ -172,7 +172,7 @@ public class Vista_login extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(chk_recordarUsuario))
@@ -194,11 +194,10 @@ public class Vista_login extends javax.swing.JFrame {
                         .addComponent(jLabel4))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txt_usuario, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                            .addComponent(lbl_bienvenida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(17, 17, 17)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE))
+                        .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbl_bienvenida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,15 +228,15 @@ public class Vista_login extends javax.swing.JFrame {
 
     private void btn_ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ingresarActionPerformed
         LoginDAO loginDAO = new LoginDAO();
-        if (loginDAO.validarIngreso(txt_usuario, txt_clave)) {
+        if (loginDAO.validarIngreso(txt_usuario)) {
+            validar();
             recordarUsuario();
             desactivarRecordarUsuario();
         }
-        validar();
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
     private void txt_usuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyReleased
-
+        reactivarCuenta();
         verificarAccesoAdministrador();
         existeUsuarioRecordado();
     }//GEN-LAST:event_txt_usuarioKeyReleased
@@ -247,11 +246,8 @@ public class Vista_login extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_claveKeyReleased
 
     private void btn_crearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearCuentaActionPerformed
-// Guardamos el tamaño original del JFrame
         Dimension originalSize = this.getSize();
-// Redimensionamos el JFrame antes de mostrar el Popup
         this.setSize(this.getWidth(), 600); // Asegúrate de que el tamaño sea suficiente para mostrar el Popup
-
         Vista_Usuarios.Crear crear = new Crear();
         DefaultOption option = new DefaultOption() {
             @Override
@@ -267,7 +263,10 @@ public class Vista_login extends javax.swing.JFrame {
                         Usuario usuario = crear.crearUsuario();
                         System.out.println("Usuario devuelto del Popup: " + usuario.toString());
                         UsuarioDAO usuarioDAO = new UsuarioDAO();
-                        usuarioDAO.crearUsuario(usuario);
+                        try {
+                            usuarioDAO.crearUsuario(usuario);
+                        } catch (IOException ex) {
+                        }
                         pc.closePopup();
                         Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado correctamente");
                     } else {
@@ -340,8 +339,10 @@ public class Vista_login extends javax.swing.JFrame {
             });
         }).start();
     }
+    private int intentos = 0;
 
     private void validar() {
+        intentos += 1;
         LoginDAO loginDAO = new LoginDAO();
         String usuario = txt_usuario.getText();
         String clave = new String(txt_clave.getPassword());
@@ -352,10 +353,14 @@ public class Vista_login extends javax.swing.JFrame {
             return;
         }
         if (usuarioAutenticado != null) {
-            Menu_Principal menu = new Menu_Principal();
+            Menu_Principal menu = new Menu_Principal(usuarioAutenticado);
             menu.setVisible(true);
             Notifications.getInstance().show(Notifications.Type.SUCCESS, "Credenciales Correctas");
             this.dispose();
+        } else {
+            if (intentos == 3) {
+                loginDAO.desactivarCuenta(usuario);
+            }
         }
     }
 
@@ -364,8 +369,14 @@ public class Vista_login extends javax.swing.JFrame {
         String usuario = txt_usuario.getText();
         String clave = new String(txt_clave.getPassword());
         Usuario usuarioAutenticado = loginDAO.validarCredenciales(usuario, clave);
+        List<Usuario> usuariosRecord = loginDAO.obtenerUsuariosRecordados();
         if (usuarioAutenticado != null && chk_recordarUsuario.isSelected()) {
-            loginDAO.agregarUsuarioRecordado(usuario);
+            usuariosRecord.forEach((Usuario usu) -> {
+                if (!usuario.equals(usu)) {
+                    loginDAO.agregarUsuarioRecordado(usuario);
+                }
+                System.out.println("Esta en los usarios existentes");
+            });
         }
     }
 
@@ -397,5 +408,11 @@ public class Vista_login extends javax.swing.JFrame {
             usuariosRecordados.add(nombreUsuario);
         });
         AutoCompleteDecorator.decorate(txt_usuario, usuariosRecordados, false);
+    }
+
+    private void reactivarCuenta() {
+        String usuario = txt_usuario.getText();
+        LoginDAO loginDAO = new LoginDAO();
+        loginDAO.reactivarCuenta(usuario);
     }
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package Vista_Usuarios;
 
 import Modelo.Usuario;
@@ -11,8 +7,13 @@ import Vista_Usuarios.table.ProfileTableRenderer;
 import Vista_Usuarios.table.TableHeaderAlignment;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
@@ -21,15 +22,10 @@ import raven.popup.GlassPanePopup;
 import raven.popup.component.SimplePopupBorder;
 import raven.toast.Notifications;
 
-/**
- *
- * @author user
- */
+
 public class Man_Usuarios extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Man_Usuarios
-     */
+
     public Man_Usuarios() {
         initComponents();
         init();
@@ -131,6 +127,10 @@ public class Man_Usuarios extends javax.swing.JPanel {
         });
         table.getTableHeader().setReorderingAllowed(false);
         scroll.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setMaxWidth(40);
+            table.getColumnModel().getColumn(2).setPreferredWidth(200);
+        }
 
         lbl_titulo.setText("Usuarios");
 
@@ -167,14 +167,17 @@ public class Man_Usuarios extends javax.swing.JPanel {
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
+                    .addComponent(scroll)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_titulo)
-                            .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panelLayout.createSequentialGroup()
+                                .addComponent(lbl_titulo)
+                                .addGap(300, 516, Short.MAX_VALUE))
+                            .addGroup(panelLayout.createSequentialGroup()
+                                .addComponent(txt_busqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 367, Short.MAX_VALUE)))
                         .addComponent(btn_crear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -205,10 +208,7 @@ public class Man_Usuarios extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(27, 27, 27))
+            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,7 +257,11 @@ public class Man_Usuarios extends javax.swing.JPanel {
                             if (i == 1) { // Opción de "Actualizar"
                                 Usuario usuarioEditado = crear.obtenerDatos();
                                 UsuarioDAO usuarioDAO = new UsuarioDAO();
-                                usuarioDAO.actualizarUsuario(usuarioEditado);
+                                try {
+                                    usuarioDAO.actualizarUsuario(usuarioEditado);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Man_Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                                 popupComponent.closePopup();
                                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario actualizado exitosamente");
                                 cargarDatosTabla();
@@ -286,13 +290,15 @@ public class Man_Usuarios extends javax.swing.JPanel {
         GlassPanePopup.showPopup(
                 new SimplePopupBorder(crear, "Crear Usuario", actions, (pc, i) -> {
                     if (i == 1) {
+                        // Lógica para crear el usuario
                         Usuario usuario = crear.crearUsuario();
-                        System.out.println("Usuario devuelto del Poput: " + usuario.toString());
                         UsuarioDAO usuarioDAO = new UsuarioDAO();
-                        usuarioDAO.crearUsuario(usuario);
+                        try {
+                            usuarioDAO.crearUsuario(usuario);
+                        } catch (IOException ex) {
+                        }
                         pc.closePopup();
-                        cargarDatosTabla();
-                        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado Correctamente");
+                        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado correctamente");
                     } else {
                         pc.closePopup();
                     }
@@ -300,7 +306,6 @@ public class Man_Usuarios extends javax.swing.JPanel {
                 option
         );
     }//GEN-LAST:event_btn_crearActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Vista_Usuarios.table.ButtonAction btn_crear;
@@ -350,7 +355,7 @@ private List<Usuario> getSelectedUsers() throws NullPointerException {
                     for (Usuario usuario : usuarios) {
                         Object[] fila = new Object[]{
                             false, // Checkbox
-                            usuario.getid(),
+                            usuario.getId(),
                             usuario,
                             usuario.getApellido(),
                             usuario.getDni(),

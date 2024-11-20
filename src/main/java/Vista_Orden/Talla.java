@@ -7,10 +7,20 @@ import javax.swing.border.Border;
 public class Talla extends javax.swing.JPanel {
 
     private static Talla selectedTalla;
+    private Modelo.Talla talla;
 
-    public Talla(String talla) {
+    public Modelo.Talla getTalla() {
+        return talla;
+    }
+
+    public void setTalla(Modelo.Talla talla) {
+        this.talla = talla;
+    }
+
+    public Talla(Modelo.Talla talla) {
+        this.talla = talla;
         initComponents();
-        lbl_talla.setText(talla);
+        lbl_talla.setText(talla.getNombre());
     }
 
     @SuppressWarnings("unchecked")
@@ -32,6 +42,10 @@ public class Talla extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+
+    }//GEN-LAST:event_formMouseClicked
+
+    public void seleccionar() {
         // Si hay una talla seleccionada, deseleccionarla
         if (selectedTalla != null) {
             selectedTalla.setBorder(BorderFactory.createLineBorder(Color.BLACK)); // Restaurar borde original
@@ -43,8 +57,7 @@ public class Talla extends javax.swing.JPanel {
         Border border = BorderFactory.createLineBorder(Color.DARK_GRAY, 3);
         this.setBorder(border); // Establecer borde para la talla seleccionada
         this.setBackground(Color.LIGHT_GRAY); // Cambiar color de fondo para indicar selección
-    }//GEN-LAST:event_formMouseClicked
-
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lbl_talla;
     // End of variables declaration//GEN-END:variables

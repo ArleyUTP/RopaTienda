@@ -4,6 +4,10 @@ public class Talla {
     private int id;
     private String nombre;
 
+    
+    public Talla() {
+    }
+
     public int getId() {
         return this.id;
     }

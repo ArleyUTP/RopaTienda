@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package Vista_Orden;
 
 import Modelo.ColorRopa;
@@ -9,10 +5,6 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 
-/**
- *
- * @author user
- */
 public class Colores extends javax.swing.JPanel {
 
     private ColorRopa colorRopa;
@@ -23,12 +15,23 @@ public class Colores extends javax.swing.JPanel {
         this.colorRopa = colorRopa;
         establecerColorDeFondo();
     }
-    public Colores(String color){
+
+    public ColorRopa getColorRopa() {
+        return colorRopa;
+    }
+
+    public void setColorRopa(ColorRopa colorRopa) {
+        this.colorRopa = colorRopa;
+    }
+
+    public Colores(String color) {
         initComponents();
     }
+
     private void establecerColorDeFondo() {
-        if (colorRopa.getNombre() != null && !colorRopa.getNombre().isEmpty()) {
-            String colorHex = colorRopa.getNombre();
+        if (colorRopa.getCodigo_hexdecimal() != null) {
+            String colorHex = colorRopa.getCodigo_hexdecimal();
+            System.out.println("Codigo exadecimal: "+colorRopa.getCodigo_hexdecimal());
             Color color = Color.decode(colorHex);
             this.setBackground(color);
         }
