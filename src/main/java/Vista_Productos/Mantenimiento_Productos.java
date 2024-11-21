@@ -1,7 +1,7 @@
 package Vista_Productos;
 
 import Modelo.Producto;
-import Persistencia.CategoriaDAO;
+import Persistencia.CategoriaDAO;   
 import Persistencia.ProductoDAO;
 import Vista_Usuarios.table.CheckBoxTableHeaderRenderer;
 import Vista_Usuarios.table.TableHeaderAlignment;
