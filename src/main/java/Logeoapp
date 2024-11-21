@@ -1,0 +1,31 @@
+import java.util.Scanner;
+
+import java.util.Scanner;
+
+public class Logeoapp { 
+    private ServicioLogeo loginService;
+
+    public Logeoapp() {
+        loginService = new ServicioLogeo();
+    }
+
+    public void iniciar() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Bienvenido al sistema de inicio de sesión");
+        System.out.print("Ingrese su correo: ");
+        String correo = scanner.nextLine();
+
+        System.out.print("Ingrese su contraseña: ");
+        String contraseña = scanner.nextLine();
+
+        if (loginService.validarCredenciales(correo, contraseña)) {
+            System.out.println("Inicio de sesión exitoso. ¡Bienvenido!");
+        } else {
+            System.out.println("Correo o contraseña incorrectos. Intente nuevamente.");
+        }
+
+        scanner.close();
+    }
+}
+
