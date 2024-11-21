@@ -3,6 +3,7 @@ package Vista;
 import Modelo.Usuario;
 import drawer.MyDrawerBuilder;
 import drawer.MyDrawerBuilder1;
+import java.awt.Color;
 import raven.drawer.Drawer;
 import raven.popup.GlassPanePopup;
 
@@ -22,7 +23,7 @@ public class Menu_Principal extends javax.swing.JFrame {
             drawer.setDrawerBuilder(myDrawerBuilder);
             javax.swing.JPanel drawerPanel = drawer.getDrawerPanel();
             if (drawerPanel != null) {
-                drawerPanel.setBackground(new java.awt.Color(80, 200, 120));
+                drawerPanel.setBackground(Color.decode("#39E079"));
             }
         } else if (usuario.getRol().equals("vendedor")) {
             MyDrawerBuilder1 myDrawerBuilder1 = new MyDrawerBuilder1(contenedor);
@@ -30,7 +31,7 @@ public class Menu_Principal extends javax.swing.JFrame {
             drawer.setDrawerBuilder(myDrawerBuilder1);
             javax.swing.JPanel drawerPanel = drawer.getDrawerPanel();
             if (drawerPanel != null) {
-                drawerPanel.setBackground(new java.awt.Color(80, 200, 120));
+                drawerPanel.setBackground(Color.decode("#39E079"));
             }
         }
     }

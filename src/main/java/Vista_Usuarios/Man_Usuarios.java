@@ -249,16 +249,20 @@ public class Man_Usuarios extends javax.swing.JPanel {
                 GlassPanePopup.showPopup(
                         new SimplePopupBorder(crear, "Editar Usuario [" + usuario.getNombre() + "]", actions, (popupComponent, i) -> {
                             if (i == 1) { // Opción de "Actualizar"
+                                if (!crear.validar()) {
+                                    return;
+                                }
                                 Usuario usuarioEditado = crear.obtenerDatos();
                                 UsuarioDAO usuarioDAO = new UsuarioDAO();
                                 try {
                                     usuarioDAO.actualizarUsuario(usuarioEditado);
                                 } catch (IOException ex) {
-                                    Logger.getLogger(Man_Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+                                    // Manejo de excepciones
                                 }
                                 popupComponent.closePopup();
                                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario actualizado exitosamente");
                                 cargarDatosTabla();
+
                             } else {
                                 popupComponent.closePopup(); // Cerrar el popup sin hacer nada
                             }
@@ -284,15 +288,21 @@ public class Man_Usuarios extends javax.swing.JPanel {
         GlassPanePopup.showPopup(
                 new SimplePopupBorder(crear, "Crear Usuario", actions, (pc, i) -> {
                     if (i == 1) {
+                        if (!crear.validar()) {
+                            // Si las validaciones fallan, no se cierra el popup y se muestra el error correspondiente
+                            return;
+                        }
                         // Lógica para crear el usuario
                         Usuario usuario = crear.crearUsuario();
                         UsuarioDAO usuarioDAO = new UsuarioDAO();
                         try {
                             usuarioDAO.crearUsuario(usuario);
                         } catch (IOException ex) {
+                            // Manejo de excepciones
                         }
                         pc.closePopup();
                         Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado correctamente");
+
                     } else {
                         pc.closePopup();
                     }

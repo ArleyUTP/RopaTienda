@@ -12,7 +12,7 @@ public class Autogenerar extends DAO {
 
     public String generarUsuario(String nombre, String Apellido, String dni) {
         String usuarioGenerado = "";
-        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC GenerarUsuarioUnico ?,?,?,?")) {
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_GenerarUsuarioUnico ?,?,?,?")) {
             cs.setString(1, nombre);
             cs.setString(2, Apellido);
             cs.setString(3, dni);

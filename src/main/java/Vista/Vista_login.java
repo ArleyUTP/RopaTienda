@@ -25,7 +25,6 @@ public class Vista_login extends javax.swing.JFrame {
         btn_crearCuenta.setVisible(false);
         configurarAutoCompleter();
         this.setLocationRelativeTo(null);
-        this.setResizable(false);
         lbl_ocultarContraseña.setVisible(false);
     }
 
@@ -92,6 +91,7 @@ public class Vista_login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(242, 242, 242));
+        setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
         lbl_bienvenida.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -171,7 +171,7 @@ public class Vista_login extends javax.swing.JFrame {
         });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Icon Login");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/WhatsApp Image 2024-11-20 at 20.12.36.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -202,8 +202,8 @@ public class Vista_login extends javax.swing.JFrame {
                         .addGap(30, 30, 30)
                         .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lbl_bienvenida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, 0)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 504, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -21,14 +21,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import jnafilechooser.api.JnaFileChooser;
+import raven.toast.Notifications;
 
 public class Crear extends javax.swing.JPanel {
-    
+
     private Perfil perfil;
     private int id;
-    
+
     public Crear() {
         initComponents();
+        btn_activo.setSelected(true);
         datePicker.setCloseAfterSelected(true);
         datePicker.setEditor(txt_fechaNacimiento);
         imagen.setPictureBoxRender(new DefaultPictureBoxRender() {
@@ -36,7 +38,7 @@ public class Crear extends javax.swing.JPanel {
             public Shape render(Rectangle rectangle) {
                 return createRound(rectangle, UIScale.scale(10));
             }
-            
+
         });
         panelImagen.putClientProperty(FlatClientProperties.STYLE, ""
                 + "border:0,0,0,0,$Component.borderColor,,10;"
@@ -51,10 +53,10 @@ public class Crear extends javax.swing.JPanel {
                     txt_clave.setText("");
                 }
             }
-            
+
         });
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -77,7 +79,6 @@ public class Crear extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         cbo_rol = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         btn_activo = new javax.swing.JRadioButton();
         btn_inactivo = new javax.swing.JRadioButton();
@@ -92,7 +93,13 @@ public class Crear extends javax.swing.JPanel {
         jLabel1.setText("Nombre");
 
         txt_nombre.setToolTipText("Nombre");
+        txt_nombre.setToolTipText("Nombre");
         txt_nombre.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txt_nombre.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_nombreFocusLost(evt);
+            }
+        });
         txt_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_nombreKeyReleased(evt);
@@ -101,6 +108,12 @@ public class Crear extends javax.swing.JPanel {
 
         jLabel3.setText("Apellido");
 
+        txt_apellido.setToolTipText("Apellido");
+        txt_apellido.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_apellidoFocusLost(evt);
+            }
+        });
         txt_apellido.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_apellidoKeyReleased(evt);
@@ -109,6 +122,12 @@ public class Crear extends javax.swing.JPanel {
 
         jLabel4.setText("F.Nacimiento");
 
+        txt_dni.setToolTipText("DNI");
+        txt_dni.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_dniFocusLost(evt);
+            }
+        });
         txt_dni.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_dniKeyReleased(evt);
@@ -117,9 +136,34 @@ public class Crear extends javax.swing.JPanel {
 
         jLabel5.setText("DNI");
 
+        txt_fechaNacimiento.setToolTipText("Fecha De Nacimiento");
+        txt_fechaNacimiento.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_fechaNacimientoFocusLost(evt);
+            }
+        });
+
+        txt_clave.setEditable(false);
+        txt_clave.setToolTipText("Clave");
+        txt_clave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_claveActionPerformed(evt);
+            }
+        });
+
+        txt_usuario.setEditable(false);
+        txt_usuario.setToolTipText("Usuario");
+
         jLabel7.setText("Usuario");
 
         jLabel8.setText("Correo");
+
+        txt_correo.setToolTipText("Correo");
+        txt_correo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_correoFocusLost(evt);
+            }
+        });
 
         jLabel9.setText("Rol");
 
@@ -129,13 +173,6 @@ public class Crear extends javax.swing.JPanel {
         cbo_rol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbo_rolActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("Generar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
             }
         });
 
@@ -237,9 +274,7 @@ public class Crear extends javax.swing.JPanel {
                             .addComponent(txt_usuario, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_clave, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(chb_generar))
+                        .addComponent(chb_generar)
                         .addGap(26, 26, 26))))
         );
         layout.setVerticalGroup(
@@ -274,13 +309,11 @@ public class Crear extends javax.swing.JPanel {
                     .addComponent(jLabel10)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txt_clave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1)))
+                        .addComponent(chb_generar)))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cbo_rol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(chb_generar)))
+                    .addComponent(cbo_rol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
@@ -305,7 +338,7 @@ public class Crear extends javax.swing.JPanel {
     }//GEN-LAST:event_cbo_rolActionPerformed
 
     private void txt_nombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombreKeyReleased
-        
+
         generarUsuario();
     }//GEN-LAST:event_txt_nombreKeyReleased
 
@@ -313,18 +346,6 @@ public class Crear extends javax.swing.JPanel {
         // TODO add your handling code here:
         generarUsuario();
     }//GEN-LAST:event_txt_apellidoKeyReleased
-
-    private void txt_dniKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_dniKeyReleased
-        // TODO add your handling code here:
-        generarUsuario();
-    }//GEN-LAST:event_txt_dniKeyReleased
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (txt_clave.getText().isEmpty()) {
-            Autogenerar autogenerar = new Autogenerar();
-            txt_clave.setText(autogenerar.generarClave());
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btn_seleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_seleccionarActionPerformed
         UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -353,6 +374,42 @@ public class Crear extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_chb_generarActionPerformed
 
+    private void txt_dniKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_dniKeyReleased
+        // TODO add your handling code here:
+        generarUsuario();
+    }//GEN-LAST:event_txt_dniKeyReleased
+
+    private void txt_claveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_claveActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_claveActionPerformed
+
+    private void txt_nombreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_nombreFocusLost
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        usuarioDAO.ValidarCampoTexto(txt_nombre, txt_nombre.getToolTipText());
+    }//GEN-LAST:event_txt_nombreFocusLost
+
+    private void txt_apellidoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_apellidoFocusLost
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        usuarioDAO.ValidarCampoTexto(txt_apellido, txt_apellido.getToolTipText());
+    }//GEN-LAST:event_txt_apellidoFocusLost
+
+    private void txt_dniFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_dniFocusLost
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        usuarioDAO.validarDNI(txt_dni);
+    }//GEN-LAST:event_txt_dniFocusLost
+
+    private void txt_fechaNacimientoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_fechaNacimientoFocusLost
+        Date fechaNacimiento = datePicker.isDateSelected() ? Date.valueOf(datePicker.getSelectedDate()) : null;
+        if (fechaNacimiento == null) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, "La Fecha de Nacimiento no puede estar Vacio");
+        }
+    }//GEN-LAST:event_txt_fechaNacimientoFocusLost
+
+    private void txt_correoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_correoFocusLost
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        usuarioDAO.ValidarFormatoCorreo(txt_correo, txt_correo.getToolTipText());
+    }//GEN-LAST:event_txt_correoFocusLost
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton btn_activo;
@@ -364,7 +421,6 @@ public class Crear extends javax.swing.JPanel {
     private raven.datetime.component.date.DatePicker datePicker;
     private javax.swing.ButtonGroup grupoEstado;
     private javaswingdev.picturebox.PictureBox imagen;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -397,7 +453,7 @@ public class Crear extends javax.swing.JPanel {
         String usuarioGenerado = autogenerar.generarUsuario(nombre, apellido, dni);
         txt_usuario.setText(usuarioGenerado);
     }
-    
+
     public Usuario crearUsuario() {
         String nombre = txt_nombre.getText().trim();
         String apellido = txt_apellido.getText().trim();
@@ -408,7 +464,7 @@ public class Crear extends javax.swing.JPanel {
         String contraseña = txt_clave.getText().trim();
         String rol = cbo_rol.getSelectedItem() != null ? cbo_rol.getSelectedItem().toString().toLowerCase() : "";
         String estado = btn_activo.isSelected() ? "activo" : (btn_inactivo.isSelected() ? "inactivo" : null);
-        
+
         if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() || correo.isEmpty()
                 || usuarioString.isEmpty() || contraseña.isEmpty() || estado == null || fechaNacimiento == null || rol.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -465,7 +521,7 @@ public class Crear extends javax.swing.JPanel {
             imagen.setImage(null);
         }
     }
-    
+
     public Usuario obtenerDatos() {
         Usuario usuario = new Usuario();
         usuario.setId(id);
@@ -483,4 +539,41 @@ public class Crear extends javax.swing.JPanel {
         usuario.setPerfil(perfil);  // Asignar el perfil directamente
         return usuario;
     }
+
+    public boolean validar() {
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        if (!usuarioDAO.ValidarCampoTexto(txt_nombre, txt_nombre.getToolTipText())) {
+            return false;
+        }
+
+        if (!usuarioDAO.ValidarCampoTexto(txt_apellido, txt_apellido.getToolTipText())) {
+            return false;
+        }
+
+        if (!usuarioDAO.validarDNI(txt_dni)) {
+            return false;
+        }
+
+        Date fechaNacimiento = datePicker.isDateSelected() ? Date.valueOf(datePicker.getSelectedDate()) : null;
+        if (fechaNacimiento == null) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, "La Fecha de Nacimiento no puede estar vacía");
+            return false;
+        }
+
+        if (!usuarioDAO.ValidarFormatoCorreo(txt_correo, txt_correo.getToolTipText())) {
+            return false;
+        }
+
+        if (!usuarioDAO.validarLongitud(txt_usuario, 3, 20, "El nombre de usuario debe tener entre 3 y 20 caracteres")) {
+            return false;
+        }
+
+        if (perfil == null) {
+            Notifications.getInstance().show(Notifications.Type.ERROR, "Debe seleccionar un foto de Perfil");
+            return false;
+        }
+
+        return true; // Si todas las validaciones pasan
+    }
+
 }

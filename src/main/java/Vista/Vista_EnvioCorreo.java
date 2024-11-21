@@ -31,7 +31,7 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
         txt_correo = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Correo Electronico:");
 

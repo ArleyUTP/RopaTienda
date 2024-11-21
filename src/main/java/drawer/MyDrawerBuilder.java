@@ -5,6 +5,7 @@ import Modelo.Usuario;
 import Vista_Orden.Orden;
 import Vista_Usuarios.Man_Usuarios;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import javax.swing.JPanel;
 import raven.drawer.component.DrawerPanel;
 import raven.drawer.component.SimpleDrawerBuilder;
@@ -44,7 +45,7 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
 
         // Cambiar color de fondo del menú
         if (menu != null) {
-            menu.setBackground(new java.awt.Color(80, 200, 120));
+            menu.setBackground(Color.decode("#39E079"));
         }
 
         // Cambiar color del footer si es necesario
