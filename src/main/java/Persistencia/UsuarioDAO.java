@@ -84,7 +84,6 @@ public class UsuarioDAO extends DAO<Usuario> {
                 cs.setNull(11, java.sql.Types.VARBINARY);
             }
             cs.executeUpdate();
-            mensaje("Usuario actualizado correctamente");
         } catch (SQLException e) {
             manejarError("Error al actualizar el usuario", e);
         }
@@ -95,7 +94,12 @@ public class UsuarioDAO extends DAO<Usuario> {
     }
 
     public void eliminar(Usuario usuario) {
-
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_EliminarUsuario ?")) {
+            cs.setInt(1, usuario.getId());
+            cs.executeUpdate();
+        } catch (SQLException e) {
+            manejarError("Error al eliminar el usuario", e);
+        }
     }
 
     public void buscarUsuarios(JTextField txt_buscador, JTable table) {

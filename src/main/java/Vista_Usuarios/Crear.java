@@ -350,7 +350,7 @@ public class Crear extends javax.swing.JPanel {
     private void btn_seleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_seleccionarActionPerformed
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         JnaFileChooser ch = new JnaFileChooser();
-        ch.addFilter("Image", "png", "jpg");
+        ch.addFilter("Image", "png", "jpg","jpeg");
         boolean act = ch.showOpenDialog(SwingUtilities.getWindowAncestor(this));
         if (act) {
             File file = ch.getSelectedFile();

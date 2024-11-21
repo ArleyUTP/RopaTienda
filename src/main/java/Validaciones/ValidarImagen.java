@@ -21,11 +21,11 @@ public interface ValidarImagen {
         int width = img.getWidth();
         int height = img.getHeight();
 
-        int maxWidth = 1500;
-        int maxHeight = 1500;
+        int maxWidth = 500;
+        int maxHeight = 700;
 
         if (width > maxWidth || height > maxHeight) {
-            mostrarMensajeError("La imagen es demasiado grande. Las dimensiones máximas son 1500x1500 píxeles.");
+            mostrarMensajeError("La imagen es demasiado grande. Las dimensiones máximas son 500x700 píxeles.");
             return false;
         }
         return true;
