@@ -6,8 +6,19 @@ INSERT INTO Categoria (nombre) VALUES
 ('Camisas'),
 ('Pantalones'),
 ('Zapatos'),
-('Accesorios');
+('Accesorios'),
+('Vestidos'),
+('Chaquetas'),
+('Suéteres'),
+('Shorts'),
+('Bermudas'),
+('Ropa Deportiva'),
+('Ropa de baño'),
+('Jerseys'),
+('Faldas'),
+('Blusas');
 
+DBCC CHECKIDENT ('dbo.Categoria', RESEED, 0);
 EXEC sp_help Usuarios
 CREATE TABLE Producto(
 	id BIGINT PRIMARY KEY IDENTITY(1,1),
@@ -35,34 +46,67 @@ BEGIN
 	SELECT P.id,P.nombre,P.descripcion,P.precio_compra,precio_venta
 	FROM Producto P
 END;
+
 INSERT INTO Producto (nombre, descripcion, categoria_id, precio_compra, precio_venta) VALUES
-('Camisa Formal Blanca', 'Camisa blanca de manga larga, ideal para eventos formales.', 1, 20.00, 35.00),
-('Pantalón Jeans Azul', 'Pantalón de mezclilla azul con corte clásico.', 2, 25.00, 50.00),
-('Zapatos de Cuero Negro', 'Zapatos de cuero negro con suela antideslizante.', 3, 40.00, 80.00),
-('Reloj Deportivo', 'Reloj resistente al agua con funciones deportivas.', 4, 15.00, 30.00);
+('Camisa Polo', 'Camisa tipo polo de algodón, ideal para climas cálidos, disponible en varios colores.', 1, 25.00, 45.00),
+('Pantalón de mezclilla', 'Pantalón de mezclilla de corte clásico, cómodo y duradero.', 2, 30.00, 60.00),
+('Zapatos de cuero', 'Zapatos formales de cuero de alta calidad, perfectos para ocasiones especiales.', 3, 40.00, 90.00),
+('Accesorio de reloj', 'Reloj de pulsera elegante con correa de cuero, diseño clásico y moderno.', 4, 15.00, 35.00),
+('Vestido de noche', 'Vestido elegante para ocasiones formales, diseño único con detalles finos.', 5, 50.00, 120.00),
+('Chaqueta de invierno', 'Chaqueta acolchonada para invierno, resistente al frío y viento.', 6, 60.00, 120.00),
+('Suéter de lana', 'Suéter de lana para el invierno, cómodo y cálido.', 7, 20.00, 40.00),
+('Short deportivo', 'Short cómodo para actividades deportivas y de ocio, en materiales de alta transpiración.', 8, 18.00, 35.00),
+('Bermuda casual', 'Bermuda de algodón, ideal para el verano y días cálidos.', 9, 15.00, 25.00),
+('Ropa Deportiva', 'Conjunto deportivo, camiseta y pantalón en materiales livianos para entrenamientos.', 10, 20.00, 40.00),
+('Bikini de baño', 'Bikini de baño femenino con diseño moderno, ideal para días de playa o piscina.', 11, 12.00, 25.00),
+('Jersey de fútbol', 'Jersey oficial de fútbol, fabricado con materiales de alta calidad.', 12, 25.00, 50.00),
+('Falda corta', 'Falda corta de algodón, cómoda y fresca, ideal para el verano.', 13, 12.00, 25.00),
+('Blusa de seda', 'Blusa femenina de seda, elegante y liviana para ocasiones formales o casuales.', 14, 30.00, 60.00),
+('Pantalón de lino', 'Pantalón de lino ligero y cómodo, perfecto para el clima cálido.', 2, 28.00, 55.00);
 
 CREATE TABLE Talla(
 	id BIGINT PRIMARY KEY IDENTITY(1,1),
 	nombre NVARCHAR(50) NOT NULL
 );
+
+SELECT * FROM Producto
+
+DBCC CHECKIDENT ('dbo.Talla', RESEED, 0);
+
 INSERT INTO Talla (nombre) VALUES
+('XS'),
 ('S'),
 ('M'),
 ('L'),
-('XL');
+('XL'),
+('XXL'),
+('XXXL');
+
 
 CREATE TABLE Color(
 	id BIGINT PRIMARY KEY IDENTITY(1,1),
 	nombre NVARCHAR(50) NOT NULL,
 	valor_hex NVARCHAR(100) NOT NULL
 );
+DELETE FROM Color
+DBCC CHECKIDENT ('dbo.Color', RESEED, 0);
 INSERT INTO Color (nombre, valor_hex) VALUES
-('Blanco', '#FFFFFF'),
-('Negro', '#000000'),
-('Rojo', '#FF0000'),
-('Azul', '#0000FF'),
-('Verde Esmeralda', '#39E079'),
-('Gris', '#808080');
+('Rojo Mexicano', '#D50032'),
+('Amarillo Oro', '#FFCC00'),
+('Verde Esperanza', '#00A859'),
+('Azul Caribe', '#0077B6'),
+('Púrpura Andino', '#6A0DAD'),
+('Naranja Tropical', '#FF7F00'),
+('Rojo Fuego', '#FF4500'),
+('Verde Lima', '#00FF00'),
+('Celeste Claro', '#4AC6D8'),
+('Amarillo Sol', '#FFEB3B'),
+('Fucsia Viva', '#D500F9'),
+('Marrón Tierra', '#8B4513'),
+('Turquesa Maya', '#00B3B3'),
+('Azul Cielo Caribeño', '#00BFFF'),
+('Lavanda Andina', '#C8A2D6');
+
 
 CREATE TABLE Inventario(
 	id BIGINT PRIMARY KEY IDENTITY(1,1),
@@ -74,13 +118,74 @@ CREATE TABLE Inventario(
 	ON DELETE CASCADE,
 	cantidad INT NOT NULL,
 );
+-- Insertar productos en el inventario con tallas y colores
 INSERT INTO Inventario (producto_id, talla_id, color_id, cantidad) VALUES
-(1, 1, 1, 50),  -- Camisa Formal Blanca, Talla S, Color Blanco
-(1, 2, 1, 30),  -- Camisa Formal Blanca, Talla M, Color Blanco
-(2, 3, 4, 40),  -- Pantalón Jeans Azul, Talla L, Color Azul
-(3, 4, 2, 20),  -- Zapatos de Cuero Negro, Talla XL, Color Negro
-(4, 1, 3, 15),  -- Reloj Deportivo, Talla S, Color Rojo
-(4, 1, 5, 10);  -- Reloj Deportivo, Talla S, Color Verde Esmeralda
+(1, 2, 1, 10),  -- Camisa Polo (S, Rojo Mexicano)
+(1, 3, 2, 8),   -- Camisa Polo (M, Amarillo Oro)
+(1, 4, 3, 5),   -- Camisa Polo (L, Verde Esperanza)
+(1, 5, 4, 6),   -- Camisa Polo (XL, Azul Caribe)
+(1, 6, 5, 7),   -- Camisa Polo (XXL, Púrpura Andino)
+
+(2, 2, 6, 15),  -- Pantalón de mezclilla (S, Naranja Tropical)
+(2, 3, 7, 12),  -- Pantalón de mezclilla (M, Rojo Fuego)
+(2, 4, 8, 18),  -- Pantalón de mezclilla (L, Verde Lima)
+(2, 5, 9, 20),  -- Pantalón de mezclilla (XL, Celeste Claro)
+(2, 6, 10, 14), -- Pantalón de mezclilla (XXL, Amarillo Sol)
+
+(3, 3, 11, 6),  -- Zapatos de cuero (M, Fucsia Viva)
+(3, 4, 12, 8),  -- Zapatos de cuero (L, Marrón Tierra)
+(3, 5, 13, 10), -- Zapatos de cuero (XL, Turquesa Maya)
+(3, 6, 14, 7),  -- Zapatos de cuero (XXL, Azul Cielo Caribeño)
+
+(4, 2, 1, 20),  -- Accesorio de reloj (S, Rojo Mexicano)
+(4, 3, 2, 25),  -- Accesorio de reloj (M, Amarillo Oro)
+(4, 4, 3, 30),  -- Accesorio de reloj (L, Verde Esperanza)
+
+(5, 5, 4, 3),   -- Vestido de noche (XL, Azul Caribe)
+(5, 6, 5, 4),   -- Vestido de noche (XXL, Púrpura Andino)
+(5, 7, 6, 5),   -- Vestido de noche (XXXL, Naranja Tropical)
+
+(6, 3, 7, 8),   -- Chaqueta de invierno (M, Rojo Fuego)
+(6, 4, 8, 12),  -- Chaqueta de invierno (L, Verde Lima)
+(6, 5, 9, 10),  -- Chaqueta de invierno (XL, Celeste Claro)
+
+(7, 2, 10, 18), -- Suéter de lana (S, Amarillo Sol)
+(7, 3, 11, 25), -- Suéter de lana (M, Fucsia Viva)
+(7, 4, 12, 20), -- Suéter de lana (L, Marrón Tierra)
+
+(8, 5, 13, 16), -- Short deportivo (XL, Turquesa Maya)
+(8, 6, 14, 12), -- Short deportivo (XXL, Azul Cielo Caribeño)
+(8, 7, 1, 10),  -- Short deportivo (XXXL, Rojo Mexicano)
+
+(9, 2, 2, 22),  -- Bermuda casual (S, Amarillo Oro)
+(9, 3, 3, 18),  -- Bermuda casual (M, Verde Esperanza)
+(9, 4, 4, 25),  -- Bermuda casual (L, Azul Caribe)
+(9, 5, 5, 30),  -- Bermuda casual (XL, Púrpura Andino)
+
+(10, 6, 6, 35), -- Ropa Deportiva (XXL, Naranja Tropical)
+(10, 7, 7, 28), -- Ropa Deportiva (XXXL, Rojo Fuego)
+(10, 2, 8, 22), -- Ropa Deportiva (S, Verde Lima)
+
+(11, 4, 9, 12), -- Bikini de baño (L, Celeste Claro)
+(11, 5, 10, 15), -- Bikini de baño (XL, Amarillo Sol)
+(11, 6, 11, 10), -- Bikini de baño (XXL, Fucsia Viva)
+
+(12, 2, 12, 7),  -- Jersey de fútbol (S, Marrón Tierra)
+(12, 3, 13, 8),  -- Jersey de fútbol (M, Turquesa Maya)
+(12, 4, 14, 5),  -- Jersey de fútbol (L, Azul Cielo Caribeño)
+
+(13, 5, 1, 30), -- Falda corta (XL, Rojo Mexicano)
+(13, 6, 2, 25), -- Falda corta (XXL, Amarillo Oro)
+(13, 7, 3, 20), -- Falda corta (XXXL, Verde Esperanza)
+
+(14, 3, 4, 18), -- Blusa de seda (M, Azul Caribe)
+(14, 4, 5, 22), -- Blusa de seda (L, Púrpura Andino)
+(14, 5, 6, 15), -- Blusa de seda (XL, Naranja Tropical)
+
+(15, 2, 7, 25), -- Pantalón de lino (S, Rojo Fuego)
+(15, 3, 8, 30), -- Pantalón de lino (M, Verde Lima)
+(15, 4, 9, 28); -- Pantalón de lino (L, Celeste Claro)
+
 
 CREATE PROCEDURE SP_ObtenerColoresPorIdProducto
 @id BIGINT
