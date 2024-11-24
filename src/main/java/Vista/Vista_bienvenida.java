@@ -16,7 +16,7 @@ public class Vista_bienvenida extends javax.swing.JFrame {
         // Configuración de la barra de progreso
         barraDeCarga.setStringPainted(true);  // Asegura que el texto se muestre en la barra
         // Temporizador para simular la carga (20 segundos)
-        Timer progressTimer = new Timer(200, new ActionListener() { // 200 ms por paso
+        Timer progressTimer = new Timer(2, new ActionListener() { // 200 ms por paso
             private int progress = 0;
 
             @Override

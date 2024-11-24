@@ -14,6 +14,7 @@ Vista\Notifications.class
 Validaciones\ValidarCamposVacios.class
 Vista_Productos\coloas$2.class
 Vista_Usuarios\table\CheckBoxTableHeaderRenderer.class
+Componentes\Ofer_Extrella.class
 drawer\Menu$1.class
 Vista\Vista_login$5.class
 Vista\Vista_login$11.class
@@ -84,6 +85,7 @@ Vista_Productos\Mantenimiento_Productos$4.class
 Vista_Orden\Productos_Detalles$4.class
 Vista_Usuarios\Man_Usuarios$6.class
 Vista_Usuarios\Crear.class
+Componentes\Ofertas_Item.class
 Vista\Menu_Principal.class
 Vista_Orden\ImportarImagenes_a_Productos$1.class
 Vista_Usuarios\Man_Usuarios.class
@@ -94,6 +96,7 @@ Vista_Usuarios\Crear$7.class
 Modelo\ColorRopa.class
 Vista_Usuarios\Crear$15.class
 drawer\Menu.class
+Componentes\ofertaConPictureBox.class
 Vista\Vista_login$10.class
 Vista\Vista_login$9.class
 Vista_Orden\CartaProductos.class

@@ -354,6 +354,7 @@ public class Crear extends javax.swing.JPanel {
         boolean act = ch.showOpenDialog(SwingUtilities.getWindowAncestor(this));
         if (act) {
             File file = ch.getSelectedFile();
+            System.out.println("Link: "+file.getAbsolutePath());
             try {
                 if (usuarioDAO.validarImagen(file)) {
                     imagen.setImage(new ImageIcon(file.getAbsolutePath()));

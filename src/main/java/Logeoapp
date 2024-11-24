@@ -24,7 +24,6 @@ public class Logeoapp {
         } else {
             System.out.println("Correo o contraseña incorrectos. Intente nuevamente.");
         }
-
         scanner.close();
     }
 }
