@@ -29,6 +29,7 @@ Vista\Vista_login$2.class
 Vista_Orden\CartaProductos$1.class
 Persistencia\ProductoDAO.class
 Vista_Orden\Productos_Detalles$3.class
+Modelo\ImageResizer.class
 Vista_Usuarios\Crear$11.class
 Vista_Productos\CrearVariantes.class
 Persistencia\MarcaDAO.class
