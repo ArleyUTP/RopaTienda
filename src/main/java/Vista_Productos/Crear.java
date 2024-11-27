@@ -1,24 +1,11 @@
 package Vista_Productos;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.util.UIScale;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import javaswingdev.picturebox.DefaultPictureBoxRender;
 
 public class Crear extends javax.swing.JPanel {
 
     public Crear() {
         initComponents();
-        datePicker.setCloseAfterSelected(true);
-        datePicker.setEditor(txt_fechaVencimientoPromocion);
-                imagen.setPictureBoxRender(new DefaultPictureBoxRender() {
-            @Override
-            public Shape render(Rectangle rectangle) {
-                return createRound(rectangle, UIScale.scale(10));
-            }
-
-        });
         panelImagen.putClientProperty(FlatClientProperties.STYLE, ""
                 + "border:0,0,0,0,$Component.borderColor,,10;"
                 + "background:$TextArea.background");
@@ -29,26 +16,19 @@ public class Crear extends javax.swing.JPanel {
     private void initComponents() {
 
         grupoEstadoPromocion = new javax.swing.ButtonGroup();
-        datePicker = new raven.datetime.component.date.DatePicker();
-        jLabel2 = new javax.swing.JLabel();
         txt_nombre = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         cbo_categoria = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        spn_stock = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
-        spn_stockMinimo = new javax.swing.JSpinner();
-        jLabel6 = new javax.swing.JLabel();
         txt_precioCompra = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
         txt_PrecioVenta = new javax.swing.JFormattedTextField();
         jLabel8 = new javax.swing.JLabel();
         btn_inactivo = new javax.swing.JRadioButton();
         btn_activo = new javax.swing.JRadioButton();
-        jLabel9 = new javax.swing.JLabel();
         panelImagen = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        txt_fechaVencimientoPromocion = new javax.swing.JFormattedTextField();
         contenedorColores = new javax.swing.JPanel();
         imagen = new javaswingdev.picturebox.PictureBox();
         jToolBar1 = new javax.swing.JToolBar();
@@ -59,11 +39,11 @@ public class Crear extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
         buttonAction1 = new Vista_Usuarios.table.ButtonAction();
         buttonAction2 = new Vista_Usuarios.table.ButtonAction();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txt_descripcion = new javax.swing.JTextArea();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel2.setText("Stock");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 86, -1, -1));
         add(txt_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 6, 230, -1));
 
         jLabel3.setText("Nombre");
@@ -73,14 +53,9 @@ public class Crear extends javax.swing.JPanel {
 
         jLabel4.setText("Categoria");
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 46, -1, -1));
-        add(spn_stock, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 86, 230, -1));
 
         jLabel5.setText("Precio Compra");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 164, -1, -1));
-        add(spn_stockMinimo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 126, 230, -1));
-
-        jLabel6.setText("Stock Minimo");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 126, -1, -1));
         add(txt_precioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 164, 230, 26));
 
         jLabel7.setText("Foto");
@@ -98,15 +73,11 @@ public class Crear extends javax.swing.JPanel {
         btn_activo.setText("Activo");
         add(btn_activo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 242, -1, -1));
 
-        jLabel9.setText("Promoción");
-        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 288, -1, -1));
-
         panelImagen.setLayout(new java.awt.BorderLayout());
         add(panelImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 568, 230, -1));
 
         jLabel10.setText("Promoción");
         add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 242, -1, -1));
-        add(txt_fechaVencimientoPromocion, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 288, 230, 28));
 
         javax.swing.GroupLayout contenedorColoresLayout = new javax.swing.GroupLayout(contenedorColores);
         contenedorColores.setLayout(contenedorColoresLayout);
@@ -162,11 +133,11 @@ public class Crear extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Talla", "Color", "Stock", "Precio Variante", "Foto"
+                "Talla", "Color", "Stock", "Foto"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -181,8 +152,26 @@ public class Crear extends javax.swing.JPanel {
         add(buttonAction1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 10, -1, -1));
 
         buttonAction2.setText("Agregar");
+        buttonAction2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAction2ActionPerformed(evt);
+            }
+        });
         add(buttonAction2, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, -1, -1));
+
+        jLabel1.setText("Descripción");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
+
+        txt_descripcion.setColumns(20);
+        txt_descripcion.setRows(5);
+        jScrollPane1.setViewportView(txt_descripcion);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 230, -1));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonAction2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonAction2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -192,29 +181,25 @@ public class Crear extends javax.swing.JPanel {
     private Vista_Usuarios.table.ButtonAction buttonAction2;
     private javax.swing.JComboBox<String> cbo_categoria;
     private javax.swing.JPanel contenedorColores;
-    private raven.datetime.component.date.DatePicker datePicker;
     private javax.swing.ButtonGroup grupoEstadoPromocion;
     private javaswingdev.picturebox.PictureBox imagen;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JPanel panelImagen;
-    private javax.swing.JSpinner spn_stock;
-    private javax.swing.JSpinner spn_stockMinimo;
     private javax.swing.JFormattedTextField txt_PrecioVenta;
-    private javax.swing.JFormattedTextField txt_fechaVencimientoPromocion;
+    private javax.swing.JTextArea txt_descripcion;
     private javax.swing.JTextField txt_nombre;
     private javax.swing.JFormattedTextField txt_precioCompra;
     // End of variables declaration//GEN-END:variables

@@ -16,25 +16,26 @@ public class Productos_Detalles extends javax.swing.JPanel {
     private int indiceActual = 0;  // Índice para recorrer las imágenes
     private ColorRopa colorDeRopaSeleccionada;
     private Modelo.Talla tallaDeRopaSeccionada;
+
     public Productos_Detalles(Producto producto) {
         this.producto = producto;
         initComponents();
         init();
         lbl_nombre.setText(producto.getNombre());
-        lbl_precio.setText(String.valueOf(producto.getPrecioVenta()));
-        imagen.setImage(producto.getFoto_principal().getIcon());
+//        lbl_precio.setText(String.valueOf(producto.getPrecioVenta()));
+//        imagen.setImage(producto.getFoto_principal().getIcon());
     }
 
     private void init() {
         ColorDAO colorDAO = new ColorDAO();
         List<ColorRopa> colores = colorDAO.obtenerColoresPorId(producto);
-        colores.forEach(color->{
+        colores.forEach(color -> {
             Colores colorpanel = new Colores(color);
             colorpanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     colorpanel.seleccionar();
-                    colorDeRopaSeleccionada=colorpanel.getColorRopa();
+                    colorDeRopaSeleccionada = colorpanel.getColorRopa();
                     lbl_colorSeleccionado.setText(colorDeRopaSeleccionada.getNombre());
                 }
             });
@@ -43,17 +44,17 @@ public class Productos_Detalles extends javax.swing.JPanel {
         contenedorColores.revalidate();
         contenedorColores.repaint();
         TallaDAO tallaDAO = new TallaDAO();
-        List<Modelo.Talla> tallas = tallaDAO.obtenerTallasPorId(producto);
-        tallas.forEach(talla->{
+        List<Modelo.Talla> tallas = tallaDAO.obtenertallasPorId(producto);
+        tallas.forEach(talla -> {
             Talla tallaPanel = new Talla(talla);
             tallaPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     tallaPanel.seleccionar();
-                    tallaDeRopaSeccionada =tallaPanel.getTalla();
+                    tallaDeRopaSeccionada = tallaPanel.getTalla();
                     lbl_tallaSeleccionado.setText(tallaDeRopaSeccionada.getNombre());
                 }
-            
+
             });
             contenedorTallas.add(tallaPanel);
         });

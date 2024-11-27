@@ -1,5 +1,4 @@
-    package Modelo;
-
+package Modelo;
 
 public class Producto {
 
@@ -9,20 +8,14 @@ public class Producto {
     private int idCategoria;
     private double precioCompra;
     private double precioVenta;
-    private Perfil foto_principal;
-    
+    private boolean estadoPromocion;
+    private Perfil fotoPrincipal;
+
     public Producto() {
-    }
-    public Producto(String nombre, String descripcion, int idCategoria, double precioCompra, double precioVenta) {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.idCategoria = idCategoria;
-        this.precioCompra = precioCompra;
-        this.precioVenta = precioVenta;
     }
 
     public int getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(int id) {
@@ -30,7 +23,7 @@ public class Producto {
     }
 
     public String getNombre() {
-        return this.nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
@@ -38,7 +31,7 @@ public class Producto {
     }
 
     public String getDescripcion() {
-        return this.descripcion;
+        return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
@@ -46,7 +39,7 @@ public class Producto {
     }
 
     public int getIdCategoria() {
-        return this.idCategoria;
+        return idCategoria;
     }
 
     public void setIdCategoria(int idCategoria) {
@@ -54,7 +47,7 @@ public class Producto {
     }
 
     public double getPrecioCompra() {
-        return this.precioCompra;
+        return precioCompra;
     }
 
     public void setPrecioCompra(double precioCompra) {
@@ -62,19 +55,38 @@ public class Producto {
     }
 
     public double getPrecioVenta() {
-        return this.precioVenta;
+        return precioVenta;
     }
 
     public void setPrecioVenta(double precioVenta) {
         this.precioVenta = precioVenta;
     }
 
-    public Perfil getFoto_principal() {
-        return foto_principal;
+    public Producto(int id, String nombre, String descripcion, int idCategoria, double precioCompra, double precioVenta, boolean estadoPromocion, Perfil fotoPrincipal) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.idCategoria = idCategoria;
+        this.precioCompra = precioCompra;
+        this.precioVenta = precioVenta;
+        this.estadoPromocion = estadoPromocion;
+        this.fotoPrincipal = fotoPrincipal;
     }
 
-    public void setFoto_principal(Perfil foto_principal) {
-        this.foto_principal = foto_principal;
+    public boolean isEstadoPromocion() {
+        return estadoPromocion;
+    }
+
+    public void setEstadoPromocion(boolean estadoPromocion) {
+        this.estadoPromocion = estadoPromocion;
+    }
+    
+    public Perfil getFotoPrincipal() {
+        return fotoPrincipal;
+    }
+
+    public void setFotoPrincipal(Perfil fotoPrincipal) {
+        this.fotoPrincipal = fotoPrincipal;
     }
 
 }

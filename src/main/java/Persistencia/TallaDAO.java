@@ -11,28 +11,29 @@ import Modelo.Talla;
 public class TallaDAO extends DAO<Talla>{
     
 
-    public List<Talla> obtenerTodasLasTallas(){
-        List<Talla> obtenerTodasLasTallas = listarTodo("ObtenerTodasLasTallas");
-        return obtenerTodasLasTallas;
+    public List<Talla> obtenerTodasLastallas(){
+        List<Talla> tallas = listarTodo("SP_ObtenerTodasLasTallas");
+        return tallas;
     }
     
     @Override
     public Talla parsear(ResultSet rs) {
-        Talla talla = new Talla();
         try {
+            Talla talla = new Talla();
             talla.setId(rs.getInt("id"));
             talla.setNombre(rs.getString("nombre"));
+            return talla;
         } catch (SQLException e) {
             manejarError("Error al parsear talla", e);
         }
-        return talla;
+        return null;
     }
     
-    public List<Talla> obtenerTallasPorId(Producto producto){
+    public List<Talla> obtenertallasPorId(Producto producto){
         int id = producto.getId();
         List<Talla> tallas = new ArrayList<>();
         try (Connection con = getconection();
-        CallableStatement cs = con.prepareCall("EXEC SP_ObtenerTallasPorIdProducto ?")){
+        CallableStatement cs = con.prepareCall("EXEC SP_ObtenertallasPorIdProducto ?")){
             cs.setInt(1, id);
             try(ResultSet rs = cs.executeQuery()){
                 while (rs.next()) {

@@ -116,12 +116,12 @@ public class ImportarImagenes_a_Productos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int id = Integer.parseInt(txt_id.getText());
-        Producto producto = new Producto();
-        producto.setId(id);
-        producto.setFoto_principal(perfil);
-        ProductoDAO productoDAO = new ProductoDAO();
-        productoDAO.importarFotoPrueba(producto);
+//        int id = Integer.parseInt(txt_id.getText());
+//        Producto producto = new Producto();
+//        producto.setId(id);
+//        producto.setFoto_principal(perfil);
+//        ProductoDAO productoDAO = new ProductoDAO();
+//        productoDAO.importarFotoPrueba(producto);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

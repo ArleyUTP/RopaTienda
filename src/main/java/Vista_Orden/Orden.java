@@ -2,7 +2,6 @@ package Vista_Orden;
 
 import Persistencia.ProductoDAO;
 import com.formdev.flatlaf.FlatClientProperties;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 public class Orden extends javax.swing.JPanel {

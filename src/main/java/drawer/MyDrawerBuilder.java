@@ -3,6 +3,7 @@ package drawer;
 import Dashboard.Dashboard;
 import Modelo.Usuario;
 import Vista_Orden.Orden;
+import Vista_Productos.Mantenimiento_Productos;
 import Vista_Usuarios.Man_Usuarios;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -86,23 +87,35 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
                         if (index == 0) {
                             if (subIndex == 0) {
                                 Dashboard dashboard = new Dashboard();
-                                contenedor.setLayout(new BorderLayout());
                                 contenedor.removeAll(); // Asegúrate de limpiar antes de añadir
                                 contenedor.add(dashboard, BorderLayout.CENTER);
                                 contenedor.revalidate();
                                 contenedor.repaint();
                             }
                         } else if (index == 1) { // Mantenimientos
-                            if (subIndex == 0) {
-                            } else if (subIndex == 1) {
+                            switch (subIndex) {
+                                case 0 -> {
+                                }
+                                case 1 -> {
+                                    Mantenimiento_Productos mantenimiento_Productos = new Mantenimiento_Productos();
+                                    mantenimiento_Productos.setSize(contenedor.getWidth(), contenedor.getHeight()); // Ajustar tamaño
+                                    contenedor.setLayout(new BorderLayout()); // Configurar el diseño del contenedor
+                                    contenedor.removeAll(); // Limpiar los componentes previos
+                                    contenedor.add(mantenimiento_Productos, BorderLayout.CENTER); // Agregar el panel en el centro
+                                    contenedor.revalidate(); // Validar el nuevo diseño
+                                    contenedor.repaint(); // Repintar para asegurar que se vea
 
-                            } else if (subIndex == 2) {
-                                Man_Usuarios man_Usuarios = new Man_Usuarios();
-                                contenedor.setLayout(new BorderLayout());
-                                contenedor.removeAll(); // Asegúrate de limpiar antes de añadir
-                                contenedor.add(man_Usuarios, BorderLayout.NORTH);
-                                contenedor.revalidate();
-                                contenedor.repaint();
+                                }
+                                case 2 -> {
+                                    Man_Usuarios man_Usuarios = new Man_Usuarios();
+                                    contenedor.setLayout(new BorderLayout());
+                                    contenedor.removeAll(); // Asegúrate de limpiar antes de añadir
+                                    contenedor.add(man_Usuarios, BorderLayout.NORTH);
+                                    contenedor.revalidate();
+                                    contenedor.repaint();
+                                }
+                                default -> {
+                                }
                             }
                         } else if (index == 2) {
                             if (subIndex == 0) {

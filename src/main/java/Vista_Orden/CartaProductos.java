@@ -1,5 +1,6 @@
 package Vista_Orden;
 
+import Modelo.ImageResizer;
 import Modelo.Producto;
 import com.formdev.flatlaf.FlatClientProperties;
 import javaswingdev.picturebox.PictureBox.BoxFit;
@@ -11,33 +12,37 @@ import raven.popup.component.SimplePopupBorderOption;
 import raven.toast.Notifications;
 
 public class CartaProductos extends javax.swing.JPanel {
-
+    
     private Producto producto;
-
+    
     public CartaProductos(Producto producto) {
-        initComponents();
-        init();
-        lbl_nombre.setText(producto.getNombre());
-        lbl_precio.setText("S/. "+String.valueOf(producto.getPrecioVenta()));
-        lbl_descripcion.setText(producto.getDescripcion());
-        // Verificar si el producto tiene una imagen
-        if (producto.getFoto_principal() != null && producto.getFoto_principal().getIcon() != null) {
-            // Obtener el Icono de la imagen
-            Icon imagenIcono = producto.getFoto_principal().getIcon();  // Aquí obtenemos el Icono directamente
-            // Establecer el Icono en el PictureBox
-            imagen.setImage(imagenIcono);
-            // Ajustar la imagen con BoxFit
-            imagen.setBoxFit(BoxFit.COVER);  // Ajuste para cubrir el cuadro completo
-            this.producto = producto;
-        }
+//        initComponents();
+//        init();
+//        lbl_nombre.setText(producto.getNombre());
+//        lbl_precio.setText("S/. " + String.valueOf(producto.getPrecioVenta()));
+//        lbl_descripcion.setText(producto.getDescripcion());
+//        jScrollPane1.setOpaque(false);
+//        lbl_descripcion.setOpaque(false);
+//        // Verificar si el producto tiene una imagen
+//        if (producto.getFoto_principal() != null && producto.getFoto_principal().getIcon() != null) {
+//            // Obtener el Icono de la imagen
+//            Icon imagenIcono = producto.getFoto_principal().getIcon();  // Aquí obtenemos el Icono directamente
+//            // Establecer el Icono en el PictureBox
+//            imagen.setSize(362, 532);
+//            ImageResizer imageResizer = new ImageResizer(imagenIcono);
+//            imagen.setImage(imageResizer.obtenerIconoRedimensionado(imagen));
+//            // Ajustar la imagen con BoxFit
+//            imagen.setBoxFit(BoxFit.COVER);  // Ajuste para cubrir el cuadro completo
+//            this.producto = producto;
+//        }
     }
-
+    
     private void init() {
         this.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Table.background");
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -120,7 +125,7 @@ public class CartaProductos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-
+        
         Productos_Detalles productos_Detalles = new Productos_Detalles(producto);
         DefaultOption option = new DefaultOption() {
             @Override

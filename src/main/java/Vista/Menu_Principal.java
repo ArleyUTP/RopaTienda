@@ -10,14 +10,14 @@ import raven.drawer.Drawer;
 import raven.popup.GlassPanePopup;
 
 public class Menu_Principal extends javax.swing.JFrame {
-
+    
     private Usuario usuario;
-
+    
     public Menu_Principal(Usuario usuario) {
         GlassPanePopup.install(this);
         this.usuario = usuario;
         initComponents();
-//        encabezado.loadData(usuario);
+        perfil.cargarDatos(usuario);
         this.setExtendedState(this.MAXIMIZED_BOTH);
         this.setMaximizedBounds(this.getGraphicsConfiguration().getBounds());
         if (usuario.getRol().equals("admin")) {
@@ -47,29 +47,64 @@ public class Menu_Principal extends javax.swing.JFrame {
         contenedorOfertas.revalidate();
         contenedorOfertas.repaint();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        contenedor = new javax.swing.JPanel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jPanel1 = new javax.swing.JPanel();
-        encabezado1 = new Componentes.Encabezado();
+        jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
+        panelPrincipal = new javax.swing.JPanel();
+        contenedor = new javax.swing.JPanel();
+        PanelSuperior = new javax.swing.JPanel();
+        panelUsuario = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        carritoOfer_Item1 = new Componentes.CarritoOfer_Item();
+        perfil = new Componentes.EncabezadoPerfilUsuario();
         contenedorOfertas = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
 
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        contenedor.setPreferredSize(new java.awt.Dimension(782, 631));
+        panelPrincipal.setOpaque(false);
+        panelPrincipal.setPreferredSize(new java.awt.Dimension(782, 631));
+        panelPrincipal.setLayout(new java.awt.BorderLayout());
+
         contenedor.setLayout(new java.awt.BorderLayout());
+        panelPrincipal.add(contenedor, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(encabezado1, java.awt.BorderLayout.LINE_END);
+        PanelSuperior.setLayout(new javax.swing.BoxLayout(PanelSuperior, javax.swing.BoxLayout.Y_AXIS));
 
-        jScrollPane1.setViewportView(contenedorOfertas);
+        panelUsuario.setOpaque(false);
+        panelUsuario.setPreferredSize(new java.awt.Dimension(0, 60));
+        panelUsuario.setLayout(new java.awt.BorderLayout());
+
+        carritoOfer_Item1.setPreferredSize(new java.awt.Dimension(50, 60));
+        jPanel1.add(carritoOfer_Item1);
+        jPanel1.add(perfil);
+
+        panelUsuario.add(jPanel1, java.awt.BorderLayout.LINE_END);
+
+        PanelSuperior.add(panelUsuario);
+
+        contenedorOfertas.setPreferredSize(new java.awt.Dimension(782, 190));
+        PanelSuperior.add(contenedorOfertas);
+
+        panelPrincipal.add(PanelSuperior, java.awt.BorderLayout.NORTH);
+
+        jScrollPane1.setViewportView(panelPrincipal);
 
         jMenu1.setText("Menu");
         jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -85,26 +120,11 @@ public class Menu_Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 1366, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addComponent(jSeparator1))
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(contenedor, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
         );
 
         pack();
@@ -150,13 +170,17 @@ public class Menu_Principal extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel PanelSuperior;
+    private Componentes.CarritoOfer_Item carritoOfer_Item1;
     private javax.swing.JPanel contenedor;
     private javax.swing.JPanel contenedorOfertas;
-    private Componentes.Encabezado encabezado1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPanel panelPrincipal;
+    private javax.swing.JPanel panelUsuario;
+    private Componentes.EncabezadoPerfilUsuario perfil;
     // End of variables declaration//GEN-END:variables
 }

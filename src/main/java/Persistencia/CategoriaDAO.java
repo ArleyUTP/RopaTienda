@@ -8,12 +8,7 @@ import Modelo.Categoria;
 import Modelo.Producto;
 
 public class CategoriaDAO extends DAO<Categoria>{
-    /*Base de datos:
-     * CREATE TABLE Categorias (
-    id BIGINT PRIMARY KEY IDENTITY(1,1),
-    nombre NVARCHAR(50) UNIQUE
-);
-     */
+
     public List<Categoria> obtenerTodasLasCategorias(){
         List<Categoria> categorias = listarTodo("SP_ObtenerTodasLasCategorias");
         return categorias;
@@ -36,8 +31,9 @@ public class CategoriaDAO extends DAO<Categoria>{
     @Override
     public Categoria parsear(ResultSet rs) {
         try {
-            Categoria categoria = new Categoria(rs.getString("nombre"));
+            Categoria categoria = new Categoria();
             categoria.setId(rs.getInt("id"));
+            categoria.setNombre(rs.getString("nombre"));
             return categoria;
         } catch (SQLException e) {
             manejarError("Error al parsear categoria", e);

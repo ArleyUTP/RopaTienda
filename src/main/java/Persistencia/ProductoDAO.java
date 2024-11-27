@@ -14,12 +14,12 @@ import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.Thumbnails;
 
 public class ProductoDAO extends DAO<Producto> {
-
+    
     public List<Producto> obtenerTodosLosProductosDisponibles() {
         List<Producto> productos = listarTodo("SP_ObtenerProDisponibles");
         return productos;
     }
-
+    
     @Override
     public Producto parsear(ResultSet rs) {
         Producto producto = new Producto();
@@ -31,33 +31,19 @@ public class ProductoDAO extends DAO<Producto> {
             producto.setPrecioCompra(rs.getDouble("precio_compra"));
             producto.setPrecioVenta(rs.getDouble("precio_venta"));
             Perfil perfil = new Perfil(rs.getBytes("Foto_Principal"));
-            producto.setFoto_principal(perfil);
+            producto.setFotoPrincipal(perfil);
+            producto.setEstadoPromocion(rs.getBoolean("estado_promocion"));
         } catch (SQLException e) {
             manejarError("Error al parcear Producto", e);
         }
         return producto;
     }
 
-    public Producto obtenerProductoPorId(int productId) {
-        throw new UnsupportedOperationException("Unimplemented method 'obtenerProductoPorId'");
+    public List<Producto> obtenerTodosLosProductos() {
+        List<Producto> productos = listarTodo("SP_ObtenerTodosLosProductos");
+        return productos;
     }
-
-    public void importarFotoPrueba(Producto producto) {
-        int id = producto.getId();
-        Perfil perfil = producto.getFoto_principal();
-        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_ImagenesPrueba ?,?")) {
-            cs.setInt(1, id);
-            if (perfil != null && perfil.getRuta() != null) {
-                cs.setBytes(2, getByteImagen(perfil.getRuta()));
-            } else {
-                cs.setNull(2, java.sql.Types.VARBINARY);
-            }
-            cs.executeUpdate();
-        } catch (Exception e) {
-            System.out.println("Error al importa imagen: " + e.toString());
-        }
-    }
-
+    
     private byte[] getByteImagen(File file) throws IOException {
         BufferedImage imagen = Thumbnails.of(file)
                 .size(600, 600) // Ajustar a un tamaño moderado

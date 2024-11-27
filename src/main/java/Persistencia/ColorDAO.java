@@ -31,7 +31,11 @@ public class ColorDAO extends DAO<ColorRopa>{
         }
         return colores;
     }
-    
+    public List<ColorRopa> obtenerTodosLosColores(){
+        List<ColorRopa> colores = listarTodo("SP_ObtenerTodosLosColores");
+        return colores;
+    }
+
     public List<Modelo.Talla>  obtenerTallasParaUnColor(Producto producto,ColorRopa color){
         int idColor = color.getId();
         int idProducto = producto.getId();
