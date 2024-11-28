@@ -164,7 +164,7 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
         }
         // Si pasa la validación
         raven.toast.Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, "El correo electrónico es válido. Enviando datos...");
-        // Aquí añades tu lógica para enviar datos
+        // Aquí añades tu lógica para enviar datosx
         CrearCorreo();
         // TODO add your handling code here:
     }//GEN-LAST:event_bt_enviarActionPerformed
