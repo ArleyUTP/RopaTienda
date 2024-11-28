@@ -24,8 +24,9 @@ public class Perfil {
         this.ruta = ruta;
     }
 
-    public Perfil(String rutaAbsoluta) {
+    public Perfil(String rutaAbsoluta,File file) {
         this.rutaAbsoluta = rutaAbsoluta;
+        this.ruta=file;
         this.icon = new ImageIcon(rutaAbsoluta);
     }
 

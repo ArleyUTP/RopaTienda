@@ -4,8 +4,6 @@ import Modelo.*;
 import Persistencia.ColorDAO;
 import Persistencia.TallaDAO;
 import Vista_Productos.componentes.ImageListRenderer;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +48,7 @@ public class CrearVariantes extends javax.swing.JPanel {
     private void cargarListaDeImagenes() {
         DefaultListModel<Perfil> modelo = new DefaultListModel<>();
         if (imagenesVariante != null) {
-            imagenesVariante.forEach(perfil -> modelo.addElement(perfil));
+            imagenesVariante.forEach(perfilsa -> modelo.addElement(perfil));
             listaDeImagenes.setModel(modelo);
         } else {
             System.out.println("La lista de imagenes variante esta vacia");
@@ -241,8 +239,7 @@ public class CrearVariantes extends javax.swing.JPanel {
         boolean act = ch.showOpenDialog(SwingUtilities.getWindowAncestor(this));
         if (act) {
             File file = ch.getSelectedFile();
-            perfil = new Perfil(file.getAbsolutePath());
-
+            perfil = new Perfil(file.getAbsolutePath(),file);
             // Validar si la imagen ya existe en la lista
             if (imagenesVariante.contains(perfil)) {
                 Notifications.getInstance().show(Notifications.Type.ERROR, "La imagen seleccionada ya existe");
@@ -288,7 +285,7 @@ public class CrearVariantes extends javax.swing.JPanel {
         
         if (act) {
             File file = ch.getSelectedFile();
-            Perfil nuevaImagen = new Perfil(file.getAbsolutePath());
+            Perfil nuevaImagen = new Perfil(file.getAbsolutePath(),file);
 
             // Verificar si es la misma imagen
             if (nuevaImagen.equals(fotoSeleccionada)) {

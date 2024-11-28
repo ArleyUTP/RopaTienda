@@ -1,8 +1,11 @@
 package Vista_Productos;
 
+import Modelo.ColorRopa;
+import Modelo.Talla;
 import Modelo.Usuario;
 import Persistencia.UsuarioDAO;
 import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.Color;
 import java.io.IOException;
 import javax.swing.table.DefaultTableModel;
 import raven.popup.DefaultOption;
@@ -46,7 +49,7 @@ public class Crear extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaVariantes = new javax.swing.JTable();
         buttonAction1 = new Vista_Usuarios.table.ButtonAction();
-        buttonAction2 = new Vista_Usuarios.table.ButtonAction();
+        btn_crearVariante = new Vista_Usuarios.table.ButtonAction();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txt_descripcion = new javax.swing.JTextArea();
@@ -159,13 +162,13 @@ public class Crear extends javax.swing.JPanel {
         buttonAction1.setText("Eliminar");
         add(buttonAction1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 10, -1, -1));
 
-        buttonAction2.setText("Agregar");
-        buttonAction2.addActionListener(new java.awt.event.ActionListener() {
+        btn_crearVariante.setText("Agregar");
+        btn_crearVariante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonAction2ActionPerformed(evt);
+                btn_crearVarianteActionPerformed(evt);
             }
         });
-        add(buttonAction2, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, -1, -1));
+        add(btn_crearVariante, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, -1, -1));
 
         jLabel1.setText("Descripción");
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
@@ -177,7 +180,7 @@ public class Crear extends javax.swing.JPanel {
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 230, -1));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonAction2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction2ActionPerformed
+    private void btn_crearVarianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearVarianteActionPerformed
 
         CrearVariantes crearVariantes = new CrearVariantes();
         DefaultOption option = new DefaultOption() {
@@ -191,22 +194,40 @@ public class Crear extends javax.swing.JPanel {
                 new SimplePopupBorder(crearVariantes, "Crear Usuario", actions, (pc, i) -> {
                     if (i == 1) {
                         DefaultTableModel model = (DefaultTableModel) tablaVariantes.getModel();
-                        model.addRow(crearVariantes.obtenerDatos());
-                        tablaVariantes.setModel(model);
+                        Object[] nuevosDatos = crearVariantes.obtenerDatos();
+                        if (esValorDuplicadoEnTabla(model, nuevosDatos)) {
+                            Notifications.getInstance().show(Notifications.Type.ERROR, "Esta variante ya existe en la tabla");
+                        } else {
+                            model.addRow(nuevosDatos);
+                            pc.closePopup();
+                        }
                     } else {
                         pc.closePopup();
                     }
                 }),
                 option
         );
-    }//GEN-LAST:event_buttonAction2ActionPerformed
+    }//GEN-LAST:event_btn_crearVarianteActionPerformed
 
+    private boolean esValorDuplicadoEnTabla(DefaultTableModel modelo, Object[] nuevosDatos) {
+        int filas = modelo.getRowCount();
+        for (int i = 0; i < filas; i++) {
+            Talla tallaExistente = (Talla) modelo.getValueAt(i, 0);
+            ColorRopa colorExistente = (ColorRopa) modelo.getValueAt(i, 1);
+            Talla tallaNueva = (Talla) nuevosDatos[0];
+            ColorRopa colorNuevo = (ColorRopa) nuevosDatos[1];
+            if (tallaExistente.equals(tallaNueva) && colorExistente.equals(colorNuevo)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton btn_activo;
+    private Vista_Usuarios.table.ButtonAction btn_crearVariante;
     private javax.swing.JRadioButton btn_inactivo;
     private Vista_Usuarios.table.ButtonAction buttonAction1;
-    private Vista_Usuarios.table.ButtonAction buttonAction2;
     private javax.swing.JComboBox<String> cbo_categoria;
     private javax.swing.JPanel contenedorColores;
     private javax.swing.ButtonGroup grupoEstadoPromocion;
