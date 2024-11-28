@@ -39,7 +39,7 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.ssl.trust", "smrp.gmail.com");
+        properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         properties.setProperty("mail.smtp.starttls.enable", "true");
         properties.setProperty("mail.smtp.port", "587");
         properties.setProperty("mail.smtp.user", emailFrom);
@@ -164,7 +164,7 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
         }
         // Si pasa la validación
         raven.toast.Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, "El correo electrónico es válido. Enviando datos...");
-        // Aquí añades tu lógica para enviar datos
+        // Aquí añades tu lógica para enviar datosx
         CrearCorreo();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
