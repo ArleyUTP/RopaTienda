@@ -150,7 +150,7 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
 
     private void btn_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearActionPerformed
         Vista_Productos.Crear crear = new Crear();
-        crear.setPreferredSize(new Dimension(891, 574)); // Cambia el tamaño según sea necesario
+        crear.setPreferredSize(new Dimension(100, 574)); // Cambia el tamaño según sea necesario
 
         DefaultOption option = new DefaultOption() {
             @Override
@@ -164,7 +164,7 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
                 new SimplePopupBorder(crear, "Crear Producto",
                         new SimplePopupBorderOption()
                                 .setRoundBorder(30) // Esquinas redondeadas con un radio de 30 píxeles
-                                .setWidth(891) // Cambia el ancho según sea necesario
+                                .setWidth(1000) // Cambia el ancho según sea necesario
                                 .useScroll(), // Habilitar desplazamiento si es necesario
                         actions,
                         (pc, i) -> {

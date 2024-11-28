@@ -318,8 +318,8 @@ public class Vista_login extends javax.swing.JFrame {
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         // TODO add your handling code here:
-        Vista_EnvioCorreo vista_EnvioCorreo = new Vista_EnvioCorreo();
-        vista_EnvioCorreo.setVisible(true);
+//        Vista_EnvioCorreo vista_EnvioCorreo = new Vista_EnvioCorreo();
+//        vista_EnvioCorreo.setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void chk_recordarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chk_recordarUsuarioActionPerformed

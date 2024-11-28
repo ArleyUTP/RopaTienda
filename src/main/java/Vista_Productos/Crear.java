@@ -2,11 +2,8 @@ package Vista_Productos;
 
 import Modelo.ColorRopa;
 import Modelo.Talla;
-import Modelo.Usuario;
-import Persistencia.UsuarioDAO;
+import Vista_Productos.componentes.ImageTableListRenderer;
 import com.formdev.flatlaf.FlatClientProperties;
-import java.awt.Color;
-import java.io.IOException;
 import javax.swing.table.DefaultTableModel;
 import raven.popup.DefaultOption;
 import raven.popup.GlassPanePopup;
@@ -17,9 +14,28 @@ public class Crear extends javax.swing.JPanel {
 
     public Crear() {
         initComponents();
+        init();
         panelImagen.putClientProperty(FlatClientProperties.STYLE, ""
                 + "border:0,0,0,0,$Component.borderColor,,10;"
                 + "background:$TextArea.background");
+    }
+
+    private void init() {
+        tablaVariantes.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
+                + "height:30;"
+                + "hoverBackground:null;"
+                + "pressedBackground:null;"
+                + "separatorColor:$TableHeader.background;"
+                + "font:bold;");
+
+        tablaVariantes.putClientProperty(FlatClientProperties.STYLE, ""
+                + "rowHeight:100;"
+                + "showHorizontalLines:true;"
+                + "intercellSpacing:0,1;"
+                + "cellFocusColor:$TableHeader.hoverBackground;"
+                + "selectionBackground:$TableHeader.hoverBackground;"
+                + "selectionForeground:$Table.foreground;");
+        tablaVariantes.getColumnModel().getColumn(3).setCellRenderer(new ImageTableListRenderer(tablaVariantes));
     }
 
     @SuppressWarnings("unchecked")
@@ -148,19 +164,20 @@ public class Crear extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tablaVariantes.getColumnModel().getColumn(3).setCellRenderer(new ImageTableListRenderer(tablaVariantes));
         jScrollPane2.setViewportView(tablaVariantes);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, 540, 90));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, 650, 470));
 
         buttonAction1.setText("Eliminar");
-        add(buttonAction1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 10, -1, -1));
+        add(buttonAction1, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 10, -1, -1));
 
         btn_crearVariante.setText("Agregar");
         btn_crearVariante.addActionListener(new java.awt.event.ActionListener() {
@@ -168,7 +185,7 @@ public class Crear extends javax.swing.JPanel {
                 btn_crearVarianteActionPerformed(evt);
             }
         });
-        add(btn_crearVariante, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, -1, -1));
+        add(btn_crearVariante, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 10, -1, -1));
 
         jLabel1.setText("Descripción");
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));

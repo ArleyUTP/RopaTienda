@@ -8,7 +8,7 @@ import Modelo.Usuario;
 import Persistencia.LoginDAO;
 import Persistencia.UsuarioDAO;
 import Vista.Menu_Principal;
-import Vista.Vista_EnvioCorreo;
+//import Vista.Vista_EnvioCorreo;
 import Vista_Usuarios.Crear;
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.Dimension;
@@ -250,9 +250,9 @@ public class PanelLogin extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        // TODO add your handling code here:
-        Vista_EnvioCorreo vista_EnvioCorreo = new Vista_EnvioCorreo();
-        vista_EnvioCorreo.setVisible(true);
+//        // TODO add your handling code here:
+//        Vista_EnvioCorreo vista_EnvioCorreo = new Vista_EnvioCorreo();
+//        vista_EnvioCorreo.setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void btn_crearCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearCuentaActionPerformed

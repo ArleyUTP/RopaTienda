@@ -15,16 +15,16 @@ import jnafilechooser.api.JnaFileChooser;
 import raven.toast.Notifications;
 
 public class CrearVariantes extends javax.swing.JPanel {
-    
+
     private List<Perfil> imagenesVariante;
-    
+
     public CrearVariantes() {
         initComponents();
         this.imagenesVariante = new ArrayList<>();
         llenarListas();
         listaDeImagenes.setCellRenderer(new ImageListRenderer(listaDeImagenes));
     }
-    
+
     private void llenarListas() {
         TallaDAO tallaDAO = new TallaDAO();
         List<Talla> tallas = tallaDAO.obtenerTodasLastallas();
@@ -33,28 +33,28 @@ public class CrearVariantes extends javax.swing.JPanel {
         List<ColorRopa> colores = colorDAO.obtenerTodosLosColores();
         colores.forEach(color -> cbo_colores.addItem(color));
     }
-    
+
     public Object[] obtenerDatos() {
         Talla tallaSeleccionada = (Talla) cbo_tallas.getSelectedItem();
         ColorRopa colorSeleccionado = (ColorRopa) cbo_colores.getSelectedItem();
         return new Object[]{
             tallaSeleccionada,
             colorSeleccionado,
-            (int)cantidad.getValue(),
-            imagenesVariante
+            (int) cantidad.getValue(),
+            (List<Perfil>) imagenesVariante
         };
     }
-    
+
     private void cargarListaDeImagenes() {
         DefaultListModel<Perfil> modelo = new DefaultListModel<>();
         if (imagenesVariante != null) {
-            imagenesVariante.forEach(perfilsa -> modelo.addElement(perfil));
+            imagenesVariante.forEach(modelo::addElement);
             listaDeImagenes.setModel(modelo);
         } else {
             System.out.println("La lista de imagenes variante esta vacia");
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -231,7 +231,7 @@ public class CrearVariantes extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private Perfil perfil;
+    private Perfil perfilCapturado;
     private void btn_seleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_seleccionarActionPerformed
 // TODO add your handling code here:
         JnaFileChooser ch = new JnaFileChooser();
@@ -239,9 +239,9 @@ public class CrearVariantes extends javax.swing.JPanel {
         boolean act = ch.showOpenDialog(SwingUtilities.getWindowAncestor(this));
         if (act) {
             File file = ch.getSelectedFile();
-            perfil = new Perfil(file.getAbsolutePath(),file);
+            perfilCapturado = new Perfil(file.getAbsolutePath(), file);
             // Validar si la imagen ya existe en la lista
-            if (imagenesVariante.contains(perfil)) {
+            if (imagenesVariante.contains(perfilCapturado)) {
                 Notifications.getInstance().show(Notifications.Type.ERROR, "La imagen seleccionada ya existe");
                 return; // Retorno temprano para evitar continuar
             }
@@ -251,13 +251,14 @@ public class CrearVariantes extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_btn_seleccionarActionPerformed
-    
-    private void agregar(Perfil perfil) {
-        imagenesVariante.add(perfil);
+
+    private void agregar(Perfil pefil_a_agregar) {
+        imagenesVariante.add(pefil_a_agregar);
+        this.perfilCapturado = null;
         cargarListaDeImagenes();
     }
     private void btn_eliminarImagenListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarImagenListaActionPerformed
-        
+
         Perfil fotoSeleccionada = (Perfil) listaDeImagenes.getSelectedValue();
         if (imagenesVariante != null) {
             imagenesVariante.remove(fotoSeleccionada);
@@ -267,7 +268,7 @@ public class CrearVariantes extends javax.swing.JPanel {
 
     private void btn_actualizarImagenListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarImagenListaActionPerformed
         Perfil fotoSeleccionada = (Perfil) listaDeImagenes.getSelectedValue();
-        
+
         if (fotoSeleccionada == null) {
             Notifications.getInstance().show(Notifications.Type.WARNING, "Seleccione una imagen para actualizar");
             return;
@@ -278,26 +279,35 @@ public class CrearVariantes extends javax.swing.JPanel {
             Notifications.getInstance().show(Notifications.Type.ERROR, "La lista de imágenes no está inicializada");
             return;
         }
+
         // Seleccionar una nueva imagen
         JnaFileChooser ch = new JnaFileChooser();
         ch.addFilter("Image", "png", "jpg", "jpeg");
         boolean act = ch.showOpenDialog(SwingUtilities.getWindowAncestor(this));
-        
+
         if (act) {
             File file = ch.getSelectedFile();
-            Perfil nuevaImagen = new Perfil(file.getAbsolutePath(),file);
+            Perfil nuevaImagen = new Perfil(file.getAbsolutePath(), file);
 
-            // Verificar si es la misma imagen
-            if (nuevaImagen.equals(fotoSeleccionada)) {
-                Notifications.getInstance().show(Notifications.Type.INFO, "La imagen seleccionada es la misma");
+            // Verificación de duplicados con el método equals
+            boolean existeDuplicado = false;
+            for (Perfil perfil : imagenesVariante) {
+                if (nuevaImagen.equals(perfil)) {
+                    existeDuplicado = true;
+                    break;
+                }
+            }
+
+            if (existeDuplicado) {
+                Notifications.getInstance().show(Notifications.Type.INFO, "La imagen ya existe en la lista");
                 return;
             }
 
-            // Reemplazar la imagen en la lista
+            // Reemplazar la imagen seleccionada con la nueva
             int index = imagenesVariante.indexOf(fotoSeleccionada);
             if (index != -1) {
-                imagenesVariante.set(index, nuevaImagen); // Reemplazar el elemento
-                cargarListaDeImagenes(); // Refrescar la lista
+                imagenesVariante.set(index, nuevaImagen);
+                cargarListaDeImagenes(); // Actualizar el JList con las imágenes únicas
                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Imagen actualizada correctamente");
             } else {
                 Notifications.getInstance().show(Notifications.Type.ERROR, "No se pudo encontrar la imagen seleccionada en la lista");
@@ -306,10 +316,12 @@ public class CrearVariantes extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_actualizarImagenListaActionPerformed
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-        if (perfil != null) {
-            agregar(perfil);
+        if (perfilCapturado != null) {
+            agregar(perfilCapturado);
+            perfilCapturado = null; // Limpia el perfil capturado después de agregarlo.
             imagen.setImage(null);
         }
+
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed

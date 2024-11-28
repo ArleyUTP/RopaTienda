@@ -1,6 +1,7 @@
 package Modelo;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -24,9 +25,9 @@ public class Perfil {
         this.ruta = ruta;
     }
 
-    public Perfil(String rutaAbsoluta,File file) {
+    public Perfil(String rutaAbsoluta, File file) {
         this.rutaAbsoluta = rutaAbsoluta;
-        this.ruta=file;
+        this.ruta = file;
         this.icon = new ImageIcon(rutaAbsoluta);
     }
 
@@ -68,19 +69,10 @@ public class Perfil {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Perfil other = (Perfil) obj;
+        Perfil other = (Perfil) obj;
         return Objects.equals(this.rutaAbsoluta, other.rutaAbsoluta);
     }
-
-    @Override
-    public String toString() {
-        return "Perfil{" + "icon=" + icon + ", ruta=" + ruta + '}';
-    }
-
 }
