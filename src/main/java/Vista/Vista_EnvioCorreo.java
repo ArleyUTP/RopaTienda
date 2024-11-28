@@ -39,7 +39,7 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.ssl.trust", "smrp.gmail.com");
+        properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         properties.setProperty("mail.smtp.starttls.enable", "true");
         properties.setProperty("mail.smtp.port", "587");
         properties.setProperty("mail.smtp.user", emailFrom);
@@ -106,7 +106,7 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         txt_correo = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        bt_enviar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -115,10 +115,10 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
         txt_correo.putClientProperty("JTextField.placeholderText", "Ingrese su correo electronico");
         txt_correo.putClientProperty( "JComponent.roundRect" , true );
 
-        jButton1.setText("Enviar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bt_enviar.setText("Enviar");
+        bt_enviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bt_enviarActionPerformed(evt);
             }
         });
 
@@ -136,7 +136,7 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(173, 173, 173)
-                .addComponent(jButton1)
+                .addComponent(bt_enviar)
                 .addContainerGap(210, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -147,14 +147,14 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_correo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(bt_enviar)
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bt_enviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_enviarActionPerformed
         UsuarioDAO usuarioDAO = new UsuarioDAO(); // Instancia de la clase UsuarioDAO
 
         // Validación del correo
@@ -167,7 +167,7 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
         // Aquí añades tu lógica para enviar datos
         CrearCorreo();
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_bt_enviarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -205,7 +205,7 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton bt_enviar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField txt_correo;
     // End of variables declaration//GEN-END:variables

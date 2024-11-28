@@ -36,7 +36,7 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="173" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <Component id="bt_enviar" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="210" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -49,7 +49,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="txt_correo" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <Component id="bt_enviar" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="8" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -66,12 +66,12 @@
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="txt_correo.putClientProperty(&quot;JTextField.placeholderText&quot;, &quot;Ingrese su correo electronico&quot;);&#xa;txt_correo.putClientProperty( &quot;JComponent.roundRect&quot; , true );"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="bt_enviar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Enviar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_enviarActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
