@@ -4,18 +4,95 @@
  */
 package Vista;
 
+import Modelo.Usuario;
+import Persistencia.UsuarioDAO;
+import java.io.File;
+import java.util.Properties;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
 /**
  *
  * @author user
  */
 public class Vista_EnvioCorreo extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Vista_EnvioCorreo
-     */
+    private String emailFrom = "inkafashion.soporte@gmail.com";
+    private String password = "vryj dssh aczn kemq";
+    private String mailTo;
+    private String subject;
+    private String conten;
+    private Authenticator auth;
+    private File[] file;
+    private Properties properties;
+    
     public Vista_EnvioCorreo() {
         initComponents();
         this.setLocationRelativeTo(null);
+        properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.ssl.trust", "smrp.gmail.com");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+        properties.setProperty("mail.smtp.port", "587");
+        properties.setProperty("mail.smtp.user", emailFrom);
+        properties.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
+        properties.setProperty("mail.smtp.auth", "true");
+        
+        auth = new Authenticator() {
+            public PasswordAuthentication getPasswordAuthentication(){
+                return new PasswordAuthentication(emailFrom,password);
+            }
+        };
+    }
+    
+    private void CrearCorreo(){
+        mailTo = txt_correo.getText().trim();
+        subject = "Reestablecimiento de Contraseña";
+        UsuarioDAO usuarioDAO = new UsuarioDAO(); 
+        Usuario usuario = usuarioDAO.obtenerUsuarioPorCorreo(mailTo);
+        
+        conten = "<html>"
+            + "<body>"
+            + "<h2>Hola " + usuario.getNombre() + " " + usuario.getApellido() + ",</h2>"
+            + "<p>Has solicitado restablecer tu contraseña. Aquí están tus datos:</p>"
+            + "<ul>"
+            + "<li><b>Usuario:</b> " + usuario.getUsuario() + "</li>"
+            + "<li><b>Contraseña:</b> <span style='color:red;'>" + usuario.getClave() + "</span></li>"
+            + "</ul>"
+            + "<p>Por favor, mantén esta información segura.</p>"
+            + "<p>Atentamente,<br>Equipo de Soporte</p>"
+            + "</body>"
+            + "</html>";
+        
+        Session mSession = Session.getInstance(properties, auth);
+        
+        Message msg = new MimeMessage(mSession);
+        try {
+            msg.setFrom(new InternetAddress(emailFrom));
+            InternetAddress[] toAddresses = 
+            {new InternetAddress(mailTo)};
+            msg.setRecipients(Message.RecipientType.TO, toAddresses);
+            msg.setSubject(subject);
+            msg.setSentDate(new java.util.Date());
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(conten, "text/html");
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+            
+            msg.setContent(multipart);
+            Transport.send(msg);
+            raven.toast.Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, "Correo enviado exitosamente.");
+        } catch (Exception e) {
+            raven.toast.Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, "Error al enviar correo: " + e.getMessage());
+        }
     }
 
     /**
@@ -39,6 +116,11 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
         txt_correo.putClientProperty( "JComponent.roundRect" , true );
 
         jButton1.setText("Enviar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -71,6 +153,21 @@ public class Vista_EnvioCorreo extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        UsuarioDAO usuarioDAO = new UsuarioDAO(); // Instancia de la clase UsuarioDAO
+
+        // Validación del correo
+        if (!usuarioDAO.ValidarFormatoCorreo(txt_correo, "correo electrónico")) {
+        // Si no pasa la validación, el mensaje de error ya se muestra en la notificación
+            return;
+        }
+        // Si pasa la validación
+        raven.toast.Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, "El correo electrónico es válido. Enviando datos...");
+        // Aquí añades tu lógica para enviar datos
+        CrearCorreo();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

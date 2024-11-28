@@ -63,6 +63,24 @@ public class UsuarioDAO extends DAO<Usuario> {
         }
         return usuario;
     }
+    
+    public Usuario obtenerUsuarioPorCorreo(String correo){
+        Usuario usuario = new Usuario();
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_ObtenerCorreoPorUsuario ?")) {
+            cs.setString(1, correo); 
+
+            try (ResultSet rs = cs.executeQuery()) { 
+                if (rs.next()) {
+                    
+                    usuario = parsear(rs);
+                }
+            }
+        } catch (SQLException e) {
+            manejarError("Error al obtener el usuario por correo", e); // Maneja errores
+        }
+
+        return usuario; 
+    }
 
     public void actualizarUsuario(Usuario usuario) throws IOException {
         try (Connection con = getconection(); CallableStatement cs = con.prepareCall("EXEC SP_ActualizarUsuario ?,?,?,?,?,?,?,?,?,?,?")) {
