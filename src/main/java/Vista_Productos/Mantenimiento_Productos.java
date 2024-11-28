@@ -164,7 +164,7 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
                 new SimplePopupBorder(crear, "Crear Producto",
                         new SimplePopupBorderOption()
                                 .setRoundBorder(30) // Esquinas redondeadas con un radio de 30 píxeles
-                                .setWidth(693) // Cambia el ancho según sea necesario
+                                .setWidth(891) // Cambia el ancho según sea necesario
                                 .useScroll(), // Habilitar desplazamiento si es necesario
                         actions,
                         (pc, i) -> {

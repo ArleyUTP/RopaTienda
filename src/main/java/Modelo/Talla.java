@@ -28,4 +28,9 @@ public class Talla {
         this.nombre = nombre;
     }
 
+    @Override
+    public String toString() {
+        return this.nombre;
+    }
+
 }

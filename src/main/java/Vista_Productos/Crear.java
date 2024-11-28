@@ -1,6 +1,14 @@
 package Vista_Productos;
 
+import Modelo.Usuario;
+import Persistencia.UsuarioDAO;
 import com.formdev.flatlaf.FlatClientProperties;
+import java.io.IOException;
+import javax.swing.table.DefaultTableModel;
+import raven.popup.DefaultOption;
+import raven.popup.GlassPanePopup;
+import raven.popup.component.SimplePopupBorder;
+import raven.toast.Notifications;
 
 public class Crear extends javax.swing.JPanel {
 
@@ -36,7 +44,7 @@ public class Crear extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaVariantes = new javax.swing.JTable();
         buttonAction1 = new Vista_Usuarios.table.ButtonAction();
         buttonAction2 = new Vista_Usuarios.table.ButtonAction();
         jLabel1 = new javax.swing.JLabel();
@@ -128,7 +136,7 @@ public class Crear extends javax.swing.JPanel {
         jLabel15.setText("Variantes");
         add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, -1, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaVariantes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -144,7 +152,7 @@ public class Crear extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(tablaVariantes);
 
         add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, 540, 90));
 
@@ -170,7 +178,27 @@ public class Crear extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonAction2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAction2ActionPerformed
-        // TODO add your handling code here:
+
+        CrearVariantes crearVariantes = new CrearVariantes();
+        DefaultOption option = new DefaultOption() {
+            @Override
+            public boolean closeWhenClickOutside() {
+                return true;
+            }
+        };
+        String actions[] = new String[]{"Cancelar", "Guardar"};
+        GlassPanePopup.showPopup(
+                new SimplePopupBorder(crearVariantes, "Crear Usuario", actions, (pc, i) -> {
+                    if (i == 1) {
+                        DefaultTableModel model = (DefaultTableModel) tablaVariantes.getModel();
+                        model.addRow(crearVariantes.obtenerDatos());
+                        tablaVariantes.setModel(model);
+                    } else {
+                        pc.closePopup();
+                    }
+                }),
+                option
+        );
     }//GEN-LAST:event_buttonAction2ActionPerformed
 
 
@@ -195,9 +223,9 @@ public class Crear extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JPanel panelImagen;
+    private javax.swing.JTable tablaVariantes;
     private javax.swing.JFormattedTextField txt_PrecioVenta;
     private javax.swing.JTextArea txt_descripcion;
     private javax.swing.JTextField txt_nombre;
