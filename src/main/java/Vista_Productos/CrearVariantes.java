@@ -38,10 +38,12 @@ public class CrearVariantes extends javax.swing.JPanel {
     public Object[] obtenerDatos() {
         Talla tallaSeleccionada = (Talla) cbo_tallas.getSelectedItem();
         ColorRopa colorSeleccionado = (ColorRopa) cbo_colores.getSelectedItem();
+        int cantidadSeleccionada = (int) cantidad.getValue();
+
         return new Object[]{
             tallaSeleccionada,
             colorSeleccionado,
-            (int) cantidad.getValue(),
+            cantidadSeleccionada,
             (List<Perfil>) imagenesVariante
         };
     }
@@ -348,4 +350,12 @@ public class CrearVariantes extends javax.swing.JPanel {
     private javax.swing.JList<Perfil> listaDeImagenes;
     private javax.swing.JPanel panelImagen;
     // End of variables declaration//GEN-END:variables
+
+    public void cargarDatos(Talla talla, ColorRopa colorRopa, int cantidad, List<Perfil> imagenes) {
+        cbo_tallas.setSelectedItem(talla);
+        cbo_colores.setSelectedItem(colorRopa);
+        this.cantidad.setValue(cantidad);
+        this.imagenesVariante = imagenes;
+        cargarListaDeImagenes();
+    }
 }

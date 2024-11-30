@@ -21,7 +21,7 @@ public class TallaDAO extends DAO<Talla>{
         try {
             Talla talla = new Talla();
             talla.setId(rs.getInt("id"));
-            talla.setNombre(rs.getString("nombre"));
+            talla.setNombre(rs.getString("talla_nombre"));
             return talla;
         } catch (SQLException e) {
             manejarError("Error al parsear talla", e);

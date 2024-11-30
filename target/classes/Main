@@ -1,0 +1,8 @@
+package SistemaLogeo;
+
+public class Main {
+    public static void main(String[] args) {
+        Logeoapp app = new Logeoapp(); 
+        app.iniciar();
+    }
+}

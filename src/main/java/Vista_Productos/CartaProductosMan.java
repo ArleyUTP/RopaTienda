@@ -5,6 +5,7 @@ import Modelo.Producto;
 import Modelo.ProductoInventario;
 import Persistencia.CategoriaDAO;
 import Persistencia.ProductoDAO;
+import Persistencia.ProductoInventarioDAO;
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.Dimension;
 import java.util.List;
@@ -136,35 +137,44 @@ public class CartaProductosMan extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-
-        Vista_Productos.Crear crear = new Crear();
-        crear.setPreferredSize(new Dimension(100, 574)); // Cambia el tamaño según sea necesario
-
-        DefaultOption option = new DefaultOption() {
-            @Override
-            public boolean closeWhenClickOutside() {
-                return true;
-            }
-        };
-        String actions[] = new String[]{"Cancelar", "Guardar"};
-
-        GlassPanePopup.showPopup(
-                new SimplePopupBorder(crear, "Crear Producto",
-                        new SimplePopupBorderOption()
-                                .setRoundBorder(30) // Esquinas redondeadas con un radio de 30 píxeles
-                                .setWidth(1000) // Cambia el ancho según sea necesario
-                                .useScroll(), // Habilitar desplazamiento si es necesario
-                        actions,
-                        (pc, i) -> {
-                            if (i == 1) {
-                                pc.closePopup();
-                                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado Correctamente");
-                            } else {
-                                pc.closePopup();
-                            }
-                        }),
-                option
-        );
+//
+//        Vista_Productos.Crear crear = new Crear();
+//        crear.cargarDatos(producto);
+//        ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
+//        List<ProductoInventario> variantes = productoInventarioDAO.obtenerVariantePorIdProducto(producto);
+//        crear.cargarVariantes(variantes);
+//        crear.setPreferredSize(new Dimension(100, 574)); // Cambia el tamaño según sea necesario
+//        DefaultOption option = new DefaultOption() {
+//            @Override
+//            public boolean closeWhenClickOutside() {
+//                return true;
+//            }
+//        };
+//        String actions[] = new String[]{"Cancelar", "Actualizar"};
+//
+//        GlassPanePopup.showPopup(
+//                new SimplePopupBorder(crear, "Editar Producto",
+//                        new SimplePopupBorderOption()
+//                                .setRoundBorder(30) // Esquinas redondeadas con un radio de 30 píxeles
+//                                .setWidth(1000) // Cambia el ancho según sea necesario
+//                                .useScroll(), // Habilitar desplazamiento si es necesario
+//                        actions,
+//                        (pc, i) -> {
+//                            if (i == 1) {
+//                                ProductoDAO productoDAO = new ProductoDAO();
+//                                Producto productoActualizado = crear.obtenerProducto();
+//                                System.out.println("Producto Actualizado: "+productoActualizado.toString());
+//                                List<ProductoInventario> variantesActualizadas = crear.obtenerVarianteProducto();
+//                                if (productoDAO.actualizarProductoConVariantes(productoActualizado, variantesActualizadas)) {
+//                                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "Producto actualizado correctamente");
+//                                }
+//                                pc.closePopup();
+//                            } else {
+//                                pc.closePopup();
+//                            }
+//                        }),
+//                option
+//        );
     }//GEN-LAST:event_formMouseClicked
 
 

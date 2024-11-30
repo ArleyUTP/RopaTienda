@@ -27,6 +27,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Autogenerar.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Categoria.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ColorRopa.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Encriptar.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\FotosInventario.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Genero.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ImageResizer.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Inventario.java
@@ -39,10 +40,12 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Talla.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Usuario.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\CategoriaDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ColorDAO.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\FotosInventarioDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\GeneroDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\LoginDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\MarcaDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ProductoDAO.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ProductoInventarioDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\TallaDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\UsuarioDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Productos\Inventario.java

@@ -417,3 +417,53 @@ BEGIN
         THROW;
     END CATCH
 END;
+
+CREATE PROCEDURE SP_ActualizarProducto
+    @id BIGINT,
+    @nombre NVARCHAR(255),
+    @descripcion NVARCHAR(MAX),
+    @categoria_id BIGINT,
+    @precio_compra DECIMAL(10,2),
+    @precio_venta DECIMAL(10,2),
+    @foto_principal VARBINARY(MAX),
+    @estado_promocion BIT
+AS
+BEGIN
+    UPDATE Producto
+    SET nombre = @nombre,
+        descripcion = @descripcion,
+        categoria_id = @categoria_id,
+        precio_compra = @precio_compra,
+        precio_venta = @precio_venta,
+        foto_Principal = @foto_principal,
+        estado_promocion = @estado_promocion
+    WHERE id = @id;
+END;
+CREATE PROCEDURE SP_ActualizarVariante
+    @id BIGINT,
+    @producto_id BIGINT,
+    @talla_id BIGINT,
+    @color_id BIGINT,
+    @cantidad INT
+AS
+BEGIN
+    UPDATE Inventario
+    SET talla_id = @talla_id,
+        color_id = @color_id,
+        cantidad = @cantidad
+    WHERE id = @id AND producto_id = @producto_id;
+END;
+CREATE PROCEDURE SP_ActualizarFotoInventario
+    @id BIGINT,
+    @inventario_id BIGINT,
+    @foto VARBINARY(MAX)
+AS
+BEGIN
+    UPDATE FotosInventario
+    SET foto = @foto
+    WHERE id = @id AND inventario_id = @inventario_id;
+END;
+
+SELECT * FROM Producto
+SELECT* FROM Inventario
+SELECT * FROM FotosInventario

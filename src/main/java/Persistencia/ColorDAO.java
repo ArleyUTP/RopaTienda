@@ -61,7 +61,7 @@ public class ColorDAO extends DAO<ColorRopa>{
         ColorRopa color = new ColorRopa();
         try {
             color.setId(rs.getInt("id"));
-            color.setNombre(rs.getString("nombre"));
+            color.setNombre(rs.getString("color_nombre"));
             color.setCodigo_hexdecimal(rs.getString("valor_hex"));
         } catch (Exception e) {
             manejarError("Error al parsear el Color Ropa", e);

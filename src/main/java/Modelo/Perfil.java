@@ -12,6 +12,7 @@ import net.coobird.thumbnailator.Thumbnails;
 
 public class Perfil {
 
+    int id;
     Icon icon;
     File ruta;
     byte[] bytes;
@@ -110,7 +111,15 @@ public class Perfil {
 
     @Override
     public String toString() {
-        return "Perfil{" + "bytes=" + bytes + '}';
+        return "Perfil{" + "id=" + id + ", icon=" + icon + ", ruta=" + ruta + ", bytes=" + bytes + ", rutaAbsoluta=" + rutaAbsoluta + '}';
     }
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }

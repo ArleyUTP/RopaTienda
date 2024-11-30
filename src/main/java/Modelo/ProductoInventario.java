@@ -62,4 +62,9 @@ public class ProductoInventario {
         this.fotos = fotos;
     }
 
+    @Override
+    public String toString() {
+        return "ProductoInventario{" + "idVariante=" + idVariante + ", producto=" + producto + ", talla=" + talla + ", colorRopa=" + colorRopa + ", stock=" + stock + ", fotos=" + fotos + '}';
+    }
+
 }

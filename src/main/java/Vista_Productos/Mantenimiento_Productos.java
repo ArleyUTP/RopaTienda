@@ -3,9 +3,12 @@ package Vista_Productos;
 import Modelo.Producto;
 import Modelo.ProductoInventario;
 import Persistencia.ProductoDAO;
+import Persistencia.ProductoInventarioDAO;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import raven.popup.DefaultOption;
 import raven.popup.GlassPanePopup;
@@ -200,10 +203,55 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void cargarProductos() {
+        contenedor.removeAll();
         ProductoDAO productoDAO = new ProductoDAO();
         List<Producto> productos = productoDAO.obtenerTodosLosProductos();
         productos.forEach(producto -> {
             CartaProductosMan cartaProductosMan = new CartaProductosMan(producto);
+            cartaProductosMan.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    Vista_Productos.Crear crear = new Crear();
+                    crear.cargarDatos(producto);
+                    ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
+                    List<ProductoInventario> variantes = productoInventarioDAO.obtenerVariantePorIdProducto(producto);
+                    crear.cargarVariantes(variantes);
+                    crear.setPreferredSize(new Dimension(100, 574)); // Cambia el tamaño según sea necesario
+                    DefaultOption option = new DefaultOption() {
+                        @Override
+                        public boolean closeWhenClickOutside() {
+                            return true;
+                        }
+                    };
+                    String actions[] = new String[]{"Cancelar", "Actualizar"};
+
+                    GlassPanePopup.showPopup(
+                            new SimplePopupBorder(crear, "Editar Producto",
+                                    new SimplePopupBorderOption()
+                                            .setRoundBorder(30) // Esquinas redondeadas con un radio de 30 píxeles
+                                            .setWidth(1000) // Cambia el ancho según sea necesario
+                                            .useScroll(), // Habilitar desplazamiento si es necesario
+                                    actions,
+                                    (pc, i) -> {
+                                        if (i == 1) {
+                                            ProductoDAO productoDAO = new ProductoDAO();
+                                            Producto productoActualizado = crear.obtenerProducto();
+                                            System.out.println("Producto Actualizado: " + productoActualizado.toString());
+                                            List<ProductoInventario> variantesActualizadas = crear.obtenerVarianteProducto();
+                                            System.out.println("Variantes Obtenidas: " + variantesActualizadas.toString());
+                                            if (productoDAO.actualizarProductoConVariantes(productoActualizado, variantesActualizadas)) {
+                                                cargarProductos();
+                                                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Producto actualizado correctamente");
+                                            }
+                                            pc.closePopup();
+                                        } else {
+                                            pc.closePopup();
+                                        }
+                                    }),
+                            option
+                    );
+                }
+            });
             cartaProductosMan.setPreferredSize(new java.awt.Dimension(300, 500));
             contenedor.add(cartaProductosMan);
         });

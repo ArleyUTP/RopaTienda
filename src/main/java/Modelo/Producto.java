@@ -77,5 +77,10 @@ public class Producto {
     public void setFotoPrincipal(Perfil fotoPrincipal) {
         this.fotoPrincipal = fotoPrincipal;
     }
+
+    @Override
+    public String toString() {
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", categoria=" + categoria + ", precioCompra=" + precioCompra + ", precioVenta=" + precioVenta + ", estadoPromocion=" + estadoPromocion + ", fotoPrincipal=" + fotoPrincipal + '}';
+    }
     
 }
