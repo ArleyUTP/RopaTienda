@@ -1,6 +1,7 @@
 package Vista_Productos;
 
 import Modelo.Producto;
+import Modelo.ProductoInventario;
 import Persistencia.ProductoDAO;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -169,6 +170,12 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
                         actions,
                         (pc, i) -> {
                             if (i == 1) {
+                                ProductoDAO productoDAO = new ProductoDAO();
+                                Producto producto = crear.obtenerProducto();
+                                List<ProductoInventario> variantes = crear.obtenerVarianteProducto();
+                                if (productoDAO.crearProductoConVariantes(producto, variantes)) {
+                                    Notifications.getInstance().show(Notifications.Type.INFO, "Producto Creado Correctamente");
+                                }
                                 pc.closePopup();
                                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado Correctamente");
                             } else {

@@ -27,7 +27,9 @@ CREATE TABLE Producto(
 	categoria_id BIGINT FOREIGN KEY REFERENCES Categoria(id)
 	ON DELETE CASCADE,
 	precio_compra DECIMAL(10,2) NOT NULL,
-	precio_venta DECIMAL(10,2) NOT NULL
+	precio_venta DECIMAL(10,2) NOT NULL,
+	foto_pricipal VARBINARY(MAX),
+	estado_promocion BIT DEFAULT 0,
 );
 
 ALTER PROCEDURE SP_ImagenesPrueba
@@ -118,6 +120,12 @@ CREATE TABLE Inventario(
 	ON DELETE CASCADE,
 	cantidad INT NOT NULL,
 );
+CREATE TABLE FotosInventario (
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
+    inventario_id BIGINT FOREIGN KEY REFERENCES Inventario(id) ON DELETE CASCADE,
+    foto VARBINARY(MAX) NOT NULL,
+);
+
 -- Insertar productos en el inventario con tallas y colores
 INSERT INTO Inventario (producto_id, talla_id, color_id, cantidad) VALUES
 (1, 2, 1, 10),  -- Camisa Polo (S, Rojo Mexicano)
@@ -249,3 +257,163 @@ BEGIN
       AND I.cantidad > 0;  -- Aseguramos que haya cantidad disponible
 END;
 
+
+DROP PROCEDURE SP_CrearProductoConVariantes
+    @nombre NVARCHAR(255),
+    @descripcion NVARCHAR(MAX),
+    @categoria_id BIGINT,
+    @precio_compra DECIMAL(10,2),
+    @precio_venta DECIMAL(10,2),
+    @foto_principal VARBINARY(MAX),
+    @estado_promocion BIT,
+    @variantes NVARCHAR(MAX) -- JSON con las variantes
+AS
+BEGIN
+    BEGIN TRANSACTION;
+    BEGIN TRY
+        -- Insertar el producto en la tabla Producto
+        DECLARE @producto_id BIGINT;
+        INSERT INTO Producto (nombre, descripcion, categoria_id, precio_compra, precio_venta, foto_principal, estado_promocion)
+        VALUES (@nombre, @descripcion, @categoria_id, @precio_compra, @precio_venta, @foto_principal, @estado_promocion);
+
+        SET @producto_id = SCOPE_IDENTITY();
+
+        -- Procesar las variantes desde el JSON
+        DECLARE @jsonTabla TABLE (
+            talla_id BIGINT,
+            color_id BIGINT,
+            cantidad INT,
+            fotos NVARCHAR(MAX)
+        );
+
+        INSERT INTO @jsonTabla (talla_id, color_id, cantidad, fotos)
+        SELECT 
+            JSON_VALUE(value, '$.talla_id') AS talla_id,
+            JSON_VALUE(value, '$.color_id') AS color_id,
+            JSON_VALUE(value, '$.cantidad') AS cantidad,
+            JSON_VALUE(value, '$.fotos') AS fotos
+        FROM OPENJSON(@variantes);
+
+        -- Recorrer las variantes
+        DECLARE @talla_id BIGINT;
+        DECLARE @color_id BIGINT;
+        DECLARE @cantidad INT;
+        DECLARE @fotos NVARCHAR(MAX);
+        DECLARE @inventario_id BIGINT;
+
+        DECLARE variantes_cursor CURSOR FOR
+        SELECT talla_id, color_id, cantidad, fotos FROM @jsonTabla;
+
+        OPEN variantes_cursor;
+
+        FETCH NEXT FROM variantes_cursor INTO @talla_id, @color_id, @cantidad, @fotos;
+
+        WHILE @@FETCH_STATUS = 0
+        BEGIN
+            -- Insertar la variante en Inventario
+            INSERT INTO Inventario (producto_id, talla_id, color_id, cantidad)
+            VALUES (@producto_id, @talla_id, @color_id, @cantidad);
+
+            SET @inventario_id = SCOPE_IDENTITY();
+
+            -- Procesar las fotos asociadas en formato Base64
+            DECLARE @jsonFotos TABLE (fotoBase64 NVARCHAR(MAX));
+
+            INSERT INTO @jsonFotos (fotoBase64)
+            SELECT value
+            FROM OPENJSON(@fotos);
+
+            DECLARE @fotoBase64 NVARCHAR(MAX);
+            DECLARE @foto VARBINARY(MAX);
+
+            DECLARE fotos_cursor CURSOR FOR
+            SELECT fotoBase64 FROM @jsonFotos;
+
+            OPEN fotos_cursor;
+
+            FETCH NEXT FROM fotos_cursor INTO @fotoBase64;
+
+            WHILE @@FETCH_STATUS = 0
+            BEGIN
+                -- Convertir Base64 a VARBINARY
+                SET @foto = CAST('' AS XML).value('xs:base64Binary(sql:variable("@fotoBase64"))', 'VARBINARY(MAX)');
+
+                -- Insertar la foto en FotosInventario
+                INSERT INTO FotosInventario (inventario_id, foto)
+                VALUES (@inventario_id, @foto);
+
+                FETCH NEXT FROM fotos_cursor INTO @fotoBase64;
+            END;
+
+            CLOSE fotos_cursor;
+            DEALLOCATE fotos_cursor;
+
+            FETCH NEXT FROM variantes_cursor INTO @talla_id, @color_id, @cantidad, @fotos;
+        END;
+
+        CLOSE variantes_cursor;
+        DEALLOCATE variantes_cursor;
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END;
+
+
+CREATE PROCEDURE [dbo].[SP_CrearProductoConVariantes]
+    @nombre NVARCHAR(255),
+    @descripcion NVARCHAR(MAX),
+    @categoria_id BIGINT,
+    @precio_compra DECIMAL(10, 2),
+    @precio_venta DECIMAL(10, 2),
+    @foto_principal VARBINARY(MAX),
+    @estado_promocion BIT,
+    @producto_id BIGINT OUTPUT -- Parámetro de salida
+AS
+BEGIN
+    BEGIN TRY
+        INSERT INTO Producto (nombre, descripcion, categoria_id, precio_compra, precio_venta, foto_principal, estado_promocion)
+        VALUES (@nombre, @descripcion, @categoria_id, @precio_compra, @precio_venta, @foto_principal, @estado_promocion);
+
+        SET @producto_id = SCOPE_IDENTITY(); -- Devuelve el ID insertado
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END;
+
+CREATE PROCEDURE [dbo].[SP_CrearVariantes]
+    @producto_id BIGINT,
+    @talla_id BIGINT,
+    @color_id BIGINT,
+    @cantidad INT,
+    @inventario_id BIGINT OUTPUT -- Parámetro de salida
+AS
+BEGIN
+    BEGIN TRY
+        INSERT INTO Inventario (producto_id, talla_id, color_id, cantidad)
+        VALUES (@producto_id, @talla_id, @color_id, @cantidad);
+
+        SET @inventario_id = SCOPE_IDENTITY(); -- Devuelve el ID de la variante insertada
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END;
+
+CREATE PROCEDURE [dbo].[SP_CrearImagenesInventario]
+    @inventario_id BIGINT,
+    @foto VARBINARY(MAX)
+AS
+BEGIN
+    BEGIN TRY
+        INSERT INTO FotosInventario (inventario_id, foto)
+        VALUES (@inventario_id, @foto);
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+END;

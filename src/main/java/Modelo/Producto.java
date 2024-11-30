@@ -5,7 +5,7 @@ public class Producto {
     private int id;
     private String nombre;
     private String descripcion;
-    private int idCategoria;
+    private Categoria categoria;
     private double precioCompra;
     private double precioVenta;
     private boolean estadoPromocion;
@@ -38,12 +38,12 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
-    public int getIdCategoria() {
-        return idCategoria;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public double getPrecioCompra() {
@@ -62,17 +62,6 @@ public class Producto {
         this.precioVenta = precioVenta;
     }
 
-    public Producto(int id, String nombre, String descripcion, int idCategoria, double precioCompra, double precioVenta, boolean estadoPromocion, Perfil fotoPrincipal) {
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.idCategoria = idCategoria;
-        this.precioCompra = precioCompra;
-        this.precioVenta = precioVenta;
-        this.estadoPromocion = estadoPromocion;
-        this.fotoPrincipal = fotoPrincipal;
-    }
-
     public boolean isEstadoPromocion() {
         return estadoPromocion;
     }
@@ -80,7 +69,7 @@ public class Producto {
     public void setEstadoPromocion(boolean estadoPromocion) {
         this.estadoPromocion = estadoPromocion;
     }
-    
+
     public Perfil getFotoPrincipal() {
         return fotoPrincipal;
     }
@@ -88,5 +77,5 @@ public class Producto {
     public void setFotoPrincipal(Perfil fotoPrincipal) {
         this.fotoPrincipal = fotoPrincipal;
     }
-
+    
 }

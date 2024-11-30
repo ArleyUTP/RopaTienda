@@ -1,25 +1,41 @@
 package Vista_Productos;
 
+import Modelo.Categoria;
 import Modelo.ColorRopa;
+import Modelo.Perfil;
+import Modelo.Producto;
+import Modelo.ProductoInventario;
 import Modelo.Talla;
+import Persistencia.CategoriaDAO;
 import Vista_Productos.componentes.ImageTableListRenderer;
 import com.formdev.flatlaf.FlatClientProperties;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import jnafilechooser.api.JnaFileChooser;
 import raven.popup.DefaultOption;
 import raven.popup.GlassPanePopup;
 import raven.popup.component.SimplePopupBorder;
 import raven.toast.Notifications;
 
 public class Crear extends javax.swing.JPanel {
-
+    
+    Perfil fotoPrincipal;
+    
     public Crear() {
         initComponents();
         init();
         panelImagen.putClientProperty(FlatClientProperties.STYLE, ""
                 + "border:0,0,0,0,$Component.borderColor,,10;"
                 + "background:$TextArea.background");
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        List<Categoria> categorias = categoriaDAO.obtenerTodasLasCategorias();
+        categorias.forEach(categoria -> cbo_categoria.addItem(categoria));
     }
-
+    
     private void init() {
         tablaVariantes.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
                 + "height:30;"
@@ -27,7 +43,7 @@ public class Crear extends javax.swing.JPanel {
                 + "pressedBackground:null;"
                 + "separatorColor:$TableHeader.background;"
                 + "font:bold;");
-
+        
         tablaVariantes.putClientProperty(FlatClientProperties.STYLE, ""
                 + "rowHeight:100;"
                 + "showHorizontalLines:true;"
@@ -37,7 +53,7 @@ public class Crear extends javax.swing.JPanel {
                 + "selectionForeground:$Table.foreground;");
         tablaVariantes.getColumnModel().getColumn(3).setCellRenderer(new ImageTableListRenderer(tablaVariantes));
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -54,13 +70,7 @@ public class Crear extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         btn_inactivo = new javax.swing.JRadioButton();
         btn_activo = new javax.swing.JRadioButton();
-        panelImagen = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        contenedorColores = new javax.swing.JPanel();
-        imagen = new javaswingdev.picturebox.PictureBox();
-        jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaVariantes = new javax.swing.JTable();
@@ -69,6 +79,11 @@ public class Crear extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txt_descripcion = new javax.swing.JTextArea();
+        panelImagen = new javax.swing.JPanel();
+        imagen = new javaswingdev.picturebox.PictureBox();
+        jToolBar1 = new javax.swing.JToolBar();
+        btn_seleccionar = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         add(txt_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 6, 230, -1));
@@ -83,7 +98,7 @@ public class Crear extends javax.swing.JPanel {
 
         jLabel5.setText("Precio Compra");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 164, -1, -1));
-        add(txt_precioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 164, 230, 26));
+        add(txt_precioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, 230, 26));
 
         jLabel7.setText("Foto");
         add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 352, -1, -1));
@@ -100,57 +115,8 @@ public class Crear extends javax.swing.JPanel {
         btn_activo.setText("Activo");
         add(btn_activo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 242, -1, -1));
 
-        panelImagen.setLayout(new java.awt.BorderLayout());
-        add(panelImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 568, 230, -1));
-
         jLabel10.setText("Promoción");
         add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 242, -1, -1));
-
-        javax.swing.GroupLayout contenedorColoresLayout = new javax.swing.GroupLayout(contenedorColores);
-        contenedorColores.setLayout(contenedorColoresLayout);
-        contenedorColoresLayout.setHorizontalGroup(
-            contenedorColoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
-        );
-        contenedorColoresLayout.setVerticalGroup(
-            contenedorColoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
-        );
-
-        add(contenedorColores, new org.netbeans.lib.awtextra.AbsoluteConstraints(336, 406, -1, -1));
-
-        jToolBar1.setRollover(true);
-        jToolBar1.setOpaque(false);
-
-        jButton1.setText("Seleccionar");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton1);
-
-        jButton2.setText("Eliminar");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton2);
-
-        javax.swing.GroupLayout imagenLayout = new javax.swing.GroupLayout(imagen);
-        imagen.setLayout(imagenLayout);
-        imagenLayout.setHorizontalGroup(
-            imagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(imagenLayout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        imagenLayout.setVerticalGroup(
-            imagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(imagenLayout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 155, Short.MAX_VALUE))
-        );
-
-        add(imagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 369, 230, -1));
 
         jLabel15.setText("Variantes");
         add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, -1, -1));
@@ -160,7 +126,7 @@ public class Crear extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Talla", "Color", "Stock", "Foto"
+                "Talla", "Color", "Stock", "Fotos"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -194,11 +160,58 @@ public class Crear extends javax.swing.JPanel {
         txt_descripcion.setRows(5);
         jScrollPane1.setViewportView(txt_descripcion);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 230, -1));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 230, 80));
+
+        panelImagen.setLayout(new java.awt.BorderLayout());
+
+        jToolBar1.setRollover(true);
+        jToolBar1.setOpaque(false);
+
+        btn_seleccionar.setText("Seleccionar");
+        btn_seleccionar.setFocusable(false);
+        btn_seleccionar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_seleccionar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_seleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_seleccionarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_seleccionar);
+
+        jButton2.setText("Eliminar");
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton2);
+
+        javax.swing.GroupLayout imagenLayout = new javax.swing.GroupLayout(imagen);
+        imagen.setLayout(imagenLayout);
+        imagenLayout.setHorizontalGroup(
+            imagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, imagenLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        imagenLayout.setVerticalGroup(
+            imagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(imagenLayout.createSequentialGroup()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(172, Short.MAX_VALUE))
+        );
+
+        panelImagen.add(imagen, java.awt.BorderLayout.CENTER);
+
+        add(panelImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 356, 210, 210));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_crearVarianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearVarianteActionPerformed
-
+        
         CrearVariantes crearVariantes = new CrearVariantes();
         DefaultOption option = new DefaultOption() {
             @Override
@@ -226,6 +239,22 @@ public class Crear extends javax.swing.JPanel {
         );
     }//GEN-LAST:event_btn_crearVarianteActionPerformed
 
+    private void btn_seleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_seleccionarActionPerformed
+        // TODO add your handling code here:
+        JnaFileChooser ch = new JnaFileChooser();
+        ch.addFilter("Image", "png", "jpg", "jpeg");
+        boolean act = ch.showOpenDialog(SwingUtilities.getWindowAncestor(this));
+        if (act) {
+            File file = ch.getSelectedFile();
+            fotoPrincipal = new Perfil(file.getAbsolutePath(), file);
+            imagen.setImage(new ImageIcon(file.getAbsolutePath()));
+        }
+    }//GEN-LAST:event_btn_seleccionarActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        imagen.setImage(null);
+    }//GEN-LAST:event_jButton2ActionPerformed
+    
     private boolean esValorDuplicadoEnTabla(DefaultTableModel modelo, Object[] nuevosDatos) {
         int filas = modelo.getRowCount();
         for (int i = 0; i < filas; i++) {
@@ -244,12 +273,11 @@ public class Crear extends javax.swing.JPanel {
     private javax.swing.JRadioButton btn_activo;
     private Vista_Usuarios.table.ButtonAction btn_crearVariante;
     private javax.swing.JRadioButton btn_inactivo;
+    private javax.swing.JButton btn_seleccionar;
     private Vista_Usuarios.table.ButtonAction buttonAction1;
-    private javax.swing.JComboBox<String> cbo_categoria;
-    private javax.swing.JPanel contenedorColores;
+    private javax.swing.JComboBox<Categoria> cbo_categoria;
     private javax.swing.ButtonGroup grupoEstadoPromocion;
     private javaswingdev.picturebox.PictureBox imagen;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -269,4 +297,69 @@ public class Crear extends javax.swing.JPanel {
     private javax.swing.JTextField txt_nombre;
     private javax.swing.JFormattedTextField txt_precioCompra;
     // End of variables declaration//GEN-END:variables
+
+    public Producto obtenerProducto() {
+        String nombre = txt_nombre.getText();
+        String descripcon = txt_descripcion.getText();
+        double precioCompra = Double.parseDouble(txt_precioCompra.getText());
+        double precioVenta = Double.parseDouble(txt_PrecioVenta.getText());
+        boolean estadoPromocion = btn_activo.isSelected();
+        Categoria categoria = (Categoria) cbo_categoria.getSelectedItem();
+        Producto producto = new Producto();
+        producto.setNombre(nombre);
+        producto.setDescripcion(descripcon);
+        producto.setCategoria(categoria);
+        producto.setPrecioCompra(precioCompra);
+        producto.setPrecioVenta(precioVenta);
+        producto.setEstadoPromocion(estadoPromocion);
+        if (fotoPrincipal != null) {
+            producto.setFotoPrincipal(fotoPrincipal);
+        }
+        return producto;
+    }
+    
+    public List<ProductoInventario> obtenerVarianteProducto() {
+        List<ProductoInventario> variantes = new ArrayList<>();
+        DefaultTableModel model = (DefaultTableModel) tablaVariantes.getModel();
+
+        // Verificar si la tabla tiene datos
+        if (model.getRowCount() == 0) {
+            return variantes; // Retorna una lista vacía si no hay filas
+        }
+
+        // Recorrer cada fila
+        for (int i = 0; i < model.getRowCount(); i++) {
+            ProductoInventario inventario = new ProductoInventario();
+            
+            Talla talla = (Talla) model.getValueAt(i, 0); // Columna Talla
+            ColorRopa color = (ColorRopa) model.getValueAt(i, 1); // Columna Color
+            int stock = (int) model.getValueAt(i, 2); // Columna Stock
+            List<Perfil> fotos = (List<Perfil>) model.getValueAt(i, 3); // Columna Fotos
+
+            // Asignar valores al inventario
+            inventario.setTalla(talla);
+            inventario.setColorRopa(color);
+            inventario.setStock(stock);
+            inventario.setFotos(fotos);
+            // Agregar a la lista
+            variantes.add(inventario);
+        }
+        return variantes;
+    }
+    public void cargarDatos(Producto producto){
+        txt_nombre.setText(producto.getNombre());
+        cbo_categoria.setSelectedItem(producto.getCategoria());
+        txt_precioCompra.setText(String.valueOf(producto.getPrecioCompra()));
+        txt_PrecioVenta.setText(String.valueOf(producto.getPrecioVenta()));
+        fotoPrincipal = producto.getFotoPrincipal();
+        if (fotoPrincipal!= null) {
+            imagen.setImage(fotoPrincipal.getIcon());
+        }else{
+            imagen.setImage(null);
+        }
+    }
+    
+    public void cargarVariantes(List<ProductoInventario> variantes){
+        
+    }
 }

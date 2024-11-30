@@ -2,10 +2,19 @@ package Vista_Productos;
 
 import Modelo.ImageResizer;
 import Modelo.Producto;
+import Modelo.ProductoInventario;
 import Persistencia.CategoriaDAO;
+import Persistencia.ProductoDAO;
 import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.Dimension;
+import java.util.List;
 import javaswingdev.picturebox.PictureBox.BoxFit;
 import javax.swing.Icon;
+import raven.popup.DefaultOption;
+import raven.popup.GlassPanePopup;
+import raven.popup.component.SimplePopupBorder;
+import raven.popup.component.SimplePopupBorderOption;
+import raven.toast.Notifications;
 
 public class CartaProductosMan extends javax.swing.JPanel {
 
@@ -128,7 +137,34 @@ public class CartaProductosMan extends javax.swing.JPanel {
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
 
+        Vista_Productos.Crear crear = new Crear();
+        crear.setPreferredSize(new Dimension(100, 574)); // Cambia el tamaño según sea necesario
 
+        DefaultOption option = new DefaultOption() {
+            @Override
+            public boolean closeWhenClickOutside() {
+                return true;
+            }
+        };
+        String actions[] = new String[]{"Cancelar", "Guardar"};
+
+        GlassPanePopup.showPopup(
+                new SimplePopupBorder(crear, "Crear Producto",
+                        new SimplePopupBorderOption()
+                                .setRoundBorder(30) // Esquinas redondeadas con un radio de 30 píxeles
+                                .setWidth(1000) // Cambia el ancho según sea necesario
+                                .useScroll(), // Habilitar desplazamiento si es necesario
+                        actions,
+                        (pc, i) -> {
+                            if (i == 1) {
+                                pc.closePopup();
+                                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Usuario creado Correctamente");
+                            } else {
+                                pc.closePopup();
+                            }
+                        }),
+                option
+        );
     }//GEN-LAST:event_formMouseClicked
 
 

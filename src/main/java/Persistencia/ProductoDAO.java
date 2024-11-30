@@ -4,8 +4,12 @@ import java.sql.*;
 import java.util.*;
 
 import Abstrac.DAO;
+import Modelo.Categoria;
 import Modelo.Perfil;
 import Modelo.Producto;
+import Modelo.ProductoInventario;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -14,12 +18,12 @@ import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.Thumbnails;
 
 public class ProductoDAO extends DAO<Producto> {
-    
+
     public List<Producto> obtenerTodosLosProductosDisponibles() {
         List<Producto> productos = listarTodo("SP_ObtenerProDisponibles");
         return productos;
     }
-    
+
     @Override
     public Producto parsear(ResultSet rs) {
         Producto producto = new Producto();
@@ -27,7 +31,9 @@ public class ProductoDAO extends DAO<Producto> {
             producto.setId(rs.getInt("id"));
             producto.setNombre(rs.getString("nombre"));
             producto.setDescripcion(rs.getString("descripcion"));
-            producto.setIdCategoria(rs.getInt("categoria_id"));
+            Categoria categoria = new Categoria();
+            producto.setCategoria(categoria);
+            producto.getCategoria().setId(rs.getInt("categoria_id"));
             producto.setPrecioCompra(rs.getDouble("precio_compra"));
             producto.setPrecioVenta(rs.getDouble("precio_venta"));
             Perfil perfil = new Perfil(rs.getBytes("Foto_Principal"));
@@ -39,11 +45,77 @@ public class ProductoDAO extends DAO<Producto> {
         return producto;
     }
 
+    public boolean crearProductoConVariantes(Producto producto, List<ProductoInventario> variantes) {
+        String procedimientoSQLProducto = "EXEC SP_CrearProductoConVariantes ?, ?, ?, ?, ?, ?, ?, ?";
+        String procedimientoSQLVariantes = "EXEC SP_CrearVariantes ?, ?, ?, ?, ?";
+        String procedimientoSQLImagenes = "EXEC SP_CrearImagenesInventario ?, ?";
+
+        try (Connection con = getconection()) {
+            con.setAutoCommit(false); // Iniciar transacción
+
+            // Inserta el producto y obtiene el ID de salida
+            int idProductoIngresado;
+            try (CallableStatement cs = con.prepareCall(procedimientoSQLProducto)) {
+                cs.setString(1, producto.getNombre());
+                cs.setString(2, producto.getDescripcion());
+                cs.setLong(3, producto.getCategoria().getId());
+                cs.setDouble(4, producto.getPrecioCompra());
+                cs.setDouble(5, producto.getPrecioVenta());
+                cs.setBytes(6, producto.getFotoPrincipal() != null ? producto.getFotoPrincipal().getBytes() : null);
+                cs.setBoolean(7, producto.isEstadoPromocion());
+                cs.registerOutParameter(8, java.sql.Types.BIGINT); // Registro del parámetro de salida
+                cs.executeUpdate();
+                idProductoIngresado = cs.getInt(8); // Obtener el ID de salida
+            }
+
+            // Inserta las variantes y obtiene sus IDs en paralelo
+            variantes.parallelStream().forEach(variante -> {
+                try (CallableStatement cs2 = con.prepareCall(procedimientoSQLVariantes)) {
+                    cs2.setInt(1, idProductoIngresado);
+                    cs2.setInt(2, variante.getTalla().getId());
+                    cs2.setInt(3, variante.getColorRopa().getId());
+                    cs2.setInt(4, variante.getStock());
+                    cs2.registerOutParameter(5, java.sql.Types.BIGINT); // Registro del parámetro de salida
+                    cs2.executeUpdate();
+                    int idVarianteIngresada = cs2.getInt(5); // Obtener el ID de salida
+
+                    // Inserta las fotos de la variante en paralelo
+                    variante.getFotos().parallelStream().forEach(foto -> {
+                        try (CallableStatement cs3 = con.prepareCall(procedimientoSQLImagenes)) {
+                            byte[] imgBytes = foto.getBytes();
+                            cs3.setInt(1, idVarianteIngresada);
+                            cs3.setBytes(2, imgBytes);
+                            cs3.executeUpdate();
+                        } catch (SQLException e) {
+                            e.printStackTrace(); // Manejo de errores individual para cada foto
+                        }
+                    });
+                } catch (SQLException e) {
+                    e.printStackTrace(); // Manejo de errores individual para cada variante
+                }
+            });
+
+            con.commit(); // Commit de la transacción si todo salió bien
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try (Connection con = getconection()) {
+                if (con != null) {
+                    con.rollback(); // Rollback en caso de error
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            return false;
+        }
+    }
+
     public List<Producto> obtenerTodosLosProductos() {
         List<Producto> productos = listarTodo("SP_ObtenerTodosLosProductos");
         return productos;
     }
-    
+
     private byte[] getByteImagen(File file) throws IOException {
         BufferedImage imagen = Thumbnails.of(file)
                 .size(600, 600) // Ajustar a un tamaño moderado

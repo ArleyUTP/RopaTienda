@@ -100,6 +100,7 @@ Vista_Orden\CartaProductos$1.class
 Vista_Orden\Productos_Detalles$3.class
 Vista_Usuarios\Crear$11.class
 Persistencia\MarcaDAO.class
+Vista_Productos\Crear$4.class
 Vista_Usuarios\Man_Usuarios$5.class
 Persistencia\UsuarioDAO.class
 Abstrac\pruevba.class
@@ -114,9 +115,11 @@ Vista_Productos\CartaProductosMan.class
 Componentes\PanelLogin$4.class
 Vista_Orden\Colores$1.class
 Vista_Orden\Orden.class
+Vista\Vista_EnvioCorreo$1.class
 Modelo\ProductoInventario.class
 Vista_Productos\CartaProductosMan$1.class
 Vista_Usuarios\Man_Usuarios$4.class
+Vista_Productos\Crear$5.class
 Vista_Usuarios\table\ButtonAction.class
 Modelo\Inventario.class
 Vista_Usuarios\Crear$2.class
@@ -158,6 +161,7 @@ drawer\Menu$2.class
 Vista_Productos\coloas$1.class
 Vista_Usuarios\Man_Usuarios$7.class
 Productos\Producto.class
+Vista\Vista_EnvioCorreo$2.class
 Vista_Orden\Productos_Detalles$2.class
 Vista_Usuarios\table\ProfileTableRenderer.class
 Vista_Usuarios\Crear$4.class
@@ -167,8 +171,10 @@ Componentes\EncabezadoSuperiorMenu.class
 Vista_Orden\CartaProductos$2.class
 Vista_Orden\Productos_Detalles$1.class
 Modelo\Encriptar.class
+Vista\Vista_EnvioCorreo.class
 Vista_Productos\Mantenimiento_Productos$2.class
 Vista_Usuarios\table\SuperEllipse2D.class
 Vista_Usuarios\Crear$10.class
 Vista_Usuarios\Crear$5.class
+Vista\Vista_EnvioCorreo$3.class
 Componentes\CarritoOfer_Item.class

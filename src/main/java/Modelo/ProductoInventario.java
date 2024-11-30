@@ -1,54 +1,65 @@
 package Modelo;
 
+import java.util.List;
+
 public class ProductoInventario {
 
-    private int id;
-    private int idProducto;
-    private int idTalla;
-    private int idColor;
-    private int cantidad;
+    private int idVariante;
+    private Producto producto;
+    private Talla talla;
+    private ColorRopa colorRopa;
+    private int stock;
+    private List<Perfil> fotos;
 
     public ProductoInventario() {
     }
 
-    public int getId() {
-        return id;
+    public int getIdVariante() {
+        return idVariante;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdVariante(int idVariante) {
+        this.idVariante = idVariante;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public int getIdTalla() {
-        return idTalla;
+    public Talla getTalla() {
+        return talla;
     }
 
-    public void setIdTalla(int idTalla) {
-        this.idTalla = idTalla;
+    public void setTalla(Talla talla) {
+        this.talla = talla;
     }
 
-    public int getIdColor() {
-        return idColor;
+    public ColorRopa getColorRopa() {
+        return colorRopa;
     }
 
-    public void setIdColor(int idColor) {
-        this.idColor = idColor;
+    public void setColorRopa(ColorRopa colorRopa) {
+        this.colorRopa = colorRopa;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public int getStock() {
+        return stock;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public List<Perfil> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<Perfil> fotos) {
+        this.fotos = fotos;
     }
 
 }
