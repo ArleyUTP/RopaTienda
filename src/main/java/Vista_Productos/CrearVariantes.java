@@ -2,6 +2,7 @@ package Vista_Productos;
 
 import Modelo.*;
 import Persistencia.ColorDAO;
+import Persistencia.FotosInventarioDAO;
 import Persistencia.TallaDAO;
 import Vista_Productos.componentes.ImageListRenderer;
 import java.io.File;
@@ -16,14 +17,18 @@ import raven.toast.Notifications;
 
 public class CrearVariantes extends javax.swing.JPanel {
 
+    private ProductoInventario productoInventarioCargado;
     private List<Perfil> imagenesVariante;
     private Perfil perfilCapturado;
+    private DefaultListModel<Perfil> modeloImagenes;
 
     public CrearVariantes() {
         initComponents();
         this.imagenesVariante = new ArrayList<>();
+        this.modeloImagenes = new DefaultListModel<>(); // Se inicializa un único modelo
+        listaDeImagenes.setModel(modeloImagenes); // Vincula el modelo con el JList
+        listaDeImagenes.setCellRenderer(new ImageListRenderer(listaDeImagenes)); // Renderizado personalizado
         llenarListas();
-        listaDeImagenes.setCellRenderer(new ImageListRenderer(listaDeImagenes));
     }
 
     private void llenarListas() {
@@ -36,11 +41,13 @@ public class CrearVariantes extends javax.swing.JPanel {
     }
 
     public Object[] obtenerDatos() {
+        int idvariante = productoInventarioCargado != null ? productoInventarioCargado.getIdVariante() : 0;
         Talla tallaSeleccionada = (Talla) cbo_tallas.getSelectedItem();
         ColorRopa colorSeleccionado = (ColorRopa) cbo_colores.getSelectedItem();
         int cantidadSeleccionada = (int) cantidad.getValue();
 
         return new Object[]{
+            idvariante,
             tallaSeleccionada,
             colorSeleccionado,
             cantidadSeleccionada,
@@ -50,12 +57,31 @@ public class CrearVariantes extends javax.swing.JPanel {
 
     private void cargarListaDeImagenes() {
         DefaultListModel<Perfil> modelo = new DefaultListModel<>();
-        if (imagenesVariante != null) {
+
+        if (productoInventarioCargado != null) {
+            // Si el productoInventarioCargado no es null, cargar imágenes desde la base de datos
+            FotosInventarioDAO fotosInventarioDAO = new FotosInventarioDAO();
+            List<FotosInventario> fotosInventarios = fotosInventarioDAO.obtenerFotosInventarioPorIdInventario(productoInventarioCargado);
+
+            if (!fotosInventarios.isEmpty()) {
+                imagenesVariante.clear(); // Limpia la lista local antes de agregar nuevas imágenes
+                fotosInventarios.forEach(fotoinventario -> {
+                    Perfil imagen_a_cargar = fotoinventario.getImagen();
+                    imagenesVariante.add(imagen_a_cargar); // Actualiza la lista local
+                    modelo.addElement(imagen_a_cargar); // Actualiza el modelo del JList
+                });
+            } else {
+                System.out.println("No se encontraron imágenes en la base de datos para el producto cargado.");
+            }
+        } else if (imagenesVariante != null) {
+            // Si no hay producto cargado, utilizar la lista local de imágenes (imagenesVariante)
             imagenesVariante.forEach(modelo::addElement);
-            listaDeImagenes.setModel(modelo);
         } else {
-            System.out.println("La lista de imagenes variante esta vacia");
+            System.out.println("La lista de imágenes variante está vacía.");
         }
+
+        // Establecer el modelo actualizado en la lista
+        listaDeImagenes.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -199,7 +225,7 @@ public class CrearVariantes extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -258,29 +284,37 @@ public class CrearVariantes extends javax.swing.JPanel {
         cargarListaDeImagenes();
     }
     private void btn_eliminarImagenListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarImagenListaActionPerformed
-
         Perfil fotoSeleccionada = (Perfil) listaDeImagenes.getSelectedValue();
-        if (imagenesVariante != null) {
-            imagenesVariante.remove(fotoSeleccionada);
-            cargarListaDeImagenes();
+        if (fotoSeleccionada == null) {
+            Notifications.getInstance().show(Notifications.Type.WARNING, "Seleccione una imagen para eliminar.");
+            return;
+        }
+        if (productoInventarioCargado != null) {
+            FotosInventarioDAO fotosInventarioDAO = new FotosInventarioDAO();
+            if (fotosInventarioDAO.eliminarFotoInventario(fotoSeleccionada)) {
+                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Imagen eliminada correctamente");
+                imagenesVariante.remove(fotoSeleccionada);
+                cargarListaDeImagenes();
+            } else {
+                Notifications.getInstance().show(Notifications.Type.ERROR, "No se pudo eliminar la imagen.");
+            }
+        } else {
+            if (imagenesVariante.remove(fotoSeleccionada)) {
+                cargarListaDeImagenes();
+                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Imagen eliminada correctamente");
+            } else {
+                Notifications.getInstance().show(Notifications.Type.ERROR, "No se pudo eliminar la imagen.");
+            }
         }
     }//GEN-LAST:event_btn_eliminarImagenListaActionPerformed
 
     private void btn_actualizarImagenListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarImagenListaActionPerformed
         Perfil fotoSeleccionada = (Perfil) listaDeImagenes.getSelectedValue();
-
         if (fotoSeleccionada == null) {
-            Notifications.getInstance().show(Notifications.Type.WARNING, "Seleccione una imagen para actualizar");
+            Notifications.getInstance().show(Notifications.Type.WARNING, "Seleccione una imagen para actualizar.");
             return;
         }
 
-        // Validar si la lista de imágenes no es nula
-        if (imagenesVariante == null) {
-            Notifications.getInstance().show(Notifications.Type.ERROR, "La lista de imágenes no está inicializada");
-            return;
-        }
-
-        // Seleccionar una nueva imagen
         JnaFileChooser ch = new JnaFileChooser();
         ch.addFilter("Image", "png", "jpg", "jpeg");
         boolean act = ch.showOpenDialog(SwingUtilities.getWindowAncestor(this));
@@ -289,39 +323,57 @@ public class CrearVariantes extends javax.swing.JPanel {
             File file = ch.getSelectedFile();
             Perfil nuevaImagen = new Perfil(file.getAbsolutePath(), file);
 
-            // Verificación de duplicados con el método equals
-            boolean existeDuplicado = false;
-            for (Perfil perfil : imagenesVariante) {
-                if (nuevaImagen.equals(perfil)) {
-                    existeDuplicado = true;
-                    break;
-                }
-            }
-
-            if (existeDuplicado) {
+            // Verificar duplicados
+            if (imagenesVariante.stream().anyMatch(nuevaImagen::equals)) {
                 Notifications.getInstance().show(Notifications.Type.INFO, "La imagen ya existe en la lista");
                 return;
             }
-
-            // Reemplazar la imagen seleccionada con la nueva
             int index = imagenesVariante.indexOf(fotoSeleccionada);
+            System.out.println("indice de foto selecionada: " + index);
+            System.out.println("id de foto selecionada" + fotoSeleccionada.getId());
             if (index != -1) {
+                if (productoInventarioCargado != null) {
+                    FotosInventario fotosInventario = new FotosInventario();
+                    fotosInventario.setId(fotoSeleccionada.getId());
+                    fotosInventario.setIdInventario(productoInventarioCargado.getIdVariante());
+                    fotosInventario.setImagen(nuevaImagen);
+                    FotosInventarioDAO fotosInventarioDAO = new FotosInventarioDAO();
+                    if (fotosInventarioDAO.actualizarFotoInventario(fotosInventario)) {
+                        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Imagen actualizada en la base de datos.");
+                    } else {
+                        Notifications.getInstance().show(Notifications.Type.ERROR, "No se pudo actualizar la imagen en la base de datos.");
+                        return;
+                    }
+                }
+                // Actualizar en la lista local
                 imagenesVariante.set(index, nuevaImagen);
-                cargarListaDeImagenes(); // Actualizar el JList con las imágenes únicas
-                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Imagen actualizada correctamente");
+                cargarListaDeImagenes();
+                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Imagen actualizada correctamente.");
             } else {
-                Notifications.getInstance().show(Notifications.Type.ERROR, "No se pudo encontrar la imagen seleccionada en la lista");
+                Notifications.getInstance().show(Notifications.Type.ERROR, "No se pudo encontrar la imagen seleccionada en la lista.");
             }
         }
     }//GEN-LAST:event_btn_actualizarImagenListaActionPerformed
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-        if (perfilCapturado != null) {
-            agregar(perfilCapturado);
-            perfilCapturado = null; // Limpia el perfil capturado después de agregarlo.
-            imagen.setImage(null);
+        if (productoInventarioCargado != null) {
+            if (perfilCapturado != null) {
+                FotosInventarioDAO fotosInventarioDAO = new FotosInventarioDAO();
+                FotosInventario fotosInventario = new FotosInventario();
+                fotosInventario.setIdInventario(productoInventarioCargado.getIdVariante());
+                fotosInventario.setImagen(perfilCapturado);
+                if (fotosInventarioDAO.crearFotoInventario(fotosInventario)) {
+                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "Imagen Agregada Correctamente");
+                }
+                agregar(perfilCapturado);
+            }
+        } else {
+            if (perfilCapturado != null) {
+                agregar(perfilCapturado);
+                perfilCapturado = null; // Limpia el perfil capturado después de agregarlo.
+                imagen.setImage(null);
+            }
         }
-
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
@@ -351,11 +403,35 @@ public class CrearVariantes extends javax.swing.JPanel {
     private javax.swing.JPanel panelImagen;
     // End of variables declaration//GEN-END:variables
 
-    public void cargarDatos(Talla talla, ColorRopa colorRopa, int cantidad, List<Perfil> imagenes) {
-        cbo_tallas.setSelectedItem(talla);
-        cbo_colores.setSelectedItem(colorRopa);
-        this.cantidad.setValue(cantidad);
-        this.imagenesVariante = imagenes;
-        cargarListaDeImagenes();
+    public void cargarDatos(ProductoInventario productoInventario) {
+        this.productoInventarioCargado = productoInventario;
+        cbo_tallas.setSelectedItem(productoInventario.getTalla());
+        cbo_colores.setSelectedItem(productoInventario.getColorRopa());
+        this.cantidad.setValue(productoInventario.getStock());
+
+        DefaultListModel<Perfil> modelo = new DefaultListModel<>();
+        listaDeImagenes.setModel(modelo); // Limpia la lista de imágenes previamente cargadas
+
+        if (productoInventarioCargado != null) {
+            try {
+                FotosInventarioDAO fotosInventarioDAO = new FotosInventarioDAO();
+                List<FotosInventario> fotosInventarios = fotosInventarioDAO.obtenerFotosInventarioPorIdInventario(productoInventario);
+
+                if (fotosInventarios != null && !fotosInventarios.isEmpty()) {
+                    imagenesVariante.clear(); // Limpia la lista local
+                    fotosInventarios.forEach(fotoInventario -> {
+                        Perfil imagen_a_cargar = fotoInventario.getImagen();
+                        imagenesVariante.add(imagen_a_cargar); // Actualiza la lista local
+                        modelo.addElement(imagen_a_cargar); // Actualiza el modelo del JList
+                    });
+                    listaDeImagenes.setModel(modelo);
+                } else {
+                    Notifications.getInstance().show(Notifications.Type.INFO, "No hay imágenes asociadas a este producto.");
+                }
+            } catch (Exception e) {
+                Notifications.getInstance().show(Notifications.Type.ERROR, "Error al cargar las imágenes: " + e.getMessage());
+            }
+        }
     }
+
 }

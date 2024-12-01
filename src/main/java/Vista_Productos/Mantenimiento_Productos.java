@@ -213,9 +213,6 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
                 public void mouseClicked(MouseEvent e) {
                     Vista_Productos.Crear crear = new Crear();
                     crear.cargarDatos(producto);
-                    ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
-                    List<ProductoInventario> variantes = productoInventarioDAO.obtenerVariantePorIdProducto(producto);
-                    crear.cargarVariantes(variantes);
                     crear.setPreferredSize(new Dimension(100, 574)); // Cambia el tamaño según sea necesario
                     DefaultOption option = new DefaultOption() {
                         @Override
@@ -239,7 +236,7 @@ public class Mantenimiento_Productos extends javax.swing.JPanel {
                                             System.out.println("Producto Actualizado: " + productoActualizado.toString());
                                             List<ProductoInventario> variantesActualizadas = crear.obtenerVarianteProducto();
                                             System.out.println("Variantes Obtenidas: " + variantesActualizadas.toString());
-                                            if (productoDAO.actualizarProductoConVariantes(productoActualizado, variantesActualizadas)) {
+                                            if (productoDAO.actualizarPrducto(productoActualizado)) {
                                                 cargarProductos();
                                                 Notifications.getInstance().show(Notifications.Type.SUCCESS, "Producto actualizado correctamente");
                                             }

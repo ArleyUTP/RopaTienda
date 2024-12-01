@@ -467,3 +467,20 @@ END;
 SELECT * FROM Producto
 SELECT* FROM Inventario
 SELECT * FROM FotosInventario
+
+CREATE PROCEDURE SP_CrearFotoInventario
+	@inventario_id BIGINT,
+	@foto VARBINARY(MAX)
+AS
+BEGIN
+	INSERT INTO FotosInventario(inventario_id,foto)
+	VALUES(@inventario_id,@foto)
+END
+
+CREATE PROCEDURE SP_EliminarFotoInventario
+	@id BIGINT
+AS
+BEGIN
+	DELETE FROM FotosInventario
+	WHERE id=@id;
+END

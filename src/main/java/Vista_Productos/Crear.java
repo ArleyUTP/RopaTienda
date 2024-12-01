@@ -7,6 +7,7 @@ import Modelo.Producto;
 import Modelo.ProductoInventario;
 import Modelo.Talla;
 import Persistencia.CategoriaDAO;
+import Persistencia.ProductoInventarioDAO;
 import Vista_Productos.componentes.ImageTableListRenderer;
 import com.formdev.flatlaf.FlatClientProperties;
 import java.io.File;
@@ -23,10 +24,10 @@ import raven.popup.component.SimplePopupBorderOption;
 import raven.toast.Notifications;
 
 public class Crear extends javax.swing.JPanel {
-
-    private int idproducto;
+    
+    private Producto productoCargado;
     Perfil fotoPrincipal;
-
+    
     public Crear() {
         initComponents();
         init();
@@ -37,8 +38,11 @@ public class Crear extends javax.swing.JPanel {
         List<Categoria> categorias = categoriaDAO.obtenerTodasLasCategorias();
         categorias.forEach(categoria -> cbo_categoria.addItem(categoria));
         this.btn_inactivo.setSelected(true);
+        tablaVariantes.getColumnModel().getColumn(0).setMinWidth(0);
+        tablaVariantes.getColumnModel().getColumn(0).setMaxWidth(0);
+        tablaVariantes.getColumnModel().getColumn(0).setWidth(0);
     }
-
+    
     private void init() {
         tablaVariantes.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
                 + "height:30;"
@@ -46,7 +50,7 @@ public class Crear extends javax.swing.JPanel {
                 + "pressedBackground:null;"
                 + "separatorColor:$TableHeader.background;"
                 + "font:bold;");
-
+        
         tablaVariantes.putClientProperty(FlatClientProperties.STYLE, ""
                 + "rowHeight:100;"
                 + "showHorizontalLines:true;"
@@ -56,7 +60,7 @@ public class Crear extends javax.swing.JPanel {
                 + "selectionForeground:$Table.foreground;");
         tablaVariantes.getColumnModel().getColumn(4).setCellRenderer(new ImageTableListRenderer(tablaVariantes));
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -224,32 +228,69 @@ public class Crear extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_crearVarianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearVarianteActionPerformed
-
-        CrearVariantes crearVariantes = new CrearVariantes();
-        DefaultOption option = new DefaultOption() {
-            @Override
-            public boolean closeWhenClickOutside() {
-                return true;
-            }
-        };
-        String actions[] = new String[]{"Cancelar", "Guardar"};
-        GlassPanePopup.showPopup(
-                new SimplePopupBorder(crearVariantes, "Crear Usuario", actions, (pc, i) -> {
-                    if (i == 1) {
-                        DefaultTableModel model = (DefaultTableModel) tablaVariantes.getModel();
-                        Object[] nuevosDatos = crearVariantes.obtenerDatos();
-                        if (esValorDuplicadoEnTabla(model, nuevosDatos)) {
-                            Notifications.getInstance().show(Notifications.Type.ERROR, "Esta variante ya existe en la tabla");
+        
+        if (productoCargado != null) {
+            CrearVariantes crearVariantes = new CrearVariantes();
+            DefaultOption option = new DefaultOption() {
+                @Override
+                public boolean closeWhenClickOutside() {
+                    return true;
+                }
+            };
+            String actions[] = new String[]{"Cancelar", "Guardar"};
+            GlassPanePopup.showPopup(
+                    new SimplePopupBorder(crearVariantes, "Crear Producto", actions, (pc, i) -> {
+                        if (i == 1) {
+                            DefaultTableModel model = (DefaultTableModel) tablaVariantes.getModel();
+                            Object[] nuevosDatos = crearVariantes.obtenerDatos();
+                            if (esValorDuplicadoEnTabla(model, nuevosDatos)) {
+                                Notifications.getInstance().show(Notifications.Type.ERROR, "Esta variante ya existe en la tabla");
+                            } else {
+                                ProductoInventario productoInventario = new ProductoInventario();
+                                productoInventario.setProducto(productoCargado);
+                                productoInventario.setTalla((Talla) nuevosDatos[1]);
+                                productoInventario.setColorRopa((ColorRopa) nuevosDatos[2]);
+                                productoInventario.setStock((int) nuevosDatos[3]);
+                                productoInventario.setFotos((List<Perfil>) nuevosDatos[4]);
+                                ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
+                                productoInventarioDAO.crearProductoInventario(productoInventario);
+                                model.addRow(nuevosDatos);
+                                cargarVariantes();
+                                pc.closePopup();
+                            }
                         } else {
-                            model.addRow(nuevosDatos);
                             pc.closePopup();
                         }
-                    } else {
-                        pc.closePopup();
-                    }
-                }),
-                option
-        );
+                    }),
+                    option
+            );
+        } else {
+            CrearVariantes crearVariantes = new CrearVariantes();
+            DefaultOption option = new DefaultOption() {
+                @Override
+                public boolean closeWhenClickOutside() {
+                    return true;
+                }
+            };
+            String actions[] = new String[]{"Cancelar", "Guardar"};
+            GlassPanePopup.showPopup(
+                    new SimplePopupBorder(crearVariantes, "Crear Producto", actions, (pc, i) -> {
+                        if (i == 1) {
+                            DefaultTableModel model = (DefaultTableModel) tablaVariantes.getModel();
+                            Object[] nuevosDatos = crearVariantes.obtenerDatos();
+                            if (esValorDuplicadoEnTabla(model, nuevosDatos)) {
+                                Notifications.getInstance().show(Notifications.Type.ERROR, "Esta variante ya existe en la tabla");
+                            } else {
+                                model.addRow(nuevosDatos);
+                                pc.closePopup();
+                            }
+                        } else {
+                            pc.closePopup();
+                        }
+                    }),
+                    option
+            );
+        }
     }//GEN-LAST:event_btn_crearVarianteActionPerformed
 
     private void btn_seleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_seleccionarActionPerformed
@@ -280,19 +321,19 @@ public class Crear extends javax.swing.JPanel {
             Notifications.getInstance().show(Notifications.Type.WARNING, "Selecciona una variante.");
             return;
         }
-
-// Obtener datos de la fila seleccionada, incluido el idVariante
         int idVariante = (int) tablaVariantes.getValueAt(filaSeleccionada, 0); // Columna oculta del id
         Talla talla = (Talla) tablaVariantes.getValueAt(filaSeleccionada, 1);
         ColorRopa colorRopa = (ColorRopa) tablaVariantes.getValueAt(filaSeleccionada, 2);
         int cantidad = (int) tablaVariantes.getValueAt(filaSeleccionada, 3);
         List<Perfil> imagenes = (List<Perfil>) tablaVariantes.getValueAt(filaSeleccionada, 4);
-
-// Crear instancia de CrearVariantes y cargar datos
+        ProductoInventario productoInventario = new ProductoInventario();
+        productoInventario.setIdVariante(idVariante);
+        productoInventario.setTalla(talla);
+        productoInventario.setColorRopa(colorRopa);
+        productoInventario.setStock(cantidad);
+        productoInventario.setFotos(imagenes);
         CrearVariantes crearVariantes = new CrearVariantes();
-        crearVariantes.cargarDatos(talla, colorRopa, cantidad, imagenes);
-
-// Configuración del popup
+        crearVariantes.cargarDatos(productoInventario);
         DefaultOption option = new DefaultOption() {
             @Override
             public boolean closeWhenClickOutside() {
@@ -300,7 +341,7 @@ public class Crear extends javax.swing.JPanel {
             }
         };
         String actions[] = new String[]{"Cancelar", "Actualizar"};
-
+        
         GlassPanePopup.showPopup(
                 new SimplePopupBorder(crearVariantes, "Editar Variante",
                         new SimplePopupBorderOption()
@@ -313,14 +354,24 @@ public class Crear extends javax.swing.JPanel {
                                 Object[] datosActualizados = crearVariantes.obtenerDatos();
                                 // Actualizar la fila seleccionada en la tabla, manteniendo el idVariante
                                 DefaultTableModel modelo = (DefaultTableModel) tablaVariantes.getModel();
-                                modelo.setValueAt(idVariante, filaSeleccionada, 0); // Mantener el idVariante
-                                modelo.setValueAt(datosActualizados[0], filaSeleccionada, 1); // Talla
-                                modelo.setValueAt(datosActualizados[1], filaSeleccionada, 2); // Color
-                                modelo.setValueAt(datosActualizados[2], filaSeleccionada, 3); // Stock
-                                modelo.setValueAt(datosActualizados[3], filaSeleccionada, 4); // Fotos
-
+                                modelo.setValueAt(datosActualizados[0], filaSeleccionada, 0); // Mantener el idVariante
+                                modelo.setValueAt(datosActualizados[1], filaSeleccionada, 1); // Talla
+                                modelo.setValueAt(datosActualizados[2], filaSeleccionada, 2); // Color
+                                modelo.setValueAt(datosActualizados[3], filaSeleccionada, 3); // Stock
+                                modelo.setValueAt(datosActualizados[4], filaSeleccionada, 4); // Fotos
+                                ProductoInventario productoInventarioActualizado = new ProductoInventario();
+                                productoInventarioActualizado.setIdVariante((int) datosActualizados[0]);
+                                productoInventarioActualizado.setProducto(productoCargado);
+                                productoInventarioActualizado.setTalla((Talla) datosActualizados[1]);
+                                productoInventarioActualizado.setColorRopa((ColorRopa) datosActualizados[2]);
+                                productoInventarioActualizado.setStock((int) datosActualizados[3]);
+                                productoInventarioActualizado.setFotos((List<Perfil>) datosActualizados[4]);
+                                ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
+                                if (productoInventarioDAO.actualizarProductoInventario(productoInventarioActualizado)) {
+                                    Notifications.getInstance().show(Notifications.Type.SUCCESS, "Variante actualizada correctamente.");
+                                }
+                                cargarVariantes();
                                 pc.closePopup();
-                                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Variante actualizada correctamente.");
                             } else {
                                 pc.closePopup();
                             }
@@ -329,14 +380,14 @@ public class Crear extends javax.swing.JPanel {
         );
 
     }//GEN-LAST:event_tablaVariantesMouseClicked
-
+    
     private boolean esValorDuplicadoEnTabla(DefaultTableModel modelo, Object[] nuevosDatos) {
         int filas = modelo.getRowCount();
         for (int i = 0; i < filas; i++) {
             Talla tallaExistente = (Talla) modelo.getValueAt(i, 1);
             ColorRopa colorExistente = (ColorRopa) modelo.getValueAt(i, 2);
-            Talla tallaNueva = (Talla) nuevosDatos[0];
-            ColorRopa colorNuevo = (ColorRopa) nuevosDatos[1];
+            Talla tallaNueva = (Talla) nuevosDatos[1];
+            ColorRopa colorNuevo = (ColorRopa) nuevosDatos[2];
             if (tallaExistente.equals(tallaNueva) && colorExistente.equals(colorNuevo)) {
                 return true;
             }
@@ -381,7 +432,9 @@ public class Crear extends javax.swing.JPanel {
         boolean estadoPromocion = btn_activo.isSelected();
         Categoria categoria = (Categoria) cbo_categoria.getSelectedItem();
         Producto producto = new Producto();
-        producto.setId(idproducto);
+        if (productoCargado != null) {
+            producto.setId(productoCargado.getId());
+        }
         producto.setNombre(nombre);
         producto.setDescripcion(descripcon);
         producto.setCategoria(categoria);
@@ -393,7 +446,7 @@ public class Crear extends javax.swing.JPanel {
         }
         return producto;
     }
-
+    
     public List<ProductoInventario> obtenerVarianteProducto() {
         List<ProductoInventario> variantes = new ArrayList<>();
         DefaultTableModel model = (DefaultTableModel) tablaVariantes.getModel();
@@ -426,9 +479,9 @@ public class Crear extends javax.swing.JPanel {
         }
         return variantes;
     }
-
+    
     public void cargarDatos(Producto producto) {
-        this.idproducto = producto.getId();
+        this.productoCargado = producto;
         txt_nombre.setText(producto.getNombre());
         cbo_categoria.setSelectedItem(producto.getCategoria());
         txt_descripcion.setText(producto.getDescripcion());
@@ -440,12 +493,16 @@ public class Crear extends javax.swing.JPanel {
         } else {
             imagen.setImage(null);
         }
+        if (productoCargado != null) {
+            cargarVariantes();
+        }
     }
-
-    public void cargarVariantes(List<ProductoInventario> variantes) {
+    
+    public void cargarVariantes() {
+        ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
+        List<ProductoInventario> variantes = productoInventarioDAO.obtenerVariantePorIdProducto(productoCargado);
         DefaultTableModel modelo = (DefaultTableModel) tablaVariantes.getModel();
         modelo.setRowCount(0); // Limpiar la tabla antes de cargar nuevos datos
-
         // Agregar cada variante con su id (incluido pero oculto)
         variantes.stream().map(variante -> new Object[]{
             variante.getIdVariante(), // Columna oculta
@@ -454,13 +511,6 @@ public class Crear extends javax.swing.JPanel {
             variante.getStock(),
             variante.getFotos()
         }).forEach(modelo::addRow);
-
         tablaVariantes.setModel(modelo);
-
-        // Ocultar la columna del idVariante
-        tablaVariantes.getColumnModel().getColumn(0).setMinWidth(0);
-        tablaVariantes.getColumnModel().getColumn(0).setMaxWidth(0);
-        tablaVariantes.getColumnModel().getColumn(0).setWidth(0);
     }
-
 }

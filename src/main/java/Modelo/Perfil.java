@@ -74,12 +74,6 @@ public class Perfil {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        return hash;
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -87,8 +81,13 @@ public class Perfil {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        Perfil other = (Perfil) obj;
-        return Objects.equals(this.rutaAbsoluta, other.rutaAbsoluta);
+        Perfil perfil = (Perfil) obj;
+        return Objects.equals(id, perfil.id); // Usar el atributo único que identifica la foto
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); // Asegúrate de usar el mismo atributo único
     }
 
     private byte[] getByteImagen(File file) throws IOException {

@@ -111,67 +111,85 @@ public class ProductoDAO extends DAO<Producto> {
         }
     }
 
-    public boolean actualizarProductoConVariantes(Producto producto, List<ProductoInventario> variantes) {
+//    public boolean actualizarProductoConVariantes(Producto producto, List<ProductoInventario> variantes) {
+//        String procedimientoSQLProducto = "EXEC SP_ActualizarProducto ?, ?, ?, ?, ?, ?, ?, ?";
+//        String procedimientoSQLVariantes = "EXEC SP_ActualizarVariante ?, ?, ?, ?, ?";
+//        String procedimientoSQLFotos = "EXEC SP_ActualizarFotoInventario ?, ?, ?";
+//
+//        try (Connection con = getconection()) {
+//            con.setAutoCommit(false); // Iniciar transacción
+//
+//            try (CallableStatement cs = con.prepareCall(procedimientoSQLProducto)) {
+//                cs.setInt(1, producto.getId());
+//                cs.setString(2, producto.getNombre());
+//                cs.setString(3, producto.getDescripcion());
+//                cs.setInt(4, producto.getCategoria().getId());
+//                cs.setDouble(5, producto.getPrecioCompra());
+//                cs.setDouble(6, producto.getPrecioVenta());
+//                cs.setBytes(7, producto.getFotoPrincipal() != null ? producto.getFotoPrincipal().getBytes() : null);
+//                cs.setBoolean(8, producto.isEstadoPromocion());
+//                cs.executeUpdate();
+//            } catch (Exception e) {
+//                manejarError("Error al actualizar Producto", e);
+//            }
+//            // Actualizar las variantes y sus fotos
+//            variantes.forEach(variante -> {
+//                try (CallableStatement csVariante = con.prepareCall(procedimientoSQLVariantes)) {
+//                    csVariante.setInt(1, variante.getIdVariante());
+//                    System.out.println("El id variante es: " + variante.getIdVariante());
+//                    csVariante.setInt(2, producto.getId());
+//                    System.out.println("El id Producto es: " + producto.getId());
+//                    csVariante.setInt(3, variante.getTalla().getId());
+//                    csVariante.setInt(4, variante.getColorRopa().getId());
+//                    csVariante.setInt(5, variante.getStock());
+//                    csVariante.executeUpdate();
+//                } catch (SQLException e) {
+//                    throw new RuntimeException("Error al actualizar variante", e);
+//                }
+//
+//                // Actualizar las fotos de la variante
+//                variante.getFotos().forEach(foto -> {
+//                    try (CallableStatement csFoto = con.prepareCall(procedimientoSQLFotos)) {
+//                        csFoto.setInt(1, foto.getId());
+//                        csFoto.setInt(2, variante.getIdVariante());
+//                        csFoto.setBytes(3, foto.getBytes());
+//                        csFoto.executeUpdate();
+//                    } catch (SQLException e) {
+//                        e.printStackTrace();
+//                    }
+//                });
+//            });
+//
+//            con.commit(); // Commit de la transacción si todo salió bien
+//            return true;
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            try (Connection con = getconection()) {
+//                if (con != null) {
+//                    con.rollback(); // Rollback en caso de error
+//                }
+//            } catch (SQLException rollbackEx) {
+//                rollbackEx.printStackTrace();
+//            }
+//            return false;
+//        }
+//    }
+    public boolean actualizarPrducto(Producto producto) {
         String procedimientoSQLProducto = "EXEC SP_ActualizarProducto ?, ?, ?, ?, ?, ?, ?, ?";
-        String procedimientoSQLVariantes = "EXEC SP_ActualizarVariante ?, ?, ?, ?, ?";
-        String procedimientoSQLFotos = "EXEC SP_ActualizarFotoInventario ?, ?, ?";
-
-        try (Connection con = getconection()) {
-            con.setAutoCommit(false); // Iniciar transacción
-
-            try (CallableStatement cs = con.prepareCall(procedimientoSQLProducto)) {
-                cs.setInt(1, producto.getId());
-                cs.setString(2, producto.getNombre());
-                cs.setString(3, producto.getDescripcion());
-                cs.setInt(4, producto.getCategoria().getId());
-                cs.setDouble(5, producto.getPrecioCompra());
-                cs.setDouble(6, producto.getPrecioVenta());
-                cs.setBytes(7, producto.getFotoPrincipal() != null ? producto.getFotoPrincipal().getBytes() : null);
-                cs.setBoolean(8, producto.isEstadoPromocion());
-                cs.executeUpdate();
-            } catch (Exception e) {
-                manejarError("Error al actualizar Producto", e);
-            }
-            // Actualizar las variantes y sus fotos
-            variantes.forEach(variante -> {
-                try (CallableStatement csVariante = con.prepareCall(procedimientoSQLVariantes)) {
-                    csVariante.setInt(1, variante.getIdVariante());
-                    System.out.println("El id variante es: " + variante.getIdVariante());
-                    csVariante.setInt(2, producto.getId());
-                    System.out.println("El id Producto es: " + producto.getId());
-                    csVariante.setInt(3, variante.getTalla().getId());
-                    csVariante.setInt(4, variante.getColorRopa().getId());
-                    csVariante.setInt(5, variante.getStock());
-                    csVariante.executeUpdate();
-                } catch (SQLException e) {
-                    throw new RuntimeException("Error al actualizar variante", e);
-                }
-
-                // Actualizar las fotos de la variante
-                variante.getFotos().forEach(foto -> {
-                    try (CallableStatement csFoto = con.prepareCall(procedimientoSQLFotos)) {
-                        csFoto.setInt(1, foto.getId());
-                        csFoto.setInt(2, variante.getIdVariante());
-                        csFoto.setBytes(3, foto.getBytes());
-                        csFoto.executeUpdate();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });
-            });
-
-            con.commit(); // Commit de la transacción si todo salió bien
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall(procedimientoSQLProducto)) {
+            cs.setInt(1, producto.getId());
+            cs.setString(2, producto.getNombre());
+            cs.setString(3, producto.getDescripcion());
+            cs.setInt(4, producto.getCategoria().getId());
+            cs.setDouble(5, producto.getPrecioCompra());
+            cs.setDouble(6, producto.getPrecioVenta());
+            cs.setBytes(7, producto.getFotoPrincipal() != null ? producto.getFotoPrincipal().getBytes() : null);
+            cs.setBoolean(8, producto.isEstadoPromocion());
+            cs.executeUpdate();
             return true;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try (Connection con = getconection()) {
-                if (con != null) {
-                    con.rollback(); // Rollback en caso de error
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
+        } catch (Exception e) {
+            manejarError("Error al actualizar Producto", e);
             return false;
         }
     }

@@ -13,8 +13,44 @@ import Modelo.Perfil;
 import Modelo.Producto;
 import Modelo.ProductoInventario;
 import Modelo.Talla;
+import java.sql.SQLException;
 
 public class ProductoInventarioDAO extends DAO<ProductoInventario> {
+
+    public boolean crearProductoInventario(ProductoInventario productoInventario) {
+        String sql = "EXEC SP_CrearVariantes ?, ?, ?, ?, ?";
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall(sql)) {
+            cs.setInt(1, productoInventario.getProducto().getId());
+            cs.setInt(2, productoInventario.getTalla().getId());
+            cs.setInt(3, productoInventario.getColorRopa().getId());
+            cs.setInt(4, productoInventario.getStock());
+            cs.registerOutParameter(5, java.sql.Types.BIGINT); // Registro del parámetro de salida
+            cs.executeUpdate();
+            int idVarianteIngresada = cs.getInt(5);
+            FotosInventarioDAO fotosInventarioDAO = new FotosInventarioDAO();
+            fotosInventarioDAO.crearFotosInvetario(idVarianteIngresada, productoInventario.getFotos());
+            return true;
+        } catch (SQLException e) {
+            manejarError("Error al crear Variante", e);
+            return false;
+        }
+    }
+
+    public boolean actualizarProductoInventario(ProductoInventario productoInventario) {
+        String sql = "EXEC SP_ActualizarVariante ?, ?, ?, ?, ?";
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall(sql)) {
+            cs.setInt(1, productoInventario.getIdVariante());
+            cs.setInt(2, productoInventario.getProducto().getId());
+            cs.setInt(3, productoInventario.getTalla().getId());
+            cs.setInt(4, productoInventario.getColorRopa().getId());
+            cs.setInt(5, productoInventario.getStock());
+            cs.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            manejarError("Error al actualizar Producto Variante", e);
+            return false;
+        }
+    }
 
     public List<ProductoInventario> obtenerVariantePorIdProducto(Producto producto) {
         List<ProductoInventario> productosInventarios = new ArrayList<>();
