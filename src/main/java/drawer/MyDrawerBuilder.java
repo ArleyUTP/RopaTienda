@@ -18,17 +18,18 @@ import raven.drawer.component.menu.MenuValidation;
 import raven.drawer.component.menu.SimpleMenuOption;
 
 public class MyDrawerBuilder extends SimpleDrawerBuilder {
-
+    
     public Usuario usuario;
-    private JPanel contenedor;
-
-    public MyDrawerBuilder(JPanel contenedor) {
+//    private JPanel contenedor;
+    private Vista.ContedorDePaneles contenedor;
+    
+    public MyDrawerBuilder(Vista.ContedorDePaneles contenedor) {
         this.contenedor = contenedor;  // Inicialización del panel contenedor
     }
-
+    
     public MyDrawerBuilder() {
     }
-
+    
     @Override
     public void build(DrawerPanel drawerPanel) {
         super.build(drawerPanel);
@@ -54,12 +55,12 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
             footer.setBackground(new java.awt.Color(80, 200, 120));
         }
     }
-
+    
     @Override
     public SimpleHeaderData getSimpleHeaderData() {
         return new SimpleHeaderData();
     }
-
+    
     @Override
     public SimpleMenuOption getSimpleMenuOption() {
         String menus[][] = {
@@ -70,12 +71,12 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
             {"~Generar~"},
             {"Generar", "Order", "Factura"}
         };
-
+        
         String icons[] = {
             "menu.svg",
             "maintenance.svg" // Icono para Mantenimientos
         };
-
+        
         return new SimpleMenuOption()
                 .setMenus(menus)
                 .setIcons(icons)
@@ -119,15 +120,17 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
                             }
                         } else if (index == 2) {
                             if (subIndex == 0) {
-
+                                
                             } else if (subIndex == 1) {
                                 if (contenedor != null) {
                                     Orden orden = new Orden();
+                                    orden.setUsuarioActual(contenedor.getUsuarioActual());
                                     contenedor.setLayout(new BorderLayout());
                                     contenedor.removeAll(); // Asegúrate de limpiar antes de añadir
                                     contenedor.add(orden, BorderLayout.CENTER);
                                     contenedor.revalidate();
                                     contenedor.repaint();
+                                    System.out.println("Usuario Actual " + contenedor.getUsuarioActual().getNombre());
                                 } else {
                                     System.out.println("El contenedor es nulo. No se puede mostrar el panel.");
                                 }
@@ -143,10 +146,10 @@ public class MyDrawerBuilder extends SimpleDrawerBuilder {
                     }
                 });
     }
-
+    
     @Override
     public SimpleFooterData getSimpleFooterData() {
         return new SimpleFooterData();
     }
-
+    
 }

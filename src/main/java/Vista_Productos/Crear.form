@@ -222,10 +222,13 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="Vista_Usuarios.table.ButtonAction" name="buttonAction1">
+    <Component class="Vista_Usuarios.table.ButtonAction" name="btn_eliminar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Eliminar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_eliminarActionPerformed"/>
+      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="930" y="10" width="-1" height="-1"/>

@@ -12,37 +12,37 @@ import raven.popup.component.SimplePopupBorderOption;
 import raven.toast.Notifications;
 
 public class CartaProductos extends javax.swing.JPanel {
-    
+
     private Producto producto;
-    
+
     public CartaProductos(Producto producto) {
-//        initComponents();
-//        init();
-//        lbl_nombre.setText(producto.getNombre());
-//        lbl_precio.setText("S/. " + String.valueOf(producto.getPrecioVenta()));
-//        lbl_descripcion.setText(producto.getDescripcion());
-//        jScrollPane1.setOpaque(false);
-//        lbl_descripcion.setOpaque(false);
-//        // Verificar si el producto tiene una imagen
-//        if (producto.getFoto_principal() != null && producto.getFoto_principal().getIcon() != null) {
-//            // Obtener el Icono de la imagen
-//            Icon imagenIcono = producto.getFoto_principal().getIcon();  // Aquí obtenemos el Icono directamente
-//            // Establecer el Icono en el PictureBox
-//            imagen.setSize(362, 532);
-//            ImageResizer imageResizer = new ImageResizer(imagenIcono);
-//            imagen.setImage(imageResizer.obtenerIconoRedimensionado(imagen));
-//            // Ajustar la imagen con BoxFit
-//            imagen.setBoxFit(BoxFit.COVER);  // Ajuste para cubrir el cuadro completo
-//            this.producto = producto;
-//        }
+        initComponents();
+        init();
+        lbl_nombre.setText(producto.getNombre());
+        lbl_precio.setText("S/. " + String.valueOf(producto.getPrecioVenta()));
+        lbl_descripcion.setText(producto.getDescripcion());
+        jScrollPane1.setOpaque(false);
+        lbl_descripcion.setOpaque(false);
+        // Verificar si el producto tiene una imagen
+        if (producto.getFotoPrincipal() != null && producto.getFotoPrincipal().getIcon() != null) {
+            // Obtener el Icono de la imagen
+            Icon imagenIcono = producto.getFotoPrincipal().getIcon();  // Aquí obtenemos el Icono directamente
+            // Establecer el Icono en el PictureBox
+            imagen.setSize(362, 532);
+            ImageResizer imageResizer = new ImageResizer(imagenIcono);
+            imagen.setImage(imageResizer.obtenerIconoRedimensionado(imagen));
+            // Ajustar la imagen con BoxFit
+            imagen.setBoxFit(BoxFit.COVER);  // Ajuste para cubrir el cuadro completo
+            this.producto = producto;
+        }
     }
-    
+
     private void init() {
         this.putClientProperty(FlatClientProperties.STYLE, ""
                 + "arc:25;"
                 + "background:$Table.background");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -125,26 +125,26 @@ public class CartaProductos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        
-        Productos_Detalles productos_Detalles = new Productos_Detalles(producto);
-        DefaultOption option = new DefaultOption() {
-            @Override
-            public boolean closeWhenClickOutside() {
-                return true;
-            }
-        };
-        String actions[] = new String[]{"Cancelar", "Agregar al Carrito"};
-        GlassPanePopup.showPopup(
-                new SimplePopupBorder(productos_Detalles, "Crear Usuario", new SimplePopupBorderOption().setWidth(590), actions, (pc, i) -> {
-                    if (i == 1) {
-                        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Agregado Correcto al carrito");
-                        pc.closePopup();
-                    } else {
-                        pc.closePopup();
-                    }
-                }),
-                option
-        );
+//
+//        Productos_Detalles productos_Detalles = new Productos_Detalles(producto);
+//        DefaultOption option = new DefaultOption() {
+//            @Override
+//            public boolean closeWhenClickOutside() {
+//                return true;
+//            }
+//        };
+//        String actions[] = new String[]{"Cancelar", "Agregar al Carrito"};
+//        GlassPanePopup.showPopup(
+//                new SimplePopupBorder(productos_Detalles, "Crear Usuario", new SimplePopupBorderOption().setWidth(590), actions, (pc, i) -> {
+//                    if (i == 1) {
+//                        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Agregado Correcto al carrito");
+//                        pc.closePopup();
+//                    } else {
+//                        pc.closePopup();
+//                    }
+//                }),
+//                option
+//        );
     }//GEN-LAST:event_formMouseClicked
 
 

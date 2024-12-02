@@ -17,10 +17,12 @@ public class Menu_Principal extends javax.swing.JFrame {
         GlassPanePopup.install(this);
         this.usuario = usuario;
         initComponents();
+        carritoOfer_Item2.setUsuarioActual(usuario);
         perfil.cargarDatos(usuario);
         this.setExtendedState(this.MAXIMIZED_BOTH);
         this.setMaximizedBounds(this.getGraphicsConfiguration().getBounds());
         if (usuario.getRol().equals("admin")) {
+            contenedor.setUsuarioActual(usuario);
             MyDrawerBuilder myDrawerBuilder = new MyDrawerBuilder(contenedor);
             Drawer drawer = Drawer.getInstance();
             drawer.setDrawerBuilder(myDrawerBuilder);
@@ -55,11 +57,11 @@ public class Menu_Principal extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         panelPrincipal = new javax.swing.JPanel();
-        contenedor = new javax.swing.JPanel();
+        contenedor = new Vista.ContedorDePaneles();
         PanelSuperior = new javax.swing.JPanel();
         panelUsuario = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        carritoOfer_Item1 = new Componentes.CarritoOfer_Item();
+        carritoOfer_Item2 = new Componentes.CarritoOfer_Item();
         perfil = new Componentes.EncabezadoPerfilUsuario();
         contenedorOfertas = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -81,8 +83,6 @@ public class Menu_Principal extends javax.swing.JFrame {
         panelPrincipal.setOpaque(false);
         panelPrincipal.setPreferredSize(new java.awt.Dimension(782, 631));
         panelPrincipal.setLayout(new java.awt.BorderLayout());
-
-        contenedor.setLayout(new java.awt.BorderLayout());
         panelPrincipal.add(contenedor, java.awt.BorderLayout.CENTER);
 
         PanelSuperior.setLayout(new javax.swing.BoxLayout(PanelSuperior, javax.swing.BoxLayout.Y_AXIS));
@@ -91,8 +91,7 @@ public class Menu_Principal extends javax.swing.JFrame {
         panelUsuario.setPreferredSize(new java.awt.Dimension(0, 60));
         panelUsuario.setLayout(new java.awt.BorderLayout());
 
-        carritoOfer_Item1.setPreferredSize(new java.awt.Dimension(50, 60));
-        jPanel1.add(carritoOfer_Item1);
+        jPanel1.add(carritoOfer_Item2);
         jPanel1.add(perfil);
 
         panelUsuario.add(jPanel1, java.awt.BorderLayout.LINE_END);
@@ -171,8 +170,8 @@ public class Menu_Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelSuperior;
-    private Componentes.CarritoOfer_Item carritoOfer_Item1;
-    private javax.swing.JPanel contenedor;
+    private Componentes.CarritoOfer_Item carritoOfer_Item2;
+    private Vista.ContedorDePaneles contenedor;
     private javax.swing.JPanel contenedorOfertas;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;

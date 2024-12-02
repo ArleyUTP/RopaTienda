@@ -120,6 +120,12 @@ CREATE TABLE Inventario(
 	ON DELETE CASCADE,
 	cantidad INT NOT NULL,
 );
+SELECT id
+FROM Inventario
+WHERE talla_id = @idTalla AND color_id =@idcolor;
+ALTER TABLE Inventario
+ADD CONSTRAINT UQ_producto_talla_color UNIQUE (producto_id, talla_id, color_id);
+
 CREATE TABLE FotosInventario (
     id BIGINT PRIMARY KEY IDENTITY(1,1),
     inventario_id BIGINT FOREIGN KEY REFERENCES Inventario(id) ON DELETE CASCADE,
@@ -453,6 +459,14 @@ BEGIN
         cantidad = @cantidad
     WHERE id = @id AND producto_id = @producto_id;
 END;
+CREATE PROCEDURE SP_EliminarVariante
+	@id BIGINT
+AS
+BEGIN
+	DELETE FROM Inventario
+	WHERE id=@id;
+END;
+SELECT * FROM Inventario
 CREATE PROCEDURE SP_ActualizarFotoInventario
     @id BIGINT,
     @inventario_id BIGINT,
@@ -484,3 +498,97 @@ BEGIN
 	DELETE FROM FotosInventario
 	WHERE id=@id;
 END
+
+SELECT * FROM Producto
+
+CREATE TABLE CarritoCompras (
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
+    usuario_id BIGINT NOT NULL FOREIGN KEY REFERENCES Usuarios(id) ON DELETE CASCADE,
+    fecha_creacion DATETIME2 DEFAULT GETDATE(),
+    estado NVARCHAR(15) DEFAULT 'activo',
+    CHECK (estado IN ('activo', 'inactivo'))
+);
+
+
+CREATE TABLE DetallesCarritoComprar (
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
+    carrito_id BIGINT NOT NULL FOREIGN KEY REFERENCES CarritoCompras(id) ON DELETE CASCADE,
+    inventario_id BIGINT NOT NULL FOREIGN KEY REFERENCES Inventario(id) ON DELETE CASCADE,
+    cantidad INT NOT NULL,
+    precio DECIMAL(10, 2) NOT NULL, -- El precio se guarda en el momento de la transacción
+    subtotal AS (cantidad * precio) -- Columna calculada
+);
+CREATE TABLE OrdenPedido(
+	id BIGINT PRIMARY KEY IDENTITY(1,1),
+	carrito_id BIGINT FOREIGN KEY REFERENCES CarritoCompras(id)
+	ON DELETE CASCADE,
+	fechaEmision DATETIME2 DEFAULT GETDATE(),
+);
+
+CREATE PROCEDURE SP_ObtenerIdVariantePorTallayColor
+	@idTalla BIGINT,
+	@idColor BIGINT
+AS
+BEGIN
+	SELECT TOP 1 id
+	FROM Inventario
+	WHERE talla_id =@idTalla AND color_id =@idColor
+END
+
+CREATE PROCEDURE SP_ObtenerOCrearCarrito
+    @usuario_id BIGINT,
+    @id_carrito BIGINT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Intentar buscar un carrito activo
+    SELECT TOP 1 @id_carrito = id
+    FROM CarritoCompras
+    WHERE usuario_id = @usuario_id AND estado = 'activo';
+
+    -- Si no existe un carrito activo, crear uno nuevo
+    IF @id_carrito IS NULL
+    BEGIN
+        INSERT INTO CarritoCompras (usuario_id, fecha_creacion, estado)
+        VALUES (@usuario_id, GETDATE(), 'activo');
+
+        SET @id_carrito = SCOPE_IDENTITY(); -- Obtener el ID del carrito recién creado
+    END
+END;
+GO
+
+CREATE PROCEDURE SP_CrearCarritoDetalle
+    @carrito_id BIGINT,
+    @inventario_id BIGINT,
+    @cantidad INT,
+    @precio DECIMAL(10, 2),
+    @resultado BIT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Inicializar el resultado como fallo
+    SET @resultado = 0;
+
+    -- Validar si el inventario existe y tiene suficiente stock
+    IF EXISTS (
+        SELECT 1 
+        FROM Inventario 
+        WHERE id = @inventario_id AND cantidad >= @cantidad
+    )
+    BEGIN
+        -- Insertar el nuevo detalle del carrito
+        INSERT INTO DetallesCarritoComprar (carrito_id, inventario_id, cantidad, precio)
+        VALUES (@carrito_id, @inventario_id, @cantidad, @precio);
+
+        -- Actualizar el inventario
+        UPDATE Inventario
+        SET cantidad = cantidad - @cantidad
+        WHERE id = @inventario_id;
+
+        -- Indicar éxito
+        SET @resultado = 1;
+    END
+END;
+

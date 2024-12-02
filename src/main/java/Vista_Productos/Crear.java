@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import jnafilechooser.api.JnaFileChooser;
@@ -24,10 +25,10 @@ import raven.popup.component.SimplePopupBorderOption;
 import raven.toast.Notifications;
 
 public class Crear extends javax.swing.JPanel {
-    
+
     private Producto productoCargado;
     Perfil fotoPrincipal;
-    
+
     public Crear() {
         initComponents();
         init();
@@ -42,7 +43,7 @@ public class Crear extends javax.swing.JPanel {
         tablaVariantes.getColumnModel().getColumn(0).setMaxWidth(0);
         tablaVariantes.getColumnModel().getColumn(0).setWidth(0);
     }
-    
+
     private void init() {
         tablaVariantes.getTableHeader().putClientProperty(FlatClientProperties.STYLE, ""
                 + "height:30;"
@@ -50,7 +51,7 @@ public class Crear extends javax.swing.JPanel {
                 + "pressedBackground:null;"
                 + "separatorColor:$TableHeader.background;"
                 + "font:bold;");
-        
+
         tablaVariantes.putClientProperty(FlatClientProperties.STYLE, ""
                 + "rowHeight:100;"
                 + "showHorizontalLines:true;"
@@ -60,7 +61,7 @@ public class Crear extends javax.swing.JPanel {
                 + "selectionForeground:$Table.foreground;");
         tablaVariantes.getColumnModel().getColumn(4).setCellRenderer(new ImageTableListRenderer(tablaVariantes));
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -81,7 +82,7 @@ public class Crear extends javax.swing.JPanel {
         jLabel15 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaVariantes = new javax.swing.JTable();
-        buttonAction1 = new Vista_Usuarios.table.ButtonAction();
+        btn_eliminar = new Vista_Usuarios.table.ButtonAction();
         btn_crearVariante = new Vista_Usuarios.table.ButtonAction();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -159,8 +160,13 @@ public class Crear extends javax.swing.JPanel {
 
         add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, 650, 470));
 
-        buttonAction1.setText("Eliminar");
-        add(buttonAction1, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 10, -1, -1));
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
+        add(btn_eliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 10, -1, -1));
 
         btn_crearVariante.setText("Agregar");
         btn_crearVariante.addActionListener(new java.awt.event.ActionListener() {
@@ -228,7 +234,7 @@ public class Crear extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_crearVarianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearVarianteActionPerformed
-        
+
         if (productoCargado != null) {
             CrearVariantes crearVariantes = new CrearVariantes();
             DefaultOption option = new DefaultOption() {
@@ -341,7 +347,7 @@ public class Crear extends javax.swing.JPanel {
             }
         };
         String actions[] = new String[]{"Cancelar", "Actualizar"};
-        
+
         GlassPanePopup.showPopup(
                 new SimplePopupBorder(crearVariantes, "Editar Variante",
                         new SimplePopupBorderOption()
@@ -380,7 +386,42 @@ public class Crear extends javax.swing.JPanel {
         );
 
     }//GEN-LAST:event_tablaVariantesMouseClicked
-    
+
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+
+        int filaSeleccionada = tablaVariantes.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            Notifications.getInstance().show(Notifications.Type.WARNING, "Selecciona una variante para eliminar.");
+            return;
+        }
+
+        // Obtener el idVariante y construir el objeto ProductoInventario
+        int idVariante = (int) tablaVariantes.getValueAt(filaSeleccionada, 0); // Supone que el id está en la columna 0
+        ProductoInventario productoInventarioSeleccionado = new ProductoInventario();
+        productoInventarioSeleccionado.setIdVariante(idVariante);
+
+        // Confirmar la acción con el usuario
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de que deseas eliminar esta variante?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            // Eliminar la variante de la base de datos
+            ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
+            boolean eliminado = productoInventarioDAO.eliminarProductoInventario(productoInventarioSeleccionado);
+
+            if (eliminado) {
+                // Actualizar la tabla recargando las variantes
+                cargarVariantes();
+                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Variante eliminada correctamente.");
+            } else {
+                Notifications.getInstance().show(Notifications.Type.ERROR, "No se pudo eliminar la variante de la base de datos.");
+            }
+        }
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
     private boolean esValorDuplicadoEnTabla(DefaultTableModel modelo, Object[] nuevosDatos) {
         int filas = modelo.getRowCount();
         for (int i = 0; i < filas; i++) {
@@ -398,9 +439,9 @@ public class Crear extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton btn_activo;
     private Vista_Usuarios.table.ButtonAction btn_crearVariante;
+    private Vista_Usuarios.table.ButtonAction btn_eliminar;
     private javax.swing.JRadioButton btn_inactivo;
     private javax.swing.JButton btn_seleccionar;
-    private Vista_Usuarios.table.ButtonAction buttonAction1;
     private javax.swing.JComboBox<Categoria> cbo_categoria;
     private javax.swing.ButtonGroup grupoEstadoPromocion;
     private javaswingdev.picturebox.PictureBox imagen;
@@ -446,7 +487,7 @@ public class Crear extends javax.swing.JPanel {
         }
         return producto;
     }
-    
+
     public List<ProductoInventario> obtenerVarianteProducto() {
         List<ProductoInventario> variantes = new ArrayList<>();
         DefaultTableModel model = (DefaultTableModel) tablaVariantes.getModel();
@@ -479,7 +520,7 @@ public class Crear extends javax.swing.JPanel {
         }
         return variantes;
     }
-    
+
     public void cargarDatos(Producto producto) {
         this.productoCargado = producto;
         txt_nombre.setText(producto.getNombre());
@@ -497,7 +538,7 @@ public class Crear extends javax.swing.JPanel {
             cargarVariantes();
         }
     }
-    
+
     public void cargarVariantes() {
         ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
         List<ProductoInventario> variantes = productoInventarioDAO.obtenerVariantePorIdProducto(productoCargado);

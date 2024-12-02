@@ -6,8 +6,10 @@ Vista_Usuarios\Crear$6.class
 Vista\Vista_login$8.class
 Vista\Notifications.class
 Vista_Productos\coloas$2.class
+Vista_Orden\componentes\RoundButton.class
 Componentes\Ofer_Extrella.class
 Vista_Usuarios\Crear$14.class
+Vista_Productos\Crear$7.class
 Vista_Orden\Talla.class
 Vista\Vista_login$2.class
 Persistencia\ProductoDAO.class
@@ -20,6 +22,7 @@ Vista\Swing\WrapLayout.class
 Componentes\PanelLogin$2.class
 drawer\MyDrawerBuilder$2.class
 Vista_Productos\Mantenimiento_Productos$3.class
+Vista_Orden\Orden$1$1.class
 Vista_Productos\componentes\CellList.class
 Vista_Usuarios\Crear$1.class
 Productos\Inventario.class
@@ -36,22 +39,28 @@ drawer\MyDrawerBuilder1$2.class
 Abstrac\Validador.class
 Componentes\PanelLogin$10.class
 Vista\Menu_Principal$1.class
+Persistencia\CarritoComprasDAO.class
 Vista_Orden\Productos_Detalles$5.class
 Componentes\OfertaPerfil.class
 Vista\Vista_bienvenida.class
 Vista\Login.class
+Modelo\FotosInventario.class
+Vista_Orden\Item_Carrrito.class
 Vista_Productos\Mantenimiento_Productos.class
 Vista\Swing\ModernScrollBarUI$InvisibleScrollBarButton.class
 Vista\Vista_Productos.class
 Componentes\EncabezadoPerfilUsuario.class
 Vista_Productos\Crear$3.class
 Vista_Usuarios\Crear.class
+Modelo\CarritoCompras.class
 Componentes\PanelLogin$9.class
 Vista\Menu_Principal.class
 Componentes\PanelLogin$6.class
 Vista_Orden\ImportarImagenes_a_Productos$1.class
 Vista_Usuarios\Man_Usuarios$1.class
+Persistencia\CarritoDetallesDAO.class
 Vista_Usuarios\Crear$15.class
+Vista_Orden\Orden$1.class
 Vista\Vista_login$10.class
 Vista_Orden\CartaProductos.class
 Modelo\Producto.class
@@ -89,6 +98,7 @@ Validaciones\ValidarCamposVacios.class
 Componentes\ContenedorOfertas.class
 Vista_Usuarios\table\CheckBoxTableHeaderRenderer.class
 drawer\Menu$1.class
+Modelo\CarritoDetalles.class
 Vista\Vista_login$5.class
 Vista\Vista_login$11.class
 Vista_Productos\CrearVariantes$1.class
@@ -98,6 +108,7 @@ Vista\Iniciador.class
 Vista_Usuarios\Crear$9.class
 Vista_Orden\CartaProductos$1.class
 Vista_Orden\Productos_Detalles$3.class
+Vista_Orden\CarritoCompra.class
 Vista_Usuarios\Crear$11.class
 Persistencia\MarcaDAO.class
 Vista_Productos\Crear$4.class
@@ -109,8 +120,10 @@ Modelo\Autogenerar.class
 Vista_Usuarios\TableCellProfile$1.class
 drawer\MyDrawerBuilder1$1.class
 Vista\Vista_login$12.class
+Persistencia\FotosInventarioDAO.class
 Vista_Usuarios\Crear$12.class
 drawer\MenuButton$2.class
+Vista_Productos\Mantenimiento_Productos$6.class
 Vista_Productos\CartaProductosMan.class
 Componentes\PanelLogin$4.class
 Vista_Orden\Colores$1.class
@@ -121,6 +134,7 @@ Vista_Productos\CartaProductosMan$1.class
 Vista_Usuarios\Man_Usuarios$4.class
 Vista_Productos\Crear$5.class
 Vista_Usuarios\table\ButtonAction.class
+Persistencia\ProductoInventarioDAO.class
 Modelo\Inventario.class
 Vista_Usuarios\Crear$2.class
 Vista_Usuarios\table\CheckBoxTableHeaderRenderer$1.class
@@ -137,6 +151,7 @@ Vista\Vista_login$1.class
 Modelo\Talla.class
 Vista_Productos\Mantenimiento_Productos$1.class
 Vista_Usuarios\TableCellProfile.class
+Vista_Productos\Crear$6.class
 Componentes\ImagenPerfil.class
 Vista_Productos\Mantenimiento_Productos$4.class
 Componentes\PanelLogin$3.class
@@ -145,6 +160,7 @@ Vista_Usuarios\Man_Usuarios$6.class
 Componentes\PerfilDeUsuario.class
 Componentes\Ofertas_Item.class
 Vista_Usuarios\Man_Usuarios.class
+Vista\ContedorDePaneles.class
 Vista_Orden\Productos_Detalles.class
 Modelo\Usuario.class
 Vista_Usuarios\Crear$7.class
@@ -154,10 +170,12 @@ drawer\Menu.class
 Componentes\ofertaConPictureBox.class
 Vista_Productos\componentes\ImageListRenderer.class
 Vista\Vista_login$9.class
+Vista_Productos\Mantenimiento_Productos$6$1.class
 Vista_Productos\Crear.class
 drawer\ImageAvatar.class
 drawer\MyDrawerBuilder$1.class
 drawer\Menu$2.class
+Vista_Productos\Crear$8.class
 Vista_Productos\coloas$1.class
 Vista_Usuarios\Man_Usuarios$7.class
 Productos\Producto.class
@@ -168,7 +186,6 @@ Vista_Usuarios\Crear$4.class
 drawer\SystemTheme.class
 Componentes\PanelLogin$1.class
 Componentes\EncabezadoSuperiorMenu.class
-Vista_Orden\CartaProductos$2.class
 Vista_Orden\Productos_Detalles$1.class
 Modelo\Encriptar.class
 Vista\Vista_EnvioCorreo.class
@@ -178,4 +195,5 @@ Vista_Usuarios\Crear$10.class
 Vista_Usuarios\Crear$5.class
 Vista\Vista_EnvioCorreo$3.class
 Componentes\CarritoOfer_Item.class
+Vista_Productos\Crear$10.class
 Vista_Productos\Crear$9.class

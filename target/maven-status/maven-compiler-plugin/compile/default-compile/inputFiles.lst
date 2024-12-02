@@ -24,6 +24,8 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\MyDrawerBuilder.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\MyDrawerBuilder1.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\drawer\SystemTheme.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Autogenerar.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\CarritoCompras.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\CarritoDetalles.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Categoria.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ColorRopa.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Encriptar.java
@@ -38,6 +40,8 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Producto.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ProductoInventario.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Talla.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Usuario.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\CarritoComprasDAO.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\CarritoDetallesDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\CategoriaDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ColorDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\FotosInventarioDAO.java
@@ -54,6 +58,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Validaciones\ValidarCamposNumeric
 C:\Users\user\Desktop\RopaTienda\src\main\java\Validaciones\ValidarCamposVacios.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Validaciones\ValidarCampoTexto.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Validaciones\ValidarImagen.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Vista\ContedorDePaneles.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista\Iniciador.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista\Login.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista\Menu_Principal.java
@@ -65,9 +70,12 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Vista\Vista_bienvenida.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista\Vista_EnvioCorreo.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista\Vista_login.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista\Vista_Productos.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\CarritoCompra.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\CartaProductos.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Colores.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\componentes\RoundButton.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\ImportarImagenes_a_Productos.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Item_Carrrito.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Orden.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Productos_Detalles.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Talla.java

@@ -8,8 +8,6 @@ import Modelo.Categoria;
 import Modelo.Perfil;
 import Modelo.Producto;
 import Modelo.ProductoInventario;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;

@@ -1,13 +1,18 @@
 package Vista_Orden;
 
+import Modelo.CarritoDetalles;
 import Modelo.ColorRopa;
 import Modelo.Producto;
+import Modelo.ProductoInventario;
+import Modelo.Usuario;
 import Persistencia.ColorDAO;
+import Persistencia.ProductoInventarioDAO;
 import Persistencia.TallaDAO;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.ImageIcon;
+import raven.toast.Notifications;
 
 public class Productos_Detalles extends javax.swing.JPanel {
 
@@ -16,14 +21,19 @@ public class Productos_Detalles extends javax.swing.JPanel {
     private int indiceActual = 0;  // Índice para recorrer las imágenes
     private ColorRopa colorDeRopaSeleccionada;
     private Modelo.Talla tallaDeRopaSeccionada;
+    private Usuario usuarioActual;
+
+    public void setUsuarioActual(Usuario usuarioActual) {
+        this.usuarioActual = usuarioActual;
+    }
 
     public Productos_Detalles(Producto producto) {
         this.producto = producto;
         initComponents();
         init();
         lbl_nombre.setText(producto.getNombre());
-//        lbl_precio.setText(String.valueOf(producto.getPrecioVenta()));
-//        imagen.setImage(producto.getFoto_principal().getIcon());
+        lbl_precio.setText(String.valueOf(producto.getPrecioVenta()));
+        imagen.setImage(producto.getFotoPrincipal().getIcon());
     }
 
     private void init() {
@@ -36,6 +46,7 @@ public class Productos_Detalles extends javax.swing.JPanel {
                 public void mouseClicked(MouseEvent e) {
                     colorpanel.seleccionar();
                     colorDeRopaSeleccionada = colorpanel.getColorRopa();
+                    System.out.println("Color Seleccionado: " + colorDeRopaSeleccionada.getNombre());
                     lbl_colorSeleccionado.setText(colorDeRopaSeleccionada.getNombre());
                 }
             });
@@ -52,6 +63,7 @@ public class Productos_Detalles extends javax.swing.JPanel {
                 public void mouseClicked(MouseEvent e) {
                     tallaPanel.seleccionar();
                     tallaDeRopaSeccionada = tallaPanel.getTalla();
+                    System.out.println("Talla Seleccionada: " + tallaDeRopaSeccionada.getNombre());
                     lbl_tallaSeleccionado.setText(tallaDeRopaSeccionada.getNombre());
                 }
 
@@ -101,7 +113,7 @@ public class Productos_Detalles extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        cantidad = new javax.swing.JSpinner();
         imagen = new javaswingdev.picturebox.PictureBox();
         contenedorColores = new javax.swing.JPanel();
         contenedorTallas = new javax.swing.JPanel();
@@ -128,13 +140,11 @@ public class Productos_Detalles extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel7.setText("Cantidad");
 
-        jSpinner1.setEnabled(false);
-
         imagen.setLayout(new java.awt.FlowLayout());
 
-        contenedorColores.setLayout(new java.awt.GridLayout(1, 6, 2, 0));
+        contenedorColores.setLayout(new javax.swing.BoxLayout(contenedorColores, javax.swing.BoxLayout.X_AXIS));
 
-        contenedorTallas.setLayout(new java.awt.GridLayout(1, 0, 2, 0));
+        contenedorTallas.setLayout(new javax.swing.BoxLayout(contenedorTallas, javax.swing.BoxLayout.X_AXIS));
 
         btn_anterior.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btn_anterior.setText("<");
@@ -174,7 +184,7 @@ public class Productos_Detalles extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(contenedorTallas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cantidad, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(0, 0, Short.MAX_VALUE))
@@ -233,7 +243,7 @@ public class Productos_Detalles extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(contenedorImagenes, javax.swing.GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
                 .addContainerGap())
@@ -258,6 +268,7 @@ public class Productos_Detalles extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_anterior;
     private javax.swing.JButton btn_siguiente;
+    private javax.swing.JSpinner cantidad;
     private javax.swing.JPanel contenedorColores;
     private javax.swing.JPanel contenedorImagenes;
     private javax.swing.JPanel contenedorTallas;
@@ -266,11 +277,31 @@ public class Productos_Detalles extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JLabel lbl_colorSeleccionado;
     private javax.swing.JLabel lbl_nombre;
     private javax.swing.JLabel lbl_precio;
     private javax.swing.JLabel lbl_tallaSeleccionado;
     // End of variables declaration//GEN-END:variables
 
+    public CarritoDetalles obtenerDatos() {
+        ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
+        CarritoDetalles carritoDetalles = new CarritoDetalles();
+        if (tallaDeRopaSeccionada != null & colorDeRopaSeleccionada != null) {
+            int idVariante = productoInventarioDAO.obtenerIdVariantePorTallayColor(tallaDeRopaSeccionada, colorDeRopaSeleccionada);
+            if (idVariante != 0) {
+                ProductoInventario productoInventario = new ProductoInventario();
+                productoInventario.setIdVariante(idVariante);
+                productoInventario.setTalla(tallaDeRopaSeccionada);
+                productoInventario.setColorRopa(colorDeRopaSeleccionada);
+                carritoDetalles.setProductoInventario(productoInventario);
+                carritoDetalles.setCantidad((int) cantidad.getValue());
+                carritoDetalles.setPrecio(producto.getPrecioVenta());
+            } else {
+                System.out.println("No se encontro el id variante para esa combinacion");
+            }
+        } else {
+            Notifications.getInstance().show(Notifications.Type.INFO, "Selecccione un color y talla");
+        }
+        return carritoDetalles;
+    }
 }

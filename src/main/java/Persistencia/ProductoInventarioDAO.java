@@ -52,6 +52,18 @@ public class ProductoInventarioDAO extends DAO<ProductoInventario> {
         }
     }
 
+    public boolean eliminarProductoInventario(ProductoInventario productoInventario) {
+        String sql = "EXEC SP_EliminarVariante ?";
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall(sql)) {
+            cs.setInt(1, productoInventario.getIdVariante());
+            cs.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            manejarError("Error al eliminar producto inventario", e);
+            return false;
+        }
+    }
+
     public List<ProductoInventario> obtenerVariantePorIdProducto(Producto producto) {
         List<ProductoInventario> productosInventarios = new ArrayList<>();
         int idProducto = producto.getId();
@@ -69,6 +81,24 @@ public class ProductoInventarioDAO extends DAO<ProductoInventario> {
         return productosInventarios;
     }
 
+    public int obtenerIdVariantePorTallayColor(Talla talla,ColorRopa colorRopa){
+        String sql = "EXEC SP_ObtenerIdVariantePorTallayColor ?,?";
+        int idVariante = 0;
+        try (Connection con = getconection();CallableStatement cs = con.prepareCall(sql)){
+            cs.setInt(1, talla.getId());
+            cs.setInt(2, colorRopa.getId());
+            try (ResultSet rs = cs.executeQuery()){
+                if (rs.next()) {
+                    idVariante=rs.getInt("id");
+                }
+            } catch (SQLException e) {
+                manejarError("Error al obtener id de variante", e);
+            }
+        } catch (SQLException e) {
+            manejarError("Error al obtener id variante por talla y color", e);
+        }
+        return idVariante;
+    }
     @Override
     public ProductoInventario parsear(ResultSet rs) {
         ProductoInventario productoInventario = new ProductoInventario();
