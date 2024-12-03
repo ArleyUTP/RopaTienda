@@ -1,23 +1,55 @@
 package Vista;
 
 import Componentes.Ofertas_Item;
+import Modelo.CarritoCompras;
+import Modelo.CarritoDetalles;
 import Modelo.Usuario;
+import Persistencia.CarritoComprasDAO;
+import Persistencia.CarritoDetallesDAO;
+import Vista_Orden.CarritoCompra;
 import drawer.MyDrawerBuilder;
 import drawer.MyDrawerBuilder1;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import raven.drawer.Drawer;
+import raven.popup.DefaultOption;
 import raven.popup.GlassPanePopup;
+import raven.popup.component.SimplePopupBorder;
+import raven.popup.component.SimplePopupBorderOption;
 
 public class Menu_Principal extends javax.swing.JFrame {
-    
+
     private Usuario usuario;
-    
+
     public Menu_Principal(Usuario usuario) {
         GlassPanePopup.install(this);
         this.usuario = usuario;
         initComponents();
-        carritoOfer_Item2.setUsuarioActual(usuario);
+        carritoOfer_Item2.mostrarContador(usuario);
+        carritoOfer_Item2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                CarritoCompra visCarritoCompra = new CarritoCompra(usuario);
+                DefaultOption option = new DefaultOption() {
+                    @Override
+                    public boolean closeWhenClickOutside() {
+                        return true;
+                    }
+                };
+                String actions[] = new String[]{"Cancelar", "Ir al Carro"};
+                GlassPanePopup.showPopup(
+                        new SimplePopupBorder(visCarritoCompra, "Carrito Compra", new SimplePopupBorderOption().setWidth(590), actions, (pc, i) -> {
+                            if (i == 1) {
+                            } else {
+                                pc.closePopup();
+                            }
+                        }),
+                        option
+                );
+            }
+        });
         perfil.cargarDatos(usuario);
         this.setExtendedState(this.MAXIMIZED_BOTH);
         this.setMaximizedBounds(this.getGraphicsConfiguration().getBounds());
@@ -49,7 +81,7 @@ public class Menu_Principal extends javax.swing.JFrame {
         contenedorOfertas.revalidate();
         contenedorOfertas.repaint();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

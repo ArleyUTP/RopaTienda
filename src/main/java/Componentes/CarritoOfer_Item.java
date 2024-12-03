@@ -9,7 +9,6 @@ public class CarritoOfer_Item extends javax.swing.JPanel {
 
     public CarritoOfer_Item() {
         initComponents();
-        mostrarContador();
     }
 
     public Usuario getUsuarioActual() {
@@ -20,7 +19,7 @@ public class CarritoOfer_Item extends javax.swing.JPanel {
         this.usuarioActual = usuarioActual;
     }
 
-    public void mostrarContador() {
+    public void mostrarContador(Usuario usuario) {
         if (usuarioActual != null) {
             CarritoComprasDAO carritoComprasDAO = new CarritoComprasDAO();
             int cantidadProductos = carritoComprasDAO.obtenerCantidadProductosCarritoActivo(usuarioActual);

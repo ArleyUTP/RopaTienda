@@ -196,7 +196,21 @@ public class ProductoDAO extends DAO<Producto> {
         List<Producto> productos = listarTodo("SP_ObtenerTodosLosProductos");
         return productos;
     }
-
+    public Producto obtenerProductoPorId(Producto producto){
+        Producto productoEncontrado = new Producto();
+        String sql = "EXEC SP_ObtenerProductoPorId ?";
+        try (Connection con = getconection();CallableStatement cs = con.prepareCall(sql)){
+            cs.setInt(1, producto.getId());
+            try(ResultSet rs = cs.executeQuery()){
+                if (rs.next()) {
+                    productoEncontrado = parsear(rs);
+                }
+            }
+        } catch (Exception e) {
+            manejarError("Error al obtener producto por id", e);
+        }
+        return productoEncontrado;
+    }
     private byte[] getByteImagen(File file) throws IOException {
         BufferedImage imagen = Thumbnails.of(file)
                 .size(600, 600) // Ajustar a un tamaño moderado

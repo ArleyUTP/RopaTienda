@@ -2,12 +2,18 @@ package Persistencia;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 import Abstrac.DAO;
+import Modelo.CarritoCompras;
 import Modelo.CarritoDetalles;
+import Modelo.Producto;
+import Modelo.ProductoInventario;
 
 public class CarritoDetallesDAO extends DAO<CarritoDetalles>{
 
@@ -34,10 +40,44 @@ public boolean crearCarritoDetalle(CarritoDetalles carritoDetalle) {
     }
 }
 
+public List<CarritoDetalles> obtenerDetallesPorCarrito(CarritoCompras carrito) {
+    String sql = "EXEC SP_ObtenerDetallesPorCarrito ?";
+    List<CarritoDetalles> detalles = new ArrayList<>();
+
+    try (Connection con = getconection(); PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, carrito.getIdCarrito());
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                CarritoDetalles detalle = parsear(rs);
+                detalle.setCarrito(carrito);
+                detalles.add(detalle);
+            }
+        }
+    } catch (SQLException e) {
+        manejarError("Error al obtener los detalles del carrito", e);
+    }
+
+    return detalles;
+}
+
     @Override
     public CarritoDetalles parsear(ResultSet rs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'parsear'");
+        CarritoDetalles carritoDetalles = new CarritoDetalles();
+        try {
+            carritoDetalles.setIdCarritoDetalle(rs.getInt("idCarritoDetalle"));
+            ProductoInventario productoInventario = new ProductoInventario();
+            productoInventario.setIdVariante(rs.getInt("inventario_id"));
+            Producto producto = new Producto();
+            producto.setId(rs.getInt("producto_id"));
+            productoInventario.setProducto(producto);
+            carritoDetalles.setProductoInventario(productoInventario);
+            carritoDetalles.setCantidad(rs.getInt("cantidad"));
+            carritoDetalles.setPrecio(rs.getDouble("precio"));
+        } catch (Exception e) {
+            manejarError("Error al parsear el resultado", e);
+        }
+        return carritoDetalles;
     }
     
 }

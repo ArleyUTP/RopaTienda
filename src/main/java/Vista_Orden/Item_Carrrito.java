@@ -1,10 +1,23 @@
 package Vista_Orden;
 
-public class Item_Carrrito extends javax.swing.JPanel {
+import Modelo.CarritoDetalles;
+import Modelo.Producto;
+import Persistencia.ProductoDAO;
 
-    public Item_Carrrito() {
+public class Item_Carrrito extends javax.swing.JPanel {
+    
+    public Item_Carrrito(CarritoDetalles carritoDetalles) {
         initComponents();
+        ProductoDAO productoDAO = new ProductoDAO();
+        Producto producto = productoDAO.obtenerProductoPorId(carritoDetalles.getProductoInventario().getProducto());
+        if (producto != null) {
+            lbl_nombreProducto.setText(producto.getNombre());
+            lbl_precio.setText("S/." + String.valueOf(producto.getPrecioVenta()));
+            lbl_cantidad.setText(String.valueOf(carritoDetalles.getCantidad()));
+            imagen.setImage(producto.getFotoPrincipal().getIcon());
+        }
     }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

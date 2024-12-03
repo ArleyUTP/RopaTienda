@@ -592,3 +592,41 @@ BEGIN
     END
 END;
 
+CREATE PROCEDURE SP_ObtenerCarritoActivo
+    @usuario_id BIGINT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Retornar el carrito activo del usuario
+    SELECT TOP 1 id, usuario_id, fecha_creacion, estado
+    FROM CarritoCompras
+    WHERE usuario_id = @usuario_id AND estado = 'activo';
+END;
+
+CREATE PROCEDURE SP_ObtenerDetallesPorCarrito
+    @carrito_id BIGINT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        d.id AS idCarritoDetalle,
+        d.carrito_id,
+        d.inventario_id,
+		i.producto_id,
+        d.cantidad,
+        d.precio
+    FROM DetallesCarritoComprar d
+    INNER JOIN Inventario i ON d.inventario_id = i.id
+    WHERE d.carrito_id = 1;
+END;
+
+CREATE PROCEDURE SP_ObtenerProductoPorId
+	@id BIGINT
+AS
+BEGIN
+	SELECT id,nombre,descripcion,categoria_id,precio_compra,precio_venta,foto_Principal,estado_promocion
+	FROM Producto
+	WHERE id=@id;
+END
