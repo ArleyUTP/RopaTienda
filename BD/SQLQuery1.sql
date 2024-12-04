@@ -518,6 +518,7 @@ CREATE TABLE DetallesCarritoComprar (
     precio DECIMAL(10, 2) NOT NULL, -- El precio se guarda en el momento de la transacción
     subtotal AS (cantidad * precio) -- Columna calculada
 );
+
 CREATE TABLE OrdenPedido(
 	id BIGINT PRIMARY KEY IDENTITY(1,1),
 	carrito_id BIGINT FOREIGN KEY REFERENCES CarritoCompras(id)
@@ -571,24 +572,47 @@ BEGIN
     -- Inicializar el resultado como fallo
     SET @resultado = 0;
 
-    -- Validar si el inventario existe y tiene suficiente stock
+    -- Validar si el inventario existe y tiene suficiente stock para el nuevo pedido
     IF EXISTS (
         SELECT 1 
         FROM Inventario 
         WHERE id = @inventario_id AND cantidad >= @cantidad
     )
     BEGIN
-        -- Insertar el nuevo detalle del carrito
-        INSERT INTO DetallesCarritoComprar (carrito_id, inventario_id, cantidad, precio)
-        VALUES (@carrito_id, @inventario_id, @cantidad, @precio);
+        -- Verificar si ya existe un registro en el carrito con el mismo producto
+        IF EXISTS (
+            SELECT 1
+            FROM DetallesCarritoComprar
+            WHERE carrito_id = @carrito_id AND inventario_id = @inventario_id
+        )
+        BEGIN
+            -- Si existe, actualizar la cantidad sumando la nueva
+            UPDATE DetallesCarritoComprar
+            SET cantidad = cantidad + @cantidad
+            WHERE carrito_id = @carrito_id AND inventario_id = @inventario_id;
 
-        -- Actualizar el inventario
-        UPDATE Inventario
-        SET cantidad = cantidad - @cantidad
-        WHERE id = @inventario_id;
+            -- Actualizar el inventario
+            UPDATE Inventario
+            SET cantidad = cantidad - @cantidad
+            WHERE id = @inventario_id;
 
-        -- Indicar éxito
-        SET @resultado = 1;
+            -- Indicar éxito
+            SET @resultado = 1;
+        END
+        ELSE
+        BEGIN
+            -- Si no existe, insertar un nuevo detalle en el carrito
+            INSERT INTO DetallesCarritoComprar (carrito_id, inventario_id, cantidad, precio)
+            VALUES (@carrito_id, @inventario_id, @cantidad, @precio);
+
+            -- Actualizar el inventario
+            UPDATE Inventario
+            SET cantidad = cantidad - @cantidad
+            WHERE id = @inventario_id;
+
+            -- Indicar éxito
+            SET @resultado = 1;
+        END
     END
 END;
 
@@ -629,4 +653,43 @@ BEGIN
 	SELECT id,nombre,descripcion,categoria_id,precio_compra,precio_venta,foto_Principal,estado_promocion
 	FROM Producto
 	WHERE id=@id;
+END
+CREATE PROCEDURE SP_CalcularSubTotalPorCarrito
+@carrito_id BIGINT
+AS
+BEGIN
+    -- Calcula el subtotal usando la columna calculada
+    SELECT SUM(subtotal) AS subtotal
+    FROM DetallesCarritoComprar
+    WHERE carrito_id = @carrito_id;
+END
+SELECT * FROM Producto
+SELECT * FROM Inventario
+SELECT * FROM DetallesCarritoComprar
+EXEC SP_CalcularSubTotalPorCarrito 1
+
+CREATE PROCEDURE SP_AumentarCantidadCarrito
+	@idCarritoDeta BIGINT
+AS
+BEGIN
+	UPDATE DetallesCarritoComprar
+	SET cantidad = cantidad+1
+	WHERE id=@idCarritoDeta
+END
+
+CREATE PROCEDURE SP_DisminuirCantidadCarrito
+	@idCarritoDeta BIGINT
+AS
+BEGIN
+	UPDATE DetallesCarritoComprar
+	SET cantidad = cantidad-1
+	WHERE id=@idCarritoDeta
+END
+
+CREATE PROCEDURE SP_EliminarCarritoDetalle
+	@idCarritoDeta BIGINT
+AS
+BEGIN
+	DELETE FROM DetallesCarritoComprar
+	WHERE id=@idCarritoDeta
 END

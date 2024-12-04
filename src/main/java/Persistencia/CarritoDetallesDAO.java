@@ -80,4 +80,50 @@ public List<CarritoDetalles> obtenerDetallesPorCarrito(CarritoCompras carrito) {
         return carritoDetalles;
     }
     
+    public double calcularSubtotalCarrito(CarritoCompras carrito){
+        String sql = "EXEC SP_CalcularSubTotalPorCarrito ?";
+        try (Connection con = getconection();CallableStatement cs = con.prepareCall(sql)){
+            cs.setInt(1, carrito.getIdCarrito());
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("subtotal");
+            }
+        } catch (Exception e) {
+            manejarError("Error al calcular subtotal por carrito", e);
+        }
+        return 0;
+    }
+    public boolean aumentarCantidad(CarritoDetalles carritoDetalles) {
+        String sql = "EXEC SP_AumentarCantidadCarrito ?";
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall(sql)) {
+            cs.setInt(1, carritoDetalles.getIdCarritoDetalle());
+            cs.execute();
+            return true; // Operación exitosa
+        } catch (SQLException e) {
+            manejarError("Error al aumentar cantidad en el carrito", e);
+            return false; // Indica que hubo un problema
+        }
+    }
+    public boolean disminuirCantidad(CarritoDetalles carritoDetalles) {
+        String sql = "EXEC SP_DisminuirCantidadCarrito ?";
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall(sql)) {
+            cs.setInt(1, carritoDetalles.getIdCarritoDetalle());
+            cs.execute();
+            return true; // Operación exitosa
+        } catch (SQLException e) {
+            manejarError("Error al disminuir cantidad en el carrito", e);
+            return false; // Indica que hubo un problema
+        }
+    }
+    public boolean eliminarCarritoDetalle(CarritoDetalles carritoDetalles){
+        String sql = "EXEC SP_EliminarCarritoDetalle ?";
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall(sql)) {
+            cs.setInt(1, carritoDetalles.getIdCarritoDetalle());
+            cs.execute();
+            return true; // Operación exitosa
+        } catch (SQLException e) {
+            manejarError("Error al eliminar el detalle del carrito", e);
+            return false; // Indica que hubo un problema
+        }
+    }
 }

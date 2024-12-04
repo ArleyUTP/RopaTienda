@@ -7,9 +7,11 @@ import Modelo.Usuario;
 import Persistencia.CarritoComprasDAO;
 import Persistencia.CarritoDetallesDAO;
 import Vista_Orden.CarritoCompra;
+import com.formdev.flatlaf.FlatClientProperties;
 import drawer.MyDrawerBuilder;
 import drawer.MyDrawerBuilder1;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
@@ -32,6 +34,11 @@ public class Menu_Principal extends javax.swing.JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 CarritoCompra visCarritoCompra = new CarritoCompra(usuario);
+                // Configurar el estilo de CarritoCompra
+                visCarritoCompra.putClientProperty(FlatClientProperties.STYLE, ""
+                        + "arc:25;" // Bordes redondeados
+                        + "background:#FFFFFF"); // Fondo blanco
+                visCarritoCompra.setPreferredSize(new Dimension(238, 600));
                 DefaultOption option = new DefaultOption() {
                     @Override
                     public boolean closeWhenClickOutside() {
@@ -40,7 +47,7 @@ public class Menu_Principal extends javax.swing.JFrame {
                 };
                 String actions[] = new String[]{"Cancelar", "Ir al Carro"};
                 GlassPanePopup.showPopup(
-                        new SimplePopupBorder(visCarritoCompra, "Carrito Compra", new SimplePopupBorderOption().setWidth(590), actions, (pc, i) -> {
+                        new SimplePopupBorder(visCarritoCompra, "Carrito Compra", new SimplePopupBorderOption().setWidth(238), actions, (pc, i) -> {
                             if (i == 1) {
                             } else {
                                 pc.closePopup();

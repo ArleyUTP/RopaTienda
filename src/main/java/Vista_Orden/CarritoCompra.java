@@ -5,23 +5,35 @@ import Modelo.CarritoDetalles;
 import Modelo.Usuario;
 import Persistencia.CarritoComprasDAO;
 import Persistencia.CarritoDetallesDAO;
+import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.Dimension;
 import java.util.List;
+import javax.swing.BorderFactory;
 
 public class CarritoCompra extends javax.swing.JPanel {
 
     private Usuario usuario;
+    private CarritoCompras carritoCompra;
 
     public CarritoCompra(Usuario usuario) {
         this.usuario = usuario;
         initComponents();
+        init();
         cargarDatos();
+        calcularSubtotal();
     }
 
-    private void cargarDatos() {
+    private void init() {
+        this.putClientProperty(FlatClientProperties.STYLE, ""
+                + "arc:25;"
+                + "background:$Table.background");
+    }
+
+    public void cargarDatos() {
         if (usuario != null) {
             CarritoComprasDAO carritoComprasDAO = new CarritoComprasDAO();
             CarritoDetallesDAO carritoDetallesDAO = new CarritoDetallesDAO();
-            CarritoCompras carritoCompra = carritoComprasDAO.obtenerCarritoCompras(usuario);
+            carritoCompra = carritoComprasDAO.obtenerCarritoCompras(usuario);
             List<CarritoDetalles> listaCarritoDetalle = carritoDetallesDAO.obtenerDetallesPorCarrito(carritoCompra);
             listaCarritoDetalle.forEach(carritoDetalle -> {
                 Item_Carrrito item_Carrrito = new Item_Carrrito(carritoDetalle);
@@ -32,6 +44,23 @@ public class CarritoCompra extends javax.swing.JPanel {
         }
     }
 
+    public void calcularSubtotal() {
+        CarritoDetallesDAO carritoDetallesDAO = new CarritoDetallesDAO();
+        if (carritoCompra != null) {
+            lbl_subtotal.setText("S/." + carritoDetallesDAO.calcularSubtotalCarrito(carritoCompra));
+        } else {
+            lbl_subtotal.setText("");
+        }
+    }
+
+    public void recargarCarrito() {
+        panelCentrar.removeAll(); // Limpia los elementos actuales
+        cargarDatos(); // Vuelve a cargar los datos desde la base de datos
+        calcularSubtotal(); // Actualiza el subtotal
+        panelCentrar.revalidate();
+        panelCentrar.repaint();
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -40,13 +69,19 @@ public class CarritoCompra extends javax.swing.JPanel {
         panelCentrar = new javax.swing.JPanel();
         panelInferior = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lbl_subtotal = new javax.swing.JLabel();
 
+        setOpaque(false);
+        setPreferredSize(new java.awt.Dimension(238, 200));
         setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setBorder(null);
 
         panelCentrar.setLayout(new javax.swing.BoxLayout(panelCentrar, javax.swing.BoxLayout.Y_AXIS));
+
+        // Espaciado entre elementos
+        panelCentrar.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Opcional
+
         jScrollPane1.setViewportView(panelCentrar);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -58,9 +93,9 @@ public class CarritoCompra extends javax.swing.JPanel {
         jLabel1.setPreferredSize(new java.awt.Dimension(130, 16));
         panelInferior.add(jLabel1, java.awt.BorderLayout.LINE_START);
 
-        jLabel2.setText("######");
-        jLabel2.setPreferredSize(new java.awt.Dimension(70, 16));
-        panelInferior.add(jLabel2, java.awt.BorderLayout.LINE_END);
+        lbl_subtotal.setText("######");
+        lbl_subtotal.setPreferredSize(new java.awt.Dimension(70, 16));
+        panelInferior.add(lbl_subtotal, java.awt.BorderLayout.LINE_END);
 
         add(panelInferior, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
@@ -68,8 +103,8 @@ public class CarritoCompra extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbl_subtotal;
     private javax.swing.JPanel panelCentrar;
     private javax.swing.JPanel panelInferior;
     // End of variables declaration//GEN-END:variables

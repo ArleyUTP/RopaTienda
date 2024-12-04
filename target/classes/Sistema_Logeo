@@ -1,0 +1,12 @@
+public class ServicioLogeo {
+    private Usuario usuarioRegistrado;
+
+    public ServicioLogeo() {
+        usuarioRegistrado = new Usuario("correopruebatiendautp@outlook.com", "cuentita.123");
+    }
+
+    public boolean validarCredenciales(String correo, String contraseña) {
+        return usuarioRegistrado.getCorreo().equals(correo) && 
+               usuarioRegistrado.getContraseña().equals(contraseña);
+    }
+}

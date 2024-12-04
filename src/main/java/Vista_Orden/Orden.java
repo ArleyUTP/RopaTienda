@@ -71,16 +71,18 @@ public class Orden extends javax.swing.JPanel {
                                     carritoCompra.setUsuario(usuarioActual);
                                     int idCarritoActual = carritoComprasDAO.obtenerOCrearCarritoCompras(carritoCompra);
                                     if (idCarritoActual != 0) {
-                                        carritoCompra.setIdCarrito(idCarritoActual);
-                                        carritoDetalles.setCarrito(carritoCompra);
-                                        boolean exito = carritoDetallesDAO.crearCarritoDetalle(carritoDetalles);
-                                        if (exito) {
-                                            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Producto agregado correctamente al carrito.");
-                                        } else {
-                                            Notifications.getInstance().show(Notifications.Type.ERROR, "No se pudo agregar el producto al carrito. Verifique el stock.");
+                                        if (carritoDetalles.getProductoInventario().getIdVariante() != 0) {
+                                            carritoCompra.setIdCarrito(idCarritoActual);
+                                            carritoDetalles.setCarrito(carritoCompra);
+                                            boolean exito = carritoDetallesDAO.crearCarritoDetalle(carritoDetalles);
+                                            if (exito) {
+                                                Notifications.getInstance().show(Notifications.Type.SUCCESS, "Producto agregado correctamente al carrito.");
+                                            } else {
+                                                Notifications.getInstance().show(Notifications.Type.ERROR, "No se pudo agregar el producto al carrito. Verifique el stock.");
+                                            }
+                                            Notifications.getInstance().show(Notifications.Type.SUCCESS, "Agregado Correcto al carrito");
+                                            pc.closePopup();
                                         }
-                                        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Agregado Correcto al carrito");
-                                        pc.closePopup();
                                     } else {
                                         Notifications.getInstance().show(Notifications.Type.SUCCESS, "Agregado Correcto al carrito");
                                         pc.closePopup();
