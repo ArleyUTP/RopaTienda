@@ -7,7 +7,6 @@ import Vista_Productos.Mantenimiento_Productos;
 import Vista_Usuarios.Man_Usuarios;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.JPanel;
 import raven.drawer.component.DrawerPanel;
 import raven.drawer.component.SimpleDrawerBuilder;
 import raven.drawer.component.footer.SimpleFooterData;

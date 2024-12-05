@@ -693,3 +693,260 @@ BEGIN
 	DELETE FROM DetallesCarritoComprar
 	WHERE id=@idCarritoDeta
 END
+
+CREATE TABLE OrdenPedido (
+    id BIGINT PRIMARY KEY IDENTITY(1,1), -- Identificador único de la orden
+    fecha_emision DATETIME2 NOT NULL DEFAULT GETDATE(), -- Fecha de creación de la orden
+    importe_total DECIMAL(10, 2) NOT NULL, -- Total del pedido
+    forma_pago NVARCHAR(50) NOT NULL, -- Forma de pago: Efectivo, Tarjeta, etc.
+    estado NVARCHAR(20) DEFAULT 'pendiente', -- Estado del pedido: pendiente, procesado, cancelado
+    
+    -- Relación con cliente
+    cliente_id BIGINT NOT NULL FOREIGN KEY REFERENCES Clientes(id) ON DELETE CASCADE,
+
+    -- Relación con el vendedor
+    vendedor_id BIGINT NOT NULL FOREIGN KEY REFERENCES Usuarios(id),
+
+    -- Relación con el carrito de compras
+    carrito_id BIGINT NOT NULL FOREIGN KEY REFERENCES CarritoCompras(id) ON DELETE CASCADE,
+
+    -- Restricción para el estado
+    CHECK (estado IN ('pendiente', 'procesado', 'cancelado'))
+);
+CREATE TABLE Clientes (
+    id BIGINT PRIMARY KEY IDENTITY(1,1), -- Identificador único del cliente
+    nombre NVARCHAR(100) NOT NULL, -- Nombre completo del cliente
+    tipo_documento NVARCHAR(50) NOT NULL, -- Ej: DNI, Pasaporte, etc.
+    numero_documento NVARCHAR(20) NOT NULL UNIQUE, -- Número único del documento
+    direccion NVARCHAR(255) NOT NULL, -- Dirección completa del cliente
+    telefono NVARCHAR(15), -- Teléfono del cliente (opcional)
+    email NVARCHAR(100), -- Correo electrónico (opcional
+    -- Restricción para evitar duplicados de cliente con tipo y número de documento
+    UNIQUE (tipo_documento, numero_documento)
+);
+
+CREATE TABLE Departamentos (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    nombre NVARCHAR(100) NOT NULL UNIQUE -- Nombre único del departamento
+);
+CREATE TABLE Provincias (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    nombre NVARCHAR(100) NOT NULL,
+    departamento_id INT NOT NULL FOREIGN KEY REFERENCES Departamentos(id) ON DELETE CASCADE, -- Relación con Departamentos
+    -- Evita duplicados de provincia dentro del mismo departamento
+    UNIQUE (nombre, departamento_id)
+);
+
+CREATE TABLE Distritos (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    nombre NVARCHAR(100) NOT NULL,
+    provincia_id INT NOT NULL FOREIGN KEY REFERENCES Provincias(id) ON DELETE CASCADE, -- Relación con Provincias
+    -- Evita duplicados de distrito dentro de la misma provincia
+    UNIQUE (nombre, provincia_id)
+);
+
+INSERT INTO Departamentos (nombre)
+VALUES
+('Amazonas'),
+('Áncash'),
+('Apurímac'),
+('Arequipa'),
+('Ayacucho'),
+('Cajamarca'),
+('Callao'),
+('Cusco'),
+('Huancavelica'),
+('Huánuco'),
+('Ica'),
+('Junín'),
+('La Libertad'),
+('Lambayeque'),
+('Lima'),
+('Loreto'),
+('Madre de Dios'),
+('Moquegua'),
+('Pasco'),
+('Piura'),
+('Puno'),
+('San Martín'),
+('Tacna'),
+('Tumbes'),
+('Ucayali');
+INSERT INTO Provincias (nombre, departamento_id)
+VALUES
+-- Amazonas
+('Chachapoyas', 1),
+('Bagua', 1),
+-- Áncash
+('Huaraz', 2),
+('Chimbote', 2),
+-- Apurímac
+('Abancay', 3),
+('Andahuaylas', 3),
+-- Arequipa
+('Arequipa', 4),
+('Camaná', 4),
+-- Ayacucho
+('Huamanga', 5),
+('Huanta', 5),
+-- Cajamarca
+('Cajamarca', 6),
+('Jaén', 6),
+-- Callao
+('Callao', 7),
+-- Cusco
+('Cusco', 8),
+('Urubamba', 8),
+-- Huancavelica
+('Huancavelica', 9),
+('Angaraes', 9),
+-- Huánuco
+('Huánuco', 10),
+('Tingo María', 10),
+-- Ica
+('Ica', 11),
+('Chincha', 11),
+-- Junín
+('Huancayo', 12),
+('Tarma', 12),
+-- La Libertad
+('Trujillo', 13),
+('Pacasmayo', 13),
+-- Lambayeque
+('Chiclayo', 14),
+('Lambayeque', 14),
+-- Lima
+('Lima', 15),
+('Huaral', 15),
+-- Loreto
+('Iquitos', 16),
+('Nauta', 16),
+-- Madre de Dios
+('Tambopata', 17),
+-- Moquegua
+('Moquegua', 18),
+('Ilo', 18),
+-- Pasco
+('Cerro de Pasco', 19),
+('Oxapampa', 19),
+-- Piura
+('Piura', 20),
+('Sullana', 20),
+-- Puno
+('Puno', 21),
+('Juliaca', 21),
+-- San Martín
+('Moyobamba', 22),
+('Tarapoto', 22),
+-- Tacna
+('Tacna', 23),
+('Candarave', 23),
+-- Tumbes
+('Tumbes', 24),
+('Zarumilla', 24),
+-- Ucayali
+('Pucallpa', 25),
+('Atalaya', 25);
+
+INSERT INTO Distritos (nombre, provincia_id)
+VALUES
+-- Chachapoyas (Amazonas)
+('Chachapoyas', 1),
+('Molinopampa', 1),
+-- Huaraz (Áncash)
+('Huaraz', 2),
+('Independencia', 2),
+-- Abancay (Apurímac)
+('Abancay', 3),
+('Tamburco', 3),
+-- Arequipa (Arequipa)
+('Arequipa', 4),
+('Yanahuara', 4),
+-- Huamanga (Ayacucho)
+('Ayacucho', 5),
+('Carmen Alto', 5),
+-- Cajamarca (Cajamarca)
+('Cajamarca', 6),
+('Baños del Inca', 6),
+-- Callao (Callao)
+('Callao', 7),
+('Bellavista', 7),
+-- Cusco (Cusco)
+('Cusco', 8),
+('Wanchaq', 8),
+-- Huancavelica (Huancavelica)
+('Huancavelica', 9),
+('Ascensión', 9),
+-- Huánuco (Huánuco)
+('Huánuco', 10),
+('Pillco Marca', 10),
+-- Ica (Ica)
+('Ica', 11),
+('La Tinguiña', 11),
+-- Huancayo (Junín)
+('Huancayo', 12),
+('El Tambo', 12),
+-- Trujillo (La Libertad)
+('Trujillo', 13),
+('Florencia de Mora', 13),
+-- Chiclayo (Lambayeque)
+('Chiclayo', 14),
+('José Leonardo Ortiz', 14),
+-- Lima (Lima)
+('Miraflores', 15),
+('San Isidro', 15),
+-- Iquitos (Loreto)
+('Iquitos', 16),
+('Punchana', 16),
+-- Tambopata (Madre de Dios)
+('Tambopata', 17),
+-- Moquegua (Moquegua)
+('Moquegua', 18),
+('Samegua', 18),
+-- Cerro de Pasco (Pasco)
+('Cerro de Pasco', 19),
+('Yanacancha', 19),
+-- Piura (Piura)
+('Piura', 20),
+('Castilla', 20),
+-- Puno (Puno)
+('Puno', 21),
+('Juli', 21),
+-- Moyobamba (San Martín)
+('Moyobamba', 22),
+('Soritor', 22),
+-- Tacna (Tacna)
+('Tacna', 23),
+('Alto de la Alianza', 23),
+-- Tumbes (Tumbes)
+('Tumbes', 24),
+('Corrales', 24),
+-- Pucallpa (Ucayali)
+('Pucallpa', 25),
+('Yarinacocha', 25);
+
+CREATE PROCEDURE SP_ObtenerDepartamentos
+AS
+BEGIN
+    SELECT id, nombre
+    FROM Departamentos
+    ORDER BY nombre;
+END;
+CREATE PROCEDURE SP_ObtenerProvinciasPorDepartamento
+    @DepartamentoId INT
+AS
+BEGIN
+    SELECT id, nombre
+    FROM Provincias
+    WHERE departamento_id = @DepartamentoId
+    ORDER BY nombre;
+END;
+CREATE PROCEDURE SP_ObtenerDistritosPorProvincia
+    @ProvinciaId INT
+AS
+BEGIN
+    SELECT id, nombre
+    FROM Distritos
+    WHERE provincia_id = @ProvinciaId
+    ORDER BY nombre;
+END;

@@ -76,7 +76,7 @@ public class Item_Carrrito extends javax.swing.JPanel {
         lbl_cantidad.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         paneDerecho.add(lbl_cantidad, java.awt.BorderLayout.CENTER);
 
-        add(paneDerecho, java.awt.BorderLayout.LINE_START);
+        add(paneDerecho, java.awt.BorderLayout.WEST);
 
         imagen.setPreferredSize(new java.awt.Dimension(50, 55));
         panelCentrar.add(imagen);

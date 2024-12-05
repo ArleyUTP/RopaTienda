@@ -7,9 +7,11 @@ import Modelo.Usuario;
 import Persistencia.CarritoComprasDAO;
 import Persistencia.CarritoDetallesDAO;
 import Vista_Orden.CarritoCompra;
+import Vista_Orden.GenerarOrder;
 import com.formdev.flatlaf.FlatClientProperties;
 import drawer.MyDrawerBuilder;
 import drawer.MyDrawerBuilder1;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
@@ -38,17 +40,23 @@ public class Menu_Principal extends javax.swing.JFrame {
                 visCarritoCompra.putClientProperty(FlatClientProperties.STYLE, ""
                         + "arc:25;" // Bordes redondeados
                         + "background:#FFFFFF"); // Fondo blanco
-                visCarritoCompra.setPreferredSize(new Dimension(238, 600));
+                visCarritoCompra.setPreferredSize(new Dimension(330, 600));
                 DefaultOption option = new DefaultOption() {
                     @Override
                     public boolean closeWhenClickOutside() {
                         return true;
                     }
                 };
-                String actions[] = new String[]{"Cancelar", "Ir al Carro"};
+                String actions[] = new String[]{"Cancelar", "Generar Orden"};
                 GlassPanePopup.showPopup(
-                        new SimplePopupBorder(visCarritoCompra, "Carrito Compra", new SimplePopupBorderOption().setWidth(238), actions, (pc, i) -> {
+                        new SimplePopupBorder(visCarritoCompra, "Carrito Compra", new SimplePopupBorderOption().setWidth(330), actions, (pc, i) -> {
                             if (i == 1) {
+                                GenerarOrder generarOrder = new GenerarOrder();
+                                contenedor.removeAll();
+                                contenedor.add(generarOrder, BorderLayout.NORTH);
+                                contenedor.revalidate();
+                                contenedor.repaint();
+                                pc.closePopup();
                             } else {
                                 pc.closePopup();
                             }

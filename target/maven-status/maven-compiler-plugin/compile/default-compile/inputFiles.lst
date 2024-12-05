@@ -27,6 +27,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Autogenerar.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\CarritoCompras.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\CarritoDetalles.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Categoria.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Cliente.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ColorRopa.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Encriptar.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\FotosInventario.java
@@ -35,6 +36,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ImageResizer.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Inventario.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Item.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Marca.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\OrdenPedido.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Perfil.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Producto.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ProductoInventario.java
@@ -74,6 +76,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\CarritoCompra.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\CartaProductos.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Colores.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\componentes\RoundButton.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\GenerarOrder.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\ImportarImagenes_a_Productos.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Item_Carrrito.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Vista_Orden\Orden.java
