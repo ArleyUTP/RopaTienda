@@ -8,7 +8,6 @@ public class Ofer_Circulo extends JComponent {
 
     private String texto = ""; // Texto a mostrar en el centro del círculo
 
-    // Constructor por defecto
     public Ofer_Circulo() {
         this.setPreferredSize(new Dimension(100, 100)); // Tamaño por defecto
     }

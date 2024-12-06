@@ -6,7 +6,6 @@ import Modelo.Usuario;
 import Persistencia.CarritoComprasDAO;
 import Persistencia.CarritoDetallesDAO;
 import com.formdev.flatlaf.FlatClientProperties;
-import java.awt.Dimension;
 import java.util.List;
 import javax.swing.BorderFactory;
 
@@ -14,6 +13,14 @@ public class CarritoCompra extends javax.swing.JPanel {
 
     private Usuario usuario;
     private CarritoCompras carritoCompra;
+
+    public CarritoCompras getCarritoCompra() {
+        return carritoCompra;
+    }
+
+    public void setCarritoCompra(CarritoCompras carritoCompra) {
+        this.carritoCompra = carritoCompra;
+    }
 
     public CarritoCompra(Usuario usuario) {
         this.usuario = usuario;

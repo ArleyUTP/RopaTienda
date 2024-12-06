@@ -519,12 +519,7 @@ CREATE TABLE DetallesCarritoComprar (
     subtotal AS (cantidad * precio) -- Columna calculada
 );
 
-CREATE TABLE OrdenPedido(
-	id BIGINT PRIMARY KEY IDENTITY(1,1),
-	carrito_id BIGINT FOREIGN KEY REFERENCES CarritoCompras(id)
-	ON DELETE CASCADE,
-	fechaEmision DATETIME2 DEFAULT GETDATE(),
-);
+
 
 CREATE PROCEDURE SP_ObtenerIdVariantePorTallayColor
 	@idTalla BIGINT,
@@ -559,7 +554,7 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE SP_CrearCarritoDetalle
+ALTER PROCEDURE SP_CrearCarritoDetalle
     @carrito_id BIGINT,
     @inventario_id BIGINT,
     @cantidad INT,
@@ -572,11 +567,11 @@ BEGIN
     -- Inicializar el resultado como fallo
     SET @resultado = 0;
 
-    -- Validar si el inventario existe y tiene suficiente stock para el nuevo pedido
+    -- Validar si el inventario existe (sin verificar stock, ya que no se reduce aquí)
     IF EXISTS (
         SELECT 1 
         FROM Inventario 
-        WHERE id = @inventario_id AND cantidad >= @cantidad
+        WHERE id = @inventario_id
     )
     BEGIN
         -- Verificar si ya existe un registro en el carrito con el mismo producto
@@ -591,11 +586,6 @@ BEGIN
             SET cantidad = cantidad + @cantidad
             WHERE carrito_id = @carrito_id AND inventario_id = @inventario_id;
 
-            -- Actualizar el inventario
-            UPDATE Inventario
-            SET cantidad = cantidad - @cantidad
-            WHERE id = @inventario_id;
-
             -- Indicar éxito
             SET @resultado = 1;
         END
@@ -604,11 +594,6 @@ BEGIN
             -- Si no existe, insertar un nuevo detalle en el carrito
             INSERT INTO DetallesCarritoComprar (carrito_id, inventario_id, cantidad, precio)
             VALUES (@carrito_id, @inventario_id, @cantidad, @precio);
-
-            -- Actualizar el inventario
-            UPDATE Inventario
-            SET cantidad = cantidad - @cantidad
-            WHERE id = @inventario_id;
 
             -- Indicar éxito
             SET @resultado = 1;
@@ -718,12 +703,14 @@ CREATE TABLE Clientes (
     nombre NVARCHAR(100) NOT NULL, -- Nombre completo del cliente
     tipo_documento NVARCHAR(50) NOT NULL, -- Ej: DNI, Pasaporte, etc.
     numero_documento NVARCHAR(20) NOT NULL UNIQUE, -- Número único del documento
-    direccion NVARCHAR(255) NOT NULL, -- Dirección completa del cliente
     telefono NVARCHAR(15), -- Teléfono del cliente (opcional)
     email NVARCHAR(100), -- Correo electrónico (opcional
     -- Restricción para evitar duplicados de cliente con tipo y número de documento
-    UNIQUE (tipo_documento, numero_documento)
+    UNIQUE (tipo_documento, numero_documento),
+	distrito_id INT FOREIGN KEY REFERENCES Distritos(id) ON DELETE CASCADE
 );
+ALTER TABLE Clientes
+ADD distrito_id INT NOT NULL FOREIGN KEY REFERENCES Distritos(id) ON DELETE CASCADE;
 
 CREATE TABLE Departamentos (
     id INT PRIMARY KEY IDENTITY(1,1),
@@ -950,3 +937,142 @@ BEGIN
     WHERE provincia_id = @ProvinciaId
     ORDER BY nombre;
 END;
+
+CREATE PROCEDURE SP_GenerarOrdenPedido
+    @cliente_id BIGINT,
+    @vendedor_id BIGINT,
+    @carrito_id BIGINT,
+    @forma_pago NVARCHAR(50),
+    @resultado BIT OUTPUT -- Indicador de éxito
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Inicializar variables
+    DECLARE @orden_id_table TABLE (id BIGINT); -- Usar tabla para capturar el OUTPUT
+    DECLARE @importe_total DECIMAL(10, 2) = 0;
+
+    -- Inicializar el resultado como fallo
+    SET @resultado = 0;
+
+    -- Validar que el carrito exista y esté activo
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM CarritoCompras 
+        WHERE id = @carrito_id AND usuario_id = @cliente_id AND estado = 'activo'
+    )
+    BEGIN
+        RETURN; -- Salir si no hay carrito válido
+    END
+
+    -- Verificar stock suficiente en inventario para los productos del carrito
+    IF EXISTS (
+        SELECT 1
+        FROM DetallesCarritoComprar d
+        JOIN Inventario i ON d.inventario_id = i.id
+        WHERE d.carrito_id = @carrito_id AND i.cantidad < d.cantidad
+    )
+    BEGIN
+        RETURN; -- Salir si algún producto no tiene suficiente stock
+    END
+
+    -- Calcular el importe total del carrito
+    SELECT @importe_total = SUM(d.subtotal)
+    FROM DetallesCarritoComprar d
+    WHERE d.carrito_id = @carrito_id;
+
+    -- Crear la orden y capturar el ID generado
+    INSERT INTO OrdenPedido (fecha_emision, importe_total, forma_pago, estado, cliente_id, vendedor_id, carrito_id)
+    OUTPUT INSERTED.id INTO @orden_id_table
+    VALUES (
+        GETDATE(),
+        @importe_total,
+        @forma_pago,
+        'pendiente',
+        @cliente_id,
+        @vendedor_id,
+        @carrito_id
+    );
+
+    -- Obtener el ID de la orden insertada
+    DECLARE @orden_id BIGINT;
+    SELECT @orden_id = id FROM @orden_id_table;
+
+    -- Reducir el inventario basado en los productos del carrito
+    UPDATE i
+    SET i.cantidad = i.cantidad - d.cantidad
+    FROM Inventario i
+    JOIN DetallesCarritoComprar d ON i.id = d.inventario_id
+    WHERE d.carrito_id = @carrito_id;
+
+    -- Cambiar el estado del carrito a inactivo
+    UPDATE CarritoCompras
+    SET estado = 'inactivo'
+    WHERE id = @carrito_id;
+
+    -- Indicar éxito
+    SET @resultado = 1;
+END;
+
+GO
+
+CREATE PROCEDURE SP_MostarOrdenesPedido
+AS
+BEGIN
+	SELECT id,fecha_emision,importe_total,forma_pago
+	FROM OrdenPedido
+END
+
+CREATE PROCEDURE SP_ObtenerClientes
+AS
+BEGIN
+    SELECT 
+        c.id,
+        c.nombre,
+        c.tipo_documento,
+        c.numero_documento,
+        c.telefono,
+        c.email,
+        d.id AS departamento_id,
+        d.nombre AS nombre_departamento,
+        p.id AS provincia_id,
+        p.nombre AS nombre_provincia,
+        dis.id AS distrito_id,
+        dis.nombre AS nombre_distrito
+    FROM Clientes c
+    INNER JOIN Distritos dis ON c.distrito_id = dis.id
+    INNER JOIN Provincias p ON dis.provincia_id = p.id
+    INNER JOIN Departamentos d ON p.departamento_id = d.id;
+END;
+ALTER PROCEDURE SP_GuardarCliente
+    @nombre NVARCHAR(100),
+    @tipo_documento NVARCHAR(50),
+    @numero_documento NVARCHAR(20),
+    @distrito_id INT,
+    @telefono NVARCHAR(15),
+    @email NVARCHAR(100)
+AS
+BEGIN
+    INSERT INTO Clientes (nombre, tipo_documento, numero_documento, distrito_id, telefono, email)
+    VALUES (
+        @nombre,
+        @tipo_documento,
+        @numero_documento,
+        @distrito_id, -- El distrito incluye relación con provincia y departamento
+        @telefono,
+        @email
+    );
+END;
+SELECT * FROM Clientes
+SELECT * FROM OrdenPedido
+SELECT * FROM CarritoCompras
+
+SELECT 1 
+FROM CarritoCompras 
+WHERE id = 1 AND usuario_id = 4 AND estado = 'activo';
+
+SELECT * FROM CarritoCompras
+SELECT d.inventario_id, i.cantidad AS stock_actual, d.cantidad AS cantidad_requerida
+FROM DetallesCarritoComprar d
+JOIN Inventario i ON d.inventario_id = i.id
+WHERE d.carrito_id = 1 AND i.cantidad < d.cantidad;

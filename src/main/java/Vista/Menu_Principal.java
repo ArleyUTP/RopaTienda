@@ -31,12 +31,11 @@ public class Menu_Principal extends javax.swing.JFrame {
         GlassPanePopup.install(this);
         this.usuario = usuario;
         initComponents();
-        carritoOfer_Item2.mostrarContador(usuario);
+        carritoOfer_Item2.mostrarContador(this.usuario);
         carritoOfer_Item2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 CarritoCompra visCarritoCompra = new CarritoCompra(usuario);
-                // Configurar el estilo de CarritoCompra
                 visCarritoCompra.putClientProperty(FlatClientProperties.STYLE, ""
                         + "arc:25;" // Bordes redondeados
                         + "background:#FFFFFF"); // Fondo blanco
@@ -51,7 +50,7 @@ public class Menu_Principal extends javax.swing.JFrame {
                 GlassPanePopup.showPopup(
                         new SimplePopupBorder(visCarritoCompra, "Carrito Compra", new SimplePopupBorderOption().setWidth(330), actions, (pc, i) -> {
                             if (i == 1) {
-                                GenerarOrder generarOrder = new GenerarOrder();
+                                GenerarOrder generarOrder = new GenerarOrder(visCarritoCompra.getCarritoCompra());
                                 contenedor.removeAll();
                                 contenedor.add(generarOrder, BorderLayout.NORTH);
                                 contenedor.revalidate();
