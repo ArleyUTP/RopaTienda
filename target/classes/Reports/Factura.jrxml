@@ -1,0 +1,127 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="Factura" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="65e9376d-bd28-41cb-a186-7b0877a8c72d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BD_Ex"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="orden_id" class="java.lang.Integer">
+		<description><![CDATA[identificador unico de orden]]></description>
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<query language="sql"><![CDATA[SELECT DC.cantidad,P.descripcion,P.precio_venta precio_unitario,DC.subtotal importe
+FROM OrdenPedido OP
+JOIN CarritoCompras CC ON OP.carrito_id=CC.id
+JOIN DetallesCarritoComprar DC ON DC.carrito_id=CC.id
+JOIN Inventario I ON DC.inventario_id=I.id
+JOIN Producto P ON I.producto_id=P.id
+WHERE OP.id=   $P{orden_id} ]]></query>
+	<field name="cantidad" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cantidad"/>
+		<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+	</field>
+	<field name="precio_unitario" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="precio_unitario"/>
+		<property name="com.jaspersoft.studio.field.label" value="precio_unitario"/>
+	</field>
+	<field name="importe" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="importe"/>
+		<property name="com.jaspersoft.studio.field.label" value="importe"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="230" splitType="Stretch">
+		<element kind="rectangle" uuid="594f35f3-7731-4712-8a7b-23a41e678b1f" x="0" y="0" width="280" height="120"/>
+		<element kind="rectangle" uuid="da961d83-cc24-49e5-a20f-1106ae63270b" x="290" y="0" width="265" height="120"/>
+		<element kind="staticText" uuid="b9424176-c6f2-4c6c-b2cd-b54dd866464f" x="290" y="0" width="100" height="16" fontSize="12.0">
+			<text><![CDATA[N° de Serie:]]></text>
+		</element>
+		<element kind="staticText" uuid="f5387a30-8505-4a22-a490-ebd8e0aa0f4a" x="290" y="16" width="100" height="16" fontSize="12.0">
+			<text><![CDATA[Correlativo:]]></text>
+		</element>
+		<element kind="rectangle" uuid="5bfd72f2-2c1c-4638-9818-a67eccb6a2f6" x="0" y="130" width="280" height="20"/>
+		<element kind="staticText" uuid="8aa8489d-6f13-4523-887c-d2f4d09e80a4" x="0" y="130" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Fecha de Emisión:]]></text>
+		</element>
+		<element kind="rectangle" uuid="7f673319-8562-4855-b77f-62894b3f5425" x="0" y="150" width="280" height="20"/>
+		<element kind="staticText" uuid="2063a06c-9330-4116-b950-94070deaa3b6" x="0" y="150" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Hora de Emisión:]]></text>
+		</element>
+		<element kind="rectangle" uuid="c76831b9-8a09-4092-872f-a7820c2b978b" x="0" y="170" width="280" height="20"/>
+		<element kind="staticText" uuid="36235d58-0dd1-4261-9f7f-529362b19746" x="0" y="170" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Left">
+			<text><![CDATA[Cliente:]]></text>
+		</element>
+		<element kind="rectangle" uuid="858d2361-ce60-45dc-9b2f-0d208827241d" x="280" y="130" width="275" height="20"/>
+		<element kind="staticText" uuid="a0d59746-bae6-45c1-8af4-52f359b088d5" x="280" y="130" width="120" height="20" fontSize="12.0" bold="true">
+			<text><![CDATA[Dirección:]]></text>
+		</element>
+		<element kind="rectangle" uuid="eb9e1c5a-2056-4428-bd11-6cfe4f2e11e0" x="280" y="150" width="275" height="20"/>
+		<element kind="staticText" uuid="531ed7f3-3bb5-4bc6-bd0a-b3cca4a539e4" x="280" y="150" width="120" height="20" fontSize="12.0" bold="true">
+			<text><![CDATA[Tipo de Documento:]]></text>
+		</element>
+		<element kind="rectangle" uuid="ebc03a9e-7be9-473d-883a-8b5736674c9c" x="280" y="170" width="275" height="20"/>
+		<element kind="staticText" uuid="f8fa3e98-f77d-44da-aa3d-6e44395d9cd1" x="280" y="170" width="120" height="20" fontSize="12.0" bold="true">
+			<text><![CDATA[N° de Documento:]]></text>
+		</element>
+		<element kind="rectangle" uuid="fbce9f8a-fe90-4fe2-82d6-8fcffe6a11fb" x="0" y="190" width="280" height="20"/>
+		<element kind="staticText" uuid="b3bfd5e8-8e77-494c-93dd-b32f7fdc4254" x="0" y="190" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Vendedor:]]></text>
+		</element>
+		<element kind="rectangle" uuid="bec632ba-a745-433e-a2d7-1f04485ae9c9" x="280" y="190" width="275" height="20"/>
+		<element kind="staticText" uuid="53f6ba1b-52e6-4afc-be7c-cdb035f0a40c" x="280" y="190" width="120" height="20" fontSize="12.0" bold="true" vTextAlign="Middle">
+			<text><![CDATA[Tipo de Pago:]]></text>
+		</element>
+		<element kind="staticText" uuid="93f9aaa8-0334-4560-8658-aa20d60b632f" x="290" y="32" width="100" height="18" fontSize="12.0">
+			<text><![CDATA[N° de Orden:]]></text>
+		</element>
+	</title>
+	<columnHeader height="30" splitType="Stretch">
+		<element kind="rectangle" uuid="cf023281-cd47-4d28-b21f-b4d16f85b7bd" x="0" y="0" width="100" height="30"/>
+		<element kind="staticText" uuid="71f9ca12-959c-43c1-94e0-d99e8bbe722d" x="0" y="0" width="100" height="30" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Cantidad]]></text>
+		</element>
+		<element kind="rectangle" uuid="bd8b2419-0c26-4ce7-97d8-8ce62eaf00be" x="100" y="0" width="180" height="30"/>
+		<element kind="staticText" uuid="35b41913-892c-4bef-8990-c01003508041" x="100" y="0" width="180" height="30" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Descripción]]></text>
+		</element>
+		<element kind="rectangle" uuid="2eea32ba-7558-4042-85ad-9449473b7808" x="280" y="0" width="120" height="30"/>
+		<element kind="rectangle" uuid="425ebf22-ecd8-4a7a-89e9-73fbc4ae43c3" x="400" y="0" width="155" height="30"/>
+		<element kind="staticText" uuid="971771d7-aed6-499d-b7aa-869f276a4a62" x="280" y="0" width="120" height="30" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[P. Unitario]]></text>
+		</element>
+		<element kind="staticText" uuid="0274d417-b7f7-4814-a867-b17ea596692e" x="400" y="0" width="154" height="30" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Importe]]></text>
+		</element>
+	</columnHeader>
+	<summary height="384" splitType="Stretch">
+		<element kind="rectangle" uuid="50a96734-6490-4782-b4d7-5bbbfd20a120" x="-2" y="220" width="280" height="20"/>
+		<element kind="rectangle" uuid="b5b38253-09ef-4662-bb23-98246e0ece80" x="398" y="220" width="155" height="20"/>
+		<element kind="rectangle" uuid="d888ea04-c922-453c-b11d-5334cb3c83c8" x="278" y="220" width="120" height="20"/>
+		<element kind="staticText" uuid="86d3c0bb-7efd-471d-b114-7eea6b234218" x="278" y="220" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Subtotal:]]></text>
+		</element>
+		<element kind="staticText" uuid="ce09c5b9-1b4e-4f76-a4ce-35559fd9fd59" x="-2" y="220" width="100" height="20" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Total en Letras:]]></text>
+		</element>
+		<element kind="rectangle" uuid="c2ce37c7-a462-4ee9-aab9-3d2e47fd7cc3" x="278" y="240" width="120" height="20"/>
+		<element kind="rectangle" uuid="21054c91-57f4-4906-a9e6-5ac34f97e785" x="398" y="240" width="155" height="20"/>
+		<element kind="staticText" uuid="757a999e-9ebd-4652-bbf8-32a46fb1ca51" x="278" y="240" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Total IVA:]]></text>
+		</element>
+		<element kind="staticText" uuid="1fd40069-1de8-4bfe-8756-4129e8aba259" x="78" y="290" width="399" height="30" fontSize="14.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Gracias por su compra]]></text>
+		</element>
+		<element kind="rectangle" uuid="d7ccb81f-a2e8-48b1-93df-024ca5c988b7" x="278" y="260" width="120" height="20"/>
+		<element kind="rectangle" uuid="8f445709-50aa-4b9e-8987-dca650241c07" x="398" y="260" width="155" height="20"/>
+		<element kind="staticText" uuid="9f4f85f9-6595-4165-bae1-f86eac32618a" x="278" y="260" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[Total]]></text>
+		</element>
+		<element kind="subreport" uuid="df78ef7a-d18b-4688-a8c2-4b7b93c33442" x="-18" y="0" width="595" height="20">
+			<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+			<expression><![CDATA["DetallesProductos.jasper"]]></expression>
+			<parameter name="orden_id">
+				<expression><![CDATA[$P{orden_id}]]></expression>
+			</parameter>
+		</element>
+	</summary>
+</jasperReport>

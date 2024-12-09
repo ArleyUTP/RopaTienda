@@ -519,6 +519,7 @@ CREATE TABLE DetallesCarritoComprar (
     subtotal AS (cantidad * precio) -- Columna calculada
 );
 
+SELECT GETDATE()
 
 
 CREATE PROCEDURE SP_ObtenerIdVariantePorTallayColor

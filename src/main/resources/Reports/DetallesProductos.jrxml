@@ -1,0 +1,61 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="DetallesProductos1jrxml" language="java" columnCount="1" pageWidth="595" pageHeight="842" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="852642cd-862c-49a4-b15c-db10e1e63b08">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BD_Ex"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<parameter name="orden_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<query language="sql"><![CDATA[SELECT DC.cantidad,P.descripcion,P.precio_venta precioUnitario,DC.subtotal importe
+FROM OrdenPedido OP
+JOIN CarritoCompras CC ON OP.carrito_id=CC.id
+JOIN DetallesCarritoComprar DC ON DC.carrito_id=CC.id
+JOIN Inventario I ON DC.inventario_id=I.id
+JOIN Producto P ON I.producto_id=P.id
+WHERE OP.id=  $P{orden_id} ]]></query>
+	<field name="cantidad" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cantidad"/>
+		<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+	</field>
+	<field name="precioUnitario" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="precioUnitario"/>
+		<property name="com.jaspersoft.studio.field.label" value="precioUnitario"/>
+	</field>
+	<field name="importe" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="importe"/>
+		<property name="com.jaspersoft.studio.field.label" value="importe"/>
+	</field>
+	<background splitType="Stretch"/>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<element kind="textField" uuid="b0aaca7d-c384-4532-a5f2-0e8049a7c278" x="0" y="0" width="100" height="26" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{cantidad}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5cead85b-9a4e-4a79-804c-07ccf296e481"/>
+			</element>
+			<element kind="textField" uuid="1b1f008a-185e-4541-a6cf-5a9b19529349" x="100" y="0" width="180" height="26" fontSize="12.0" textAdjust="StretchHeight" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{descripcion}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b58da1b2-dd08-402f-b9e9-a7e53dc7405e"/>
+			</element>
+			<element kind="textField" uuid="7109cc5c-f5b5-4c42-9478-9b06d2e283aa" x="280" y="0" width="120" height="26" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{precioUnitario}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="73ae1699-9329-4c49-b5db-182c581dc60d"/>
+			</element>
+			<element kind="textField" uuid="9be05866-f0e4-4ef9-8f3b-1714b75b4080" x="400" y="0" width="154" height="26" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{importe}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="033f62e7-b57e-4252-af7c-688062076c2f"/>
+			</element>
+		</band>
+	</detail>
+</jasperReport>

@@ -52,6 +52,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ClienteDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ColorDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\DepartamentoDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\DistritoDAO.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\DocumentoDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\FotosInventarioDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\GeneroDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\LoginDAO.java
@@ -64,6 +65,9 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\TallaDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\UsuarioDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Productos\Inventario.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Productos\Producto.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Reportes\BoletaDataSource.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Reportes\Jasper.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Reportes\Vista_Previa.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Validaciones\ValidarCamposNumericos.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Validaciones\ValidarCamposVacios.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Validaciones\ValidarCampoTexto.java
