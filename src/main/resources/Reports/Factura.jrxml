@@ -6,6 +6,9 @@
 		<description><![CDATA[identificador unico de orden]]></description>
 		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
+	<parameter name="tipo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[" "]]></defaultValueExpression>
+	</parameter>
 	<query language="sql"><![CDATA[SELECT DC.cantidad,P.descripcion,P.precio_venta precio_unitario,DC.subtotal importe
 FROM OrdenPedido OP
 JOIN CarritoCompras CC ON OP.carrito_id=CC.id
@@ -29,6 +32,7 @@ WHERE OP.id=   $P{orden_id} ]]></query>
 		<property name="com.jaspersoft.studio.field.name" value="importe"/>
 		<property name="com.jaspersoft.studio.field.label" value="importe"/>
 	</field>
+	<field name="fechaEmision" class="java.sql.Date"/>
 	<background splitType="Stretch"/>
 	<title height="230" splitType="Stretch">
 		<element kind="rectangle" uuid="594f35f3-7731-4712-8a7b-23a41e678b1f" x="0" y="0" width="280" height="120"/>
@@ -48,7 +52,7 @@ WHERE OP.id=   $P{orden_id} ]]></query>
 			<text><![CDATA[Hora de Emisión:]]></text>
 		</element>
 		<element kind="rectangle" uuid="c76831b9-8a09-4092-872f-a7820c2b978b" x="0" y="170" width="280" height="20"/>
-		<element kind="staticText" uuid="36235d58-0dd1-4261-9f7f-529362b19746" x="0" y="170" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Left">
+		<element kind="staticText" uuid="36235d58-0dd1-4261-9f7f-529362b19746" x="0" y="170" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
 			<text><![CDATA[Cliente:]]></text>
 		</element>
 		<element kind="rectangle" uuid="858d2361-ce60-45dc-9b2f-0d208827241d" x="280" y="130" width="275" height="20"/>
@@ -73,6 +77,15 @@ WHERE OP.id=   $P{orden_id} ]]></query>
 		</element>
 		<element kind="staticText" uuid="93f9aaa8-0334-4560-8658-aa20d60b632f" x="290" y="32" width="100" height="18" fontSize="12.0">
 			<text><![CDATA[N° de Orden:]]></text>
+		</element>
+		<element kind="textField" uuid="6e66e2a9-4fc4-435e-840d-8f5e98fa88fc" x="290" y="70" width="120" height="30" forecolor="#FF0905" fontSize="20.0" linkType="None" linkTarget="Self" hTextAlign="Center">
+			<expression><![CDATA[$P{tipo}]]></expression>
+		</element>
+		<element kind="staticText" uuid="489f36b6-942b-4f87-a619-7129758d14cb" x="390" y="70" width="163" height="30" fontSize="20.0" hTextAlign="Left">
+			<text><![CDATA[de Venta]]></text>
+		</element>
+		<element kind="textField" uuid="84408609-c9fb-4e21-95d3-4cff7ada9e0a" x="120" y="130" width="160" height="20">
+			<expression><![CDATA[$F{fechaEmision}]]></expression>
 		</element>
 	</title>
 	<columnHeader height="30" splitType="Stretch">

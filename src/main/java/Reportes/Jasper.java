@@ -20,7 +20,6 @@ public class Jasper extends DAO {
         try {
             HashMap parametros = new HashMap();
             parametros.put("orden_id", 1);
-
             JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reports/DetallesProductos.jasper"));
             JasperPrint jPrint = JasperFillManager.fillReport(report, parametros, getconection());
             JasperViewer view = new JasperViewer(jPrint, false);
@@ -30,7 +29,6 @@ public class Jasper extends DAO {
             manejarError("Error al mostrar informe", e);
         }
     }
-
     @Override
     public Object parsear(ResultSet rs) {
         throw new UnsupportedOperationException("Unimplemented method 'parsear'");

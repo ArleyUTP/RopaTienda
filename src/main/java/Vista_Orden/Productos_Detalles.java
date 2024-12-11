@@ -287,17 +287,21 @@ public class Productos_Detalles extends javax.swing.JPanel {
         ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
         CarritoDetalles carritoDetalles = new CarritoDetalles();
         if (tallaDeRopaSeccionada != null & colorDeRopaSeleccionada != null) {
-            int idVariante = productoInventarioDAO.obtenerIdVariantePorTallayColor(tallaDeRopaSeccionada, colorDeRopaSeleccionada);
-            if (idVariante != 0) {
-                ProductoInventario productoInventario = new ProductoInventario();
-                productoInventario.setIdVariante(idVariante);
-                productoInventario.setTalla(tallaDeRopaSeccionada);
-                productoInventario.setColorRopa(colorDeRopaSeleccionada);
-                carritoDetalles.setProductoInventario(productoInventario);
-                carritoDetalles.setCantidad((int) cantidad.getValue());
-                carritoDetalles.setPrecio(producto.getPrecioVenta());
+            if ((int) cantidad.getValue() <= 0) {
+                int idVariante = productoInventarioDAO.obtenerIdVariantePorTallayColor(tallaDeRopaSeccionada, colorDeRopaSeleccionada);
+                if (idVariante != 0) {
+                    ProductoInventario productoInventario = new ProductoInventario();
+                    productoInventario.setIdVariante(idVariante);
+                    productoInventario.setTalla(tallaDeRopaSeccionada);
+                    productoInventario.setColorRopa(colorDeRopaSeleccionada);
+                    carritoDetalles.setProductoInventario(productoInventario);
+                    carritoDetalles.setCantidad((int) cantidad.getValue());
+                    carritoDetalles.setPrecio(producto.getPrecioVenta());
+                } else {
+                    System.out.println("No se encontro el id variante para esa combinacion");
+                }
             } else {
-                System.out.println("No se encontro el id variante para esa combinacion");
+                Notifications.getInstance().show(Notifications.Type.INFO, "Elegir una cantidad mayor a 0");
             }
         } else {
             Notifications.getInstance().show(Notifications.Type.INFO, "Selecccione un color y talla");

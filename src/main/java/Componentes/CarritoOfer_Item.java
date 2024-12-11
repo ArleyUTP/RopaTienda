@@ -31,6 +31,9 @@ public class CarritoOfer_Item extends javax.swing.JPanel {
             }
         }
     }
+    public void recargarContador(){
+        mostrarContador(usuarioActual);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

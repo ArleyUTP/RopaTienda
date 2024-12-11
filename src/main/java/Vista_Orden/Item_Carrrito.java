@@ -1,7 +1,9 @@
 package Vista_Orden;
 
+import Componentes.CarritoOfer_Item;
 import Modelo.CarritoDetalles;
 import Modelo.Producto;
+import Modelo.Usuario;
 import Persistencia.CarritoDetallesDAO;
 import Persistencia.ProductoDAO;
 import raven.toast.Notifications;
@@ -22,6 +24,7 @@ public class Item_Carrrito extends javax.swing.JPanel {
             imagen.setImage(producto.getFotoPrincipal().getIcon());
         }
     }
+
 
     private void recargarDatosCarrito() {
         CarritoCompra carritoCompra = (CarritoCompra) getParent().getParent().getParent().getParent();

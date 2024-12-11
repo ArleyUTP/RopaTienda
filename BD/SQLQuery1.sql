@@ -607,14 +607,13 @@ CREATE PROCEDURE SP_ObtenerCarritoActivo
 AS
 BEGIN
     SET NOCOUNT ON;
-
     -- Retornar el carrito activo del usuario
     SELECT TOP 1 id, usuario_id, fecha_creacion, estado
     FROM CarritoCompras
     WHERE usuario_id = @usuario_id AND estado = 'activo';
 END;
 
-CREATE PROCEDURE SP_ObtenerDetallesPorCarrito
+ALTER PROCEDURE SP_ObtenerDetallesPorCarrito
     @carrito_id BIGINT
 AS
 BEGIN
@@ -629,7 +628,7 @@ BEGIN
         d.precio
     FROM DetallesCarritoComprar d
     INNER JOIN Inventario i ON d.inventario_id = i.id
-    WHERE d.carrito_id = 1;
+    WHERE d.carrito_id = @carrito_id;
 END;
 
 CREATE PROCEDURE SP_ObtenerProductoPorId
@@ -1077,3 +1076,148 @@ SELECT d.inventario_id, i.cantidad AS stock_actual, d.cantidad AS cantidad_reque
 FROM DetallesCarritoComprar d
 JOIN Inventario i ON d.inventario_id = i.id
 WHERE d.carrito_id = 1 AND i.cantidad < d.cantidad;
+
+SELECT DC.cantidad,P.descripcion,P.precio_venta precio_unitario,DC.subtotal importe
+FROM OrdenPedido OP
+JOIN CarritoCompras CC ON OP.carrito_id=CC.id
+JOIN DetallesCarritoComprar DC ON DC.carrito_id=CC.id
+JOIN Inventario I ON DC.inventario_id=I.id
+JOIN Producto P ON I.producto_id=P.id
+WHERE OP.id=  1
+
+SELECT * FROM OrdenPedido;
+
+
+SELECT
+    C.nombre AS Cliente,
+    U.nombre + ' ' + U.apellido AS Vendedor,
+    DE.nombre + '\' + P.nombre + '\' + D.nombre AS Ubicacion,
+    C.tipo_documento AS TipoDocumento,
+    C.numero_documento AS NumeroDocumento,
+    OP.forma_pago AS FormaPago
+FROM OrdenPedido OP
+JOIN Clientes C ON OP.cliente_id = C.id
+JOIN Usuarios U ON OP.vendedor_id = U.id
+JOIN Distritos D ON C.distrito_id = D.id
+JOIN Provincias P ON D.provincia_id = P.id
+JOIN Departamentos DE ON P.departamento_id = DE.id
+WHERE OP.id = 1;
+
+EXEC sp_help OrdenPedido;
+CREATE PROCEDURE SP_ObtenerDatosPedido
+	@idOrdenPedido BIGINT
+AS
+BEGIN
+		SELECT
+		C.nombre AS Cliente,
+		U.nombre + ' ' + U.apellido AS Vendedor,
+		DE.nombre + '\' + P.nombre + '\' + D.nombre AS Ubicacion,
+		C.tipo_documento AS TipoDocumento,
+		C.numero_documento AS NumeroDocumento,
+		OP.forma_pago AS FormaPago
+		FROM OrdenPedido OP
+		JOIN Clientes C ON OP.cliente_id = C.id
+		JOIN Usuarios U ON OP.vendedor_id = U.id
+		JOIN Distritos D ON C.distrito_id = D.id
+		JOIN Provincias P ON D.provincia_id = P.id
+		JOIN Departamentos DE ON P.departamento_id = DE.id
+		WHERE OP.id = @idOrdenPedido;
+END
+
+CREATE TABLE Comprobantes (
+    id BIGINT PRIMARY KEY IDENTITY(1,1), -- Identificador único del comprobante
+    orden_pedido_id BIGINT NOT NULL FOREIGN KEY REFERENCES OrdenPedido(id) ON DELETE CASCADE, -- Relación con la orden de pedido
+    tipo NVARCHAR(20) NOT NULL CHECK (tipo IN ('Factura', 'Boleta')), -- Tipo de comprobante
+    serie NVARCHAR(4) NOT NULL, -- Serie del comprobante
+    correlativo INT NOT NULL, -- Correlativo del comprobante
+	subtotal DECIMAL(10,8) NOT NULL DEFAULT 0,
+	total_iva DECIMAL(10,8) NOT NULL DEFAULT 0,
+	total_a_pagar DECIMAL(10,8) NOT NULL DEFAULT 0,
+    total_letras NVARCHAR(MAX), -- Total expresado en letras (opcional)
+    fecha_emision DATETIME2 NOT NULL DEFAULT GETDATE(), -- Fecha y hora de emisión
+    UNIQUE (tipo, serie, correlativo) -- Garantiza unicidad de tipo, serie y correlativo
+);
+
+SELECT * FROM OrdenPedido
+CREATE PROC SP_GenerarComprobante
+	@orden_pedido BIGINT,
+	@tipo NVARCHAR(20),
+
+
+AS
+BEGIN
+	
+END
+
+CREATE TABLE SeriesCorrelativos (
+    id BIGINT PRIMARY KEY IDENTITY(1,1), -- Identificador único
+    tipo NVARCHAR(20) NOT NULL CHECK (tipo IN ('Factura', 'Boleta')), -- Tipo de comprobante
+    serie NVARCHAR(4) NOT NULL, -- Serie del comprobante
+    correlativo_actual INT NOT NULL DEFAULT 0, -- Último correlativo utilizado
+    UNIQUE (tipo, serie) -- Garantiza unicidad de tipo y serie
+);
+SELECT * FROM SeriesCorrelativos
+-- Insertar series para boletas
+INSERT INTO SeriesCorrelativos (tipo, serie, correlativo_actual)
+VALUES 
+    ('Boleta', 'B001', 0), -- Primera serie para Boletas
+    ('Boleta', 'B002', 0); -- Segunda serie para Boletas (si necesitas más)
+
+-- Insertar series para facturas
+INSERT INTO SeriesCorrelativos (tipo, serie, correlativo_actual)
+VALUES 
+    ('Factura', 'F001', 0), -- Primera serie para Facturas
+    ('Factura', 'F002', 0); -- Segunda serie para Facturas (si necesitas más);
+
+
+	SELECT * FROM CarritoCompras
+
+CREATE PROCEDURE SP_ObtenerOrdenPorId
+	@id BIGINT
+AS
+BEGIN
+	SELECT id,fecha_emision,importe_total,forma_pago
+	FROM OrdenPedido
+	where id=@id
+END
+
+CREATE PROCEDURE GenerarComprobante
+    @orden_pedido_id BIGINT,
+    @tipo NVARCHAR(20),
+    @serie NVARCHAR(4),
+    @correlativo INT,
+    @subtotal DECIMAL(18, 2),
+    @total_iva DECIMAL(18, 2),
+    @total_a_pagar DECIMAL(18, 2),
+    @total_letras NVARCHAR(MAX),
+    @id BIGINT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Comprobantes (orden_pedido_id, tipo, serie, correlativo, subtotal, total_iva, total_a_pagar, total_letras)
+    VALUES (@orden_pedido_id, @tipo, @serie, @correlativo, @subtotal, @total_iva, @total_a_pagar, @total_letras);
+
+    SET @id = SCOPE_IDENTITY();
+END;
+
+CREATE PROCEDURE SP_ObtenerSerieYCorrelativo
+    @tipo NVARCHAR(20)
+AS
+BEGIN
+    SELECT TOP 1 id, tipo, serie, correlativo_actual
+    FROM SeriesCorrelativos
+    WHERE tipo = @tipo
+    ORDER BY id ASC;
+END;
+CREATE PROCEDURE SP_ActualizarCorrelativo
+    @id BIGINT,
+    @nuevoCorrelativo INT
+AS
+BEGIN
+    UPDATE SeriesCorrelativos
+    SET correlativo_actual = @nuevoCorrelativo
+    WHERE id = @id;
+END;
+
+

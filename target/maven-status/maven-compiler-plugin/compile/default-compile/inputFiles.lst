@@ -29,6 +29,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\CarritoDetalles.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Categoria.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Cliente.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ColorRopa.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Comprobante.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Departamento.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Distrito.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Encriptar.java
@@ -38,6 +39,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ImageResizer.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Inventario.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Item.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Marca.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\NumeroALetraPeru.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\OrdenPedido.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Perfil.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Producto.java
@@ -50,6 +52,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\CarritoDetallesDAO.j
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\CategoriaDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ClienteDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ColorDAO.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ComprobanteDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\DepartamentoDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\DistritoDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\DocumentoDAO.java

@@ -36,6 +36,7 @@ public class CarritoComprasDAO extends DAO<CarritoCompras> {
             // Ejecutar el procedimiento almacenado
             cs.execute();
             // Retornar el resultado del parámetro de salida
+            System.out.println("Cantidad Obtenida: "+cs.getInt(2));
             return cs.getInt(2);
         } catch (SQLException e) {
             manejarError("Error al obtener la cantidad de productos del carrito activo", e);
@@ -58,7 +59,6 @@ public class CarritoComprasDAO extends DAO<CarritoCompras> {
                     carritoCompras.setUsuario(usuario);
                     carritoCompras.setFechaCreacion(rs.getDate("fecha_creacion"));
                     carritoCompras.setEstado(rs.getString("estado"));
-
                     return carritoCompras; // Retorna el carrito activo
                 }
             }

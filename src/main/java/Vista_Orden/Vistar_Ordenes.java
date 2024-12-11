@@ -1,9 +1,23 @@
 package Vista_Orden;
 
+import Modelo.Comprobante;
+import Modelo.NumeroALetraPeru;
+import Modelo.OrdenPedido;
+import Modelo.SeriesCorrelativos;
+import Modelo.Usuario;
+import Persistencia.ComprobanteDAO;
 import com.formdev.flatlaf.FlatClientProperties;
 import Persistencia.OrdenPedidoDAO;
+import Persistencia.SeriesCorrelativosDAO;
+import Reportes.Vista_Previa;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import raven.toast.Notifications;
 
 public class Vistar_Ordenes extends javax.swing.JPanel {
+
+    private OrdenPedido ordenSeleccionada;
 
     public Vistar_Ordenes() {
         initComponents();
@@ -40,7 +54,21 @@ public class Vistar_Ordenes extends javax.swing.JPanel {
         OrdenPedidoDAO ordenPedidoDAO = new OrdenPedidoDAO();
         ordenPedidoDAO.mostrarOrdenesPedido(table);
     }
-    
+
+    private List<OrdenPedido> getSelect() {
+        OrdenPedidoDAO ordenPedidoDAO = new OrdenPedidoDAO();
+        List<OrdenPedido> selectOrdes = new ArrayList<>();
+        for (int i = 0; i < table.getRowCount(); i++) {
+            Boolean isSelected = (Boolean) table.getValueAt(i, 0);
+            if (isSelected != null && isSelected) {
+                int ordenId = (Integer) table.getValueAt(i, 1);
+                OrdenPedido ordenPedido = ordenPedidoDAO.obtenerOrdenPedidoPorId(ordenId);
+                selectOrdes.add(ordenPedido);
+            }
+        }
+        return selectOrdes;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -117,8 +145,54 @@ public class Vistar_Ordenes extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_generarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generarActionPerformed
-        
-        
+        List<OrdenPedido> ordenesSelecionadas = getSelect();
+        if (!ordenesSelecionadas.isEmpty()) {
+            if (ordenesSelecionadas.size() == 1) {
+                ordenSeleccionada = ordenesSelecionadas.get(0);
+
+                // Mostrar diálogo para elegir tipo de documento
+                String[] opciones = {"Factura", "Boleta"};
+                String tipoSeleccionado = (String) JOptionPane.showInputDialog(
+                        null,
+                        "Seleccione el tipo de comprobante",
+                        "Generar Comprobante",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opciones,
+                        opciones[0]);
+
+                if (tipoSeleccionado != null) {
+                    try {
+                        // Obtener serie y correlativo
+                        Comprobante comprobante = new Comprobante();
+                        comprobante.setOrdenPedido(ordenSeleccionada);
+                        comprobante.setTipo(tipoSeleccionado);
+                        comprobante.setSubtotal(ordenSeleccionada.getImporte_total());
+                        // Obtener serie y correlativo desde SeriesCorrelativosDAO
+                        SeriesCorrelativosDAO seriesDAO = new SeriesCorrelativosDAO();
+                        SeriesCorrelativos serieCorrelativo = seriesDAO.obtenerSerieYCorrelativo(tipoSeleccionado);
+                        comprobante.setSerie(serieCorrelativo.getSerie());
+                        comprobante.setCorrelativo(serieCorrelativo.getCorrelativoActual() + 1);
+
+                        // Generar el comprobante
+                        ComprobanteDAO comprobanteDAO = new ComprobanteDAO();
+                        long idComprobante = comprobanteDAO.generarComprobante(comprobante);
+                        // Actualizar el correlativo en la tabla SeriesCorrelativos
+                        seriesDAO.actualizarCorrelativo(serieCorrelativo.getId(), comprobante.getCorrelativo());
+                        if (idComprobante!=0) {
+                            
+                        }
+                        Notifications.getInstance().show(Notifications.Type.SUCCESS, "Comprobante generado con ID: " + idComprobante);
+                    } catch (Exception e) {
+                        Notifications.getInstance().show(Notifications.Type.ERROR, "Error al generar comprobante: " + e.getMessage());
+                    }
+                }
+            } else {
+                Notifications.getInstance().show(Notifications.Type.WARNING, "Seleccionar solo una Orden para Generar");
+            }
+        } else {
+            Notifications.getInstance().show(Notifications.Type.WARNING, "Selecciona un Orden Para Generar");
+        }
     }//GEN-LAST:event_btn_generarActionPerformed
 
 

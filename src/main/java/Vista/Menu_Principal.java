@@ -57,11 +57,13 @@ public class Menu_Principal extends javax.swing.JFrame {
                                 contenedor.repaint();
                                 pc.closePopup();
                             } else {
+                                carritoOfer_Item2.mostrarContador(usuario);
                                 pc.closePopup();
                             }
                         }),
                         option
                 );
+                carritoOfer_Item2.mostrarContador(usuario);
             }
         });
         perfil.cargarDatos(usuario);
