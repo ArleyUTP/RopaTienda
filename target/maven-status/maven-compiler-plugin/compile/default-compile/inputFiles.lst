@@ -45,6 +45,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Perfil.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Producto.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\ProductoInventario.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Provincia.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\SeriesCorrelativos.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Talla.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Modelo\Usuario.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\CarritoComprasDAO.java
@@ -64,6 +65,7 @@ C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\OrdenPedidoDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ProductoDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ProductoInventarioDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\ProvinciaDAO.java
+C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\SeriesCorrelativosDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\TallaDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Persistencia\UsuarioDAO.java
 C:\Users\user\Desktop\RopaTienda\src\main\java\Productos\Inventario.java

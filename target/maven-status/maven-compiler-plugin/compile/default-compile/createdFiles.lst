@@ -19,6 +19,7 @@ Vista_Productos\CrearVariantes.class
 Vista_Productos\CrearVariantes$3.class
 Modelo\Distrito.class
 Vista_Usuarios\table\TableHeaderAlignment.class
+Persistencia\ComprobanteDAO.class
 Persistencia\CategoriaDAO.class
 Vista\Swing\WrapLayout.class
 Componentes\PanelLogin$2.class
@@ -131,6 +132,7 @@ Modelo\Autogenerar.class
 Vista_Usuarios\TableCellProfile$1.class
 drawer\MyDrawerBuilder1$1.class
 Reportes\Vista_Previa.class
+Modelo\NumeroALetraPeru.class
 Vista\Vista_login$12.class
 Persistencia\FotosInventarioDAO.class
 Vista_Usuarios\Crear$12.class
@@ -147,6 +149,7 @@ Vista_Productos\CartaProductosMan$1.class
 Vista_Usuarios\Man_Usuarios$4.class
 Vista_Productos\Crear$5.class
 Vista\Menu_Principal$2.class
+Persistencia\SeriesCorrelativosDAO.class
 Vista_Usuarios\table\ButtonAction.class
 Persistencia\ProductoInventarioDAO.class
 Modelo\Inventario.class
@@ -194,9 +197,11 @@ Vista_Orden\GenerarOrder$1.class
 Vista\Vista_login$9.class
 Vista_Productos\Mantenimiento_Productos$6$1.class
 Vista_Productos\Crear.class
+Modelo\Comprobante.class
 Vista_Orden\Vistar_Ordenes$1.class
 drawer\ImageAvatar.class
 drawer\MyDrawerBuilder$1.class
+Modelo\SeriesCorrelativos.class
 drawer\Menu$2.class
 Vista_Productos\Crear$8.class
 Vista_Productos\coloas$1.class

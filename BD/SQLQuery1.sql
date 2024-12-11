@@ -1138,6 +1138,15 @@ CREATE TABLE Comprobantes (
     UNIQUE (tipo, serie, correlativo) -- Garantiza unicidad de tipo, serie y correlativo
 );
 
+ALTER TABLE Comprobantes
+ALTER COLUMN subtotal DECIMAL(18,2) NOT NULL;
+
+ALTER TABLE Comprobantes
+ALTER COLUMN total_iva DECIMAL(18,2) NOT NULL;
+
+ALTER TABLE Comprobantes
+ALTER COLUMN total_a_pagar DECIMAL(18,2) NOT NULL;
+
 SELECT * FROM OrdenPedido
 CREATE PROC SP_GenerarComprobante
 	@orden_pedido BIGINT,
@@ -1197,10 +1206,12 @@ BEGIN
 
     INSERT INTO Comprobantes (orden_pedido_id, tipo, serie, correlativo, subtotal, total_iva, total_a_pagar, total_letras)
     VALUES (@orden_pedido_id, @tipo, @serie, @correlativo, @subtotal, @total_iva, @total_a_pagar, @total_letras);
-
     SET @id = SCOPE_IDENTITY();
+	UPDATE OrdenPedido
+	SET estado = 'procesado'
+	WHERE id=@orden_pedido_id;
 END;
-
+SELECT * FROM Comprobantes
 CREATE PROCEDURE SP_ObtenerSerieYCorrelativo
     @tipo NVARCHAR(20)
 AS
@@ -1220,4 +1231,49 @@ BEGIN
     WHERE id = @id;
 END;
 
+SELECT * FROM Comprobantes
+EXEC sp_help Comprobantes
 
+UPDATE SeriesCorrelativos
+SET correlativo_actual = 0
+WHERE id = 3;
+
+SELECT 
+    id,
+    tipo,
+    serie,
+    FORMAT(correlativo, '00000000') AS correlativo_formateado,
+    subtotal,
+    total_iva,
+    total_a_pagar,
+    total_letras,
+    fecha_emision
+FROM Comprobantes;
+
+SELECT C.serie,FORMAT(C.correlativo, '00000000') AS correlativo,C.orden_pedido_id,C.tipo,
+CONVERT(DATE, C.fecha_emision) AS fechaEmision,CONVERT(TIME, C.fecha_emision) AS horaEmision,
+CL.nombre AS cliente,U.nombre+' '+U.apellido AS vendedor,	DE.nombre + '\' + P.nombre + '\' + D.nombre AS direccion,
+CL.tipo_documento,CL.numero_documento,O.forma_pago
+FROM Comprobantes C
+INNER JOIN OrdenPedido O ON C.orden_pedido_id=O.id
+INNER JOIN Clientes CL ON  O.cliente_id=CL.id
+INNER JOIN Usuarios U ON O.vendedor_id=U.id
+INNER JOIN Distritos D ON CL.distrito_id = D.id
+INNER JOIN Provincias P ON D.provincia_id = P.id
+INNER JOIN Departamentos DE ON P.departamento_id = DE.id
+WHERE 
+
+		SELECT
+		C.nombre AS Cliente,
+		U.nombre + ' ' + U.apellido AS Vendedor,
+		DE.nombre + '\' + P.nombre + '\' + D.nombre AS Ubicacion,
+		C.tipo_documento AS TipoDocumento,
+		C.numero_documento AS NumeroDocumento,
+		OP.forma_pago AS FormaPago
+		FROM OrdenPedido OP
+		JOIN Clientes C ON OP.cliente_id = C.id
+		JOIN Usuarios U ON OP.vendedor_id = U.id
+		JOIN Distritos D ON C.distrito_id = D.id
+		JOIN Provincias P ON D.provincia_id = P.id
+		JOIN Departamentos DE ON P.departamento_id = DE.id
+		WHERE OP.id = @idOrdenPedido;

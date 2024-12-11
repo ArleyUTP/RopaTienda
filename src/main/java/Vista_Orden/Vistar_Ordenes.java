@@ -175,12 +175,19 @@ public class Vistar_Ordenes extends javax.swing.JPanel {
                         comprobante.setCorrelativo(serieCorrelativo.getCorrelativoActual() + 1);
 
                         // Generar el comprobante
+                        System.out.println("Tipo: " + tipoSeleccionado);
+                        System.out.println("Serie: " + comprobante.getSerie());
+                        System.out.println("Correlativo: " + comprobante.getCorrelativo());
+                        System.out.println("Subtotal: " + comprobante.getSubtotal());
+                        System.out.println("Total_Iva: " + comprobante.getTotalIva());
+                        System.out.println("Total a pagar: " + comprobante.getTotalAPagar());
+                        System.out.println("Total En letras:" + comprobante.getTotalLetras());
                         ComprobanteDAO comprobanteDAO = new ComprobanteDAO();
                         long idComprobante = comprobanteDAO.generarComprobante(comprobante);
                         // Actualizar el correlativo en la tabla SeriesCorrelativos
                         seriesDAO.actualizarCorrelativo(serieCorrelativo.getId(), comprobante.getCorrelativo());
-                        if (idComprobante!=0) {
-                            
+                        if (idComprobante != 0) {
+
                         }
                         Notifications.getInstance().show(Notifications.Type.SUCCESS, "Comprobante generado con ID: " + idComprobante);
                     } catch (Exception e) {

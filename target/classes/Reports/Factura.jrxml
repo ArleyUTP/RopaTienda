@@ -2,90 +2,180 @@
 <jasperReport name="Factura" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="65e9376d-bd28-41cb-a186-7b0877a8c72d">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BD_Ex"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="288"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="701"/>
 	<parameter name="orden_id" class="java.lang.Integer">
 		<description><![CDATA[identificador unico de orden]]></description>
 		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
-	<parameter name="tipo" class="java.lang.String">
-		<defaultValueExpression><![CDATA[" "]]></defaultValueExpression>
+	<parameter name="comprobante_id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
-	<query language="sql"><![CDATA[SELECT DC.cantidad,P.descripcion,P.precio_venta precio_unitario,DC.subtotal importe
-FROM OrdenPedido OP
-JOIN CarritoCompras CC ON OP.carrito_id=CC.id
-JOIN DetallesCarritoComprar DC ON DC.carrito_id=CC.id
-JOIN Inventario I ON DC.inventario_id=I.id
-JOIN Producto P ON I.producto_id=P.id
-WHERE OP.id=   $P{orden_id} ]]></query>
-	<field name="cantidad" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="cantidad"/>
-		<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
+	<query language="sql"><![CDATA[SELECT C.serie,FORMAT(C.correlativo, '00000000') AS correlativo,C.orden_pedido_id,C.tipo,
+FORMAT(C.fecha_emision, 'dd/MM/yyyy') AS fechaEmision,    FORMAT(C.fecha_emision, 'HH:mm:ss') AS horaEmision,
+CL.nombre AS cliente,U.nombre+' '+U.apellido AS vendedor,	DE.nombre +', '+ P.nombre  +', '+ D.nombre AS direccion,
+CL.tipo_documento,CL.numero_documento,O.forma_pago,C.subtotal,
+    C.total_iva,
+    C.total_a_pagar,
+    C.total_letras
+FROM Comprobantes C
+INNER JOIN OrdenPedido O ON C.orden_pedido_id=O.id
+INNER JOIN Clientes CL ON  O.cliente_id=CL.id
+INNER JOIN Usuarios U ON O.vendedor_id=U.id
+INNER JOIN Distritos D ON CL.distrito_id = D.id
+INNER JOIN Provincias P ON D.provincia_id = P.id
+INNER JOIN Departamentos DE ON P.departamento_id = DE.id
+WHERE C.id= $P{comprobante_id} ]]></query>
+	<field name="serie" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="serie"/>
+		<property name="com.jaspersoft.studio.field.label" value="serie"/>
 	</field>
-	<field name="descripcion" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="descripcion"/>
-		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+	<field name="correlativo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="correlativo"/>
+		<property name="com.jaspersoft.studio.field.label" value="correlativo"/>
 	</field>
-	<field name="precio_unitario" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="precio_unitario"/>
-		<property name="com.jaspersoft.studio.field.label" value="precio_unitario"/>
+	<field name="orden_pedido_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="orden_pedido_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="orden_pedido_id"/>
 	</field>
-	<field name="importe" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="importe"/>
-		<property name="com.jaspersoft.studio.field.label" value="importe"/>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
 	</field>
-	<field name="fechaEmision" class="java.sql.Date"/>
+	<field name="fechaEmision" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fechaEmision"/>
+		<property name="com.jaspersoft.studio.field.label" value="fechaEmision"/>
+	</field>
+	<field name="horaEmision" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="horaEmision"/>
+		<property name="com.jaspersoft.studio.field.label" value="horaEmision"/>
+	</field>
+	<field name="cliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente"/>
+	</field>
+	<field name="vendedor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="vendedor"/>
+		<property name="com.jaspersoft.studio.field.label" value="vendedor"/>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="direccion"/>
+		<property name="com.jaspersoft.studio.field.label" value="direccion"/>
+	</field>
+	<field name="tipo_documento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo_documento"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo_documento"/>
+	</field>
+	<field name="numero_documento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numero_documento"/>
+		<property name="com.jaspersoft.studio.field.label" value="numero_documento"/>
+	</field>
+	<field name="forma_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="forma_pago"/>
+		<property name="com.jaspersoft.studio.field.label" value="forma_pago"/>
+	</field>
+	<field name="subtotal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.label" value="subtotal"/>
+	</field>
+	<field name="total_iva" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_iva"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_iva"/>
+	</field>
+	<field name="total_a_pagar" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total_a_pagar"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_a_pagar"/>
+	</field>
+	<field name="total_letras" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="total_letras"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_letras"/>
+	</field>
 	<background splitType="Stretch"/>
 	<title height="230" splitType="Stretch">
 		<element kind="rectangle" uuid="594f35f3-7731-4712-8a7b-23a41e678b1f" x="0" y="0" width="280" height="120"/>
 		<element kind="rectangle" uuid="da961d83-cc24-49e5-a20f-1106ae63270b" x="290" y="0" width="265" height="120"/>
-		<element kind="staticText" uuid="b9424176-c6f2-4c6c-b2cd-b54dd866464f" x="290" y="0" width="100" height="16" fontSize="12.0">
+		<element kind="staticText" uuid="b9424176-c6f2-4c6c-b2cd-b54dd866464f" x="290" y="0" width="100" height="16" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[N° de Serie:]]></text>
 		</element>
-		<element kind="staticText" uuid="f5387a30-8505-4a22-a490-ebd8e0aa0f4a" x="290" y="16" width="100" height="16" fontSize="12.0">
+		<element kind="staticText" uuid="f5387a30-8505-4a22-a490-ebd8e0aa0f4a" x="290" y="16" width="100" height="16" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[Correlativo:]]></text>
 		</element>
-		<element kind="rectangle" uuid="5bfd72f2-2c1c-4638-9818-a67eccb6a2f6" x="0" y="130" width="280" height="20"/>
+		<element kind="rectangle" uuid="5bfd72f2-2c1c-4638-9818-a67eccb6a2f6" x="0" y="130" width="250" height="20"/>
 		<element kind="staticText" uuid="8aa8489d-6f13-4523-887c-d2f4d09e80a4" x="0" y="130" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
 			<text><![CDATA[Fecha de Emisión:]]></text>
 		</element>
-		<element kind="rectangle" uuid="7f673319-8562-4855-b77f-62894b3f5425" x="0" y="150" width="280" height="20"/>
+		<element kind="rectangle" uuid="7f673319-8562-4855-b77f-62894b3f5425" x="0" y="150" width="250" height="20"/>
 		<element kind="staticText" uuid="2063a06c-9330-4116-b950-94070deaa3b6" x="0" y="150" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
 			<text><![CDATA[Hora de Emisión:]]></text>
 		</element>
-		<element kind="rectangle" uuid="c76831b9-8a09-4092-872f-a7820c2b978b" x="0" y="170" width="280" height="20"/>
-		<element kind="staticText" uuid="36235d58-0dd1-4261-9f7f-529362b19746" x="0" y="170" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="rectangle" uuid="c76831b9-8a09-4092-872f-a7820c2b978b" x="0" y="170" width="250" height="20"/>
+		<element kind="staticText" uuid="36235d58-0dd1-4261-9f7f-529362b19746" x="0" y="170" width="60" height="20" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
 			<text><![CDATA[Cliente:]]></text>
 		</element>
-		<element kind="rectangle" uuid="858d2361-ce60-45dc-9b2f-0d208827241d" x="280" y="130" width="275" height="20"/>
-		<element kind="staticText" uuid="a0d59746-bae6-45c1-8af4-52f359b088d5" x="280" y="130" width="120" height="20" fontSize="12.0" bold="true">
+		<element kind="rectangle" uuid="858d2361-ce60-45dc-9b2f-0d208827241d" x="250" y="130" width="305" height="20"/>
+		<element kind="staticText" uuid="a0d59746-bae6-45c1-8af4-52f359b088d5" x="250" y="130" width="60" height="20" fontSize="12.0" bold="true" vTextAlign="Middle">
 			<text><![CDATA[Dirección:]]></text>
 		</element>
-		<element kind="rectangle" uuid="eb9e1c5a-2056-4428-bd11-6cfe4f2e11e0" x="280" y="150" width="275" height="20"/>
-		<element kind="staticText" uuid="531ed7f3-3bb5-4bc6-bd0a-b3cca4a539e4" x="280" y="150" width="120" height="20" fontSize="12.0" bold="true">
+		<element kind="rectangle" uuid="eb9e1c5a-2056-4428-bd11-6cfe4f2e11e0" x="250" y="150" width="305" height="20"/>
+		<element kind="staticText" uuid="531ed7f3-3bb5-4bc6-bd0a-b3cca4a539e4" x="250" y="150" width="120" height="20" fontSize="12.0" bold="true" vTextAlign="Middle">
 			<text><![CDATA[Tipo de Documento:]]></text>
 		</element>
-		<element kind="rectangle" uuid="ebc03a9e-7be9-473d-883a-8b5736674c9c" x="280" y="170" width="275" height="20"/>
-		<element kind="staticText" uuid="f8fa3e98-f77d-44da-aa3d-6e44395d9cd1" x="280" y="170" width="120" height="20" fontSize="12.0" bold="true">
+		<element kind="rectangle" uuid="ebc03a9e-7be9-473d-883a-8b5736674c9c" x="250" y="170" width="305" height="20"/>
+		<element kind="staticText" uuid="f8fa3e98-f77d-44da-aa3d-6e44395d9cd1" x="250" y="170" width="120" height="20" fontSize="12.0" bold="true" vTextAlign="Middle">
 			<text><![CDATA[N° de Documento:]]></text>
 		</element>
-		<element kind="rectangle" uuid="fbce9f8a-fe90-4fe2-82d6-8fcffe6a11fb" x="0" y="190" width="280" height="20"/>
-		<element kind="staticText" uuid="b3bfd5e8-8e77-494c-93dd-b32f7fdc4254" x="0" y="190" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+		<element kind="rectangle" uuid="fbce9f8a-fe90-4fe2-82d6-8fcffe6a11fb" x="0" y="190" width="250" height="20"/>
+		<element kind="staticText" uuid="b3bfd5e8-8e77-494c-93dd-b32f7fdc4254" x="0" y="190" width="60" height="20" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
 			<text><![CDATA[Vendedor:]]></text>
 		</element>
-		<element kind="rectangle" uuid="bec632ba-a745-433e-a2d7-1f04485ae9c9" x="280" y="190" width="275" height="20"/>
-		<element kind="staticText" uuid="53f6ba1b-52e6-4afc-be7c-cdb035f0a40c" x="280" y="190" width="120" height="20" fontSize="12.0" bold="true" vTextAlign="Middle">
+		<element kind="rectangle" uuid="bec632ba-a745-433e-a2d7-1f04485ae9c9" x="250" y="190" width="305" height="20"/>
+		<element kind="staticText" uuid="53f6ba1b-52e6-4afc-be7c-cdb035f0a40c" x="250" y="190" width="120" height="20" fontSize="12.0" bold="true" vTextAlign="Middle">
 			<text><![CDATA[Tipo de Pago:]]></text>
 		</element>
-		<element kind="staticText" uuid="93f9aaa8-0334-4560-8658-aa20d60b632f" x="290" y="32" width="100" height="18" fontSize="12.0">
+		<element kind="staticText" uuid="93f9aaa8-0334-4560-8658-aa20d60b632f" x="290" y="32" width="100" height="18" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[N° de Orden:]]></text>
 		</element>
-		<element kind="textField" uuid="6e66e2a9-4fc4-435e-840d-8f5e98fa88fc" x="290" y="70" width="120" height="30" forecolor="#FF0905" fontSize="20.0" linkType="None" linkTarget="Self" hTextAlign="Center">
-			<expression><![CDATA[$P{tipo}]]></expression>
+		<element kind="textField" uuid="7d76ccf6-7a36-4117-a279-41beab895cbb" x="390" y="32" width="165" height="18" fontSize="12.0" vTextAlign="Middle">
+			<expression><![CDATA[$F{orden_pedido_id}]]></expression>
 		</element>
-		<element kind="staticText" uuid="489f36b6-942b-4f87-a619-7129758d14cb" x="390" y="70" width="163" height="30" fontSize="20.0" hTextAlign="Left">
-			<text><![CDATA[de Venta]]></text>
+		<element kind="textField" uuid="3b0c8dfa-bd2f-4305-87bb-689db32a48b9" x="390" y="0" width="165" height="16" fontSize="12.0" vTextAlign="Middle">
+			<expression><![CDATA[$F{serie}]]></expression>
 		</element>
-		<element kind="textField" uuid="84408609-c9fb-4e21-95d3-4cff7ada9e0a" x="120" y="130" width="160" height="20">
+		<element kind="textField" uuid="58f6d9eb-0297-404c-bc06-0e38a774e3f8" x="390" y="16" width="164" height="16" fontSize="12.0" vTextAlign="Middle">
+			<expression><![CDATA[$F{correlativo}]]></expression>
+		</element>
+		<element kind="textField" uuid="9de7bf58-50a2-4e9e-81cd-b2f28e3eee5c" x="120" y="130" width="130" height="20" fontSize="12.0" vTextAlign="Middle">
 			<expression><![CDATA[$F{fechaEmision}]]></expression>
+		</element>
+		<element kind="textField" uuid="629cdc88-5b59-425d-b577-303b52894db9" x="120" y="150" width="130" height="20" fontSize="12.0" vTextAlign="Middle">
+			<expression><![CDATA[$F{horaEmision}]]></expression>
+		</element>
+		<element kind="textField" uuid="353f73b2-1ea3-449e-bd16-9e83de1f7d5f" x="288" y="70" width="267" height="30" fontSize="18.0" hTextAlign="Center">
+			<expression><![CDATA[$F{tipo}]]></expression>
+		</element>
+		<element kind="textField" uuid="238a06ce-55f1-412f-9832-e7789d6b0d49" x="60" y="170" width="190" height="20" fontSize="12.0" textAdjust="StretchHeight" vTextAlign="Middle">
+			<expression><![CDATA[$F{cliente}]]></expression>
+		</element>
+		<element kind="textField" uuid="8adf695b-1b69-42f2-8408-ad2fc35b986b" x="60" y="190" width="190" height="20" fontSize="12.0" textAdjust="StretchHeight" vTextAlign="Middle">
+			<expression><![CDATA[$F{vendedor}]]></expression>
+		</element>
+		<element kind="textField" uuid="55a0f167-cde0-4c5b-8a03-f8c5aa7ffcb2" x="310" y="130" width="245" height="20" fontSize="12.0" textAdjust="StretchHeight" vTextAlign="Middle">
+			<expression><![CDATA[$F{direccion}]]></expression>
+		</element>
+		<element kind="textField" uuid="8f788bc4-5785-4ac2-80dd-89c79478256a" x="400" y="150" width="155" height="20" fontSize="12.0" vTextAlign="Middle">
+			<expression><![CDATA[$F{tipo_documento}]]></expression>
+		</element>
+		<element kind="textField" uuid="75f060e8-e1a8-4c9e-ac85-df62ea9ed14b" x="400" y="170" width="155" height="20" fontSize="12.0" vTextAlign="Middle">
+			<expression><![CDATA[$F{numero_documento}]]></expression>
+		</element>
+		<element kind="textField" uuid="a6521ac2-0d2a-4b1d-a8d2-08cfd660b769" x="400" y="190" width="155" height="20" fontSize="12.0" textAdjust="StretchHeight" vTextAlign="Middle">
+			<expression><![CDATA[$F{forma_pago}]]></expression>
+		</element>
+		<element kind="image" uuid="c1c7342e-2b52-4d5d-8a54-74638323b469" x="10" y="10" width="110" height="100" onErrorType="Icon">
+			<expression><![CDATA["Logo.png"]]></expression>
+		</element>
+		<element kind="staticText" uuid="bb73b3f5-4e81-43fb-b268-d7cba9ab8c74" x="120" y="0" width="160" height="120" fontSize="18.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[INKAFASHION]]></text>
 		</element>
 	</title>
 	<columnHeader height="30" splitType="Stretch">
@@ -107,25 +197,25 @@ WHERE OP.id=   $P{orden_id} ]]></query>
 		</element>
 	</columnHeader>
 	<summary height="384" splitType="Stretch">
-		<element kind="rectangle" uuid="50a96734-6490-4782-b4d7-5bbbfd20a120" x="-2" y="220" width="280" height="20"/>
-		<element kind="rectangle" uuid="b5b38253-09ef-4662-bb23-98246e0ece80" x="398" y="220" width="155" height="20"/>
+		<element kind="rectangle" uuid="50a96734-6490-4782-b4d7-5bbbfd20a120" x="0" y="280" width="555" height="20"/>
+		<element kind="rectangle" uuid="b5b38253-09ef-4662-bb23-98246e0ece80" x="398" y="220" width="157" height="20"/>
 		<element kind="rectangle" uuid="d888ea04-c922-453c-b11d-5334cb3c83c8" x="278" y="220" width="120" height="20"/>
 		<element kind="staticText" uuid="86d3c0bb-7efd-471d-b114-7eea6b234218" x="278" y="220" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[Subtotal:]]></text>
 		</element>
-		<element kind="staticText" uuid="ce09c5b9-1b4e-4f76-a4ce-35559fd9fd59" x="-2" y="220" width="100" height="20" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="staticText" uuid="ce09c5b9-1b4e-4f76-a4ce-35559fd9fd59" x="-2" y="280" width="100" height="20" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[Total en Letras:]]></text>
 		</element>
 		<element kind="rectangle" uuid="c2ce37c7-a462-4ee9-aab9-3d2e47fd7cc3" x="278" y="240" width="120" height="20"/>
-		<element kind="rectangle" uuid="21054c91-57f4-4906-a9e6-5ac34f97e785" x="398" y="240" width="155" height="20"/>
+		<element kind="rectangle" uuid="21054c91-57f4-4906-a9e6-5ac34f97e785" x="398" y="240" width="157" height="20"/>
 		<element kind="staticText" uuid="757a999e-9ebd-4652-bbf8-32a46fb1ca51" x="278" y="240" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[Total IVA:]]></text>
 		</element>
-		<element kind="staticText" uuid="1fd40069-1de8-4bfe-8756-4129e8aba259" x="78" y="290" width="399" height="30" fontSize="14.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+		<element kind="staticText" uuid="1fd40069-1de8-4bfe-8756-4129e8aba259" x="78" y="330" width="399" height="20" fontSize="14.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[Gracias por su compra]]></text>
 		</element>
 		<element kind="rectangle" uuid="d7ccb81f-a2e8-48b1-93df-024ca5c988b7" x="278" y="260" width="120" height="20"/>
-		<element kind="rectangle" uuid="8f445709-50aa-4b9e-8987-dca650241c07" x="398" y="260" width="155" height="20"/>
+		<element kind="rectangle" uuid="8f445709-50aa-4b9e-8987-dca650241c07" x="398" y="260" width="157" height="20"/>
 		<element kind="staticText" uuid="9f4f85f9-6595-4165-bae1-f86eac32618a" x="278" y="260" width="120" height="20" fontSize="12.0" bold="true" hTextAlign="Center">
 			<text><![CDATA[Total]]></text>
 		</element>
@@ -135,6 +225,18 @@ WHERE OP.id=   $P{orden_id} ]]></query>
 			<parameter name="orden_id">
 				<expression><![CDATA[$P{orden_id}]]></expression>
 			</parameter>
+		</element>
+		<element kind="textField" uuid="ebb42fda-9081-46ba-9aa4-ff25fb8d3b38" x="400" y="220" width="157" height="20" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{subtotal}]]></expression>
+		</element>
+		<element kind="textField" uuid="a065c92b-9857-4d20-8f63-249f05734ec0" x="398" y="240" width="157" height="20" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{total_iva}]]></expression>
+		</element>
+		<element kind="textField" uuid="d3913d10-175a-48f1-b933-cdc2fba60205" x="398" y="260" width="156" height="20" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{total_a_pagar}]]></expression>
+		</element>
+		<element kind="textField" uuid="38c1a77e-ffae-4a21-954c-5cc9549d1e25" x="98" y="280" width="457" height="20" fontSize="12.0" textAdjust="StretchHeight" vTextAlign="Middle">
+			<expression><![CDATA[$F{total_letras}]]></expression>
 		</element>
 	</summary>
 </jasperReport>

@@ -81,19 +81,22 @@ public class Comprobante {
     }
 
     public double getTotalIva() {
-        // Calcula el IVA según el tipo y el subtotal
         final double IVA = 0.18;
         if ("Factura".equalsIgnoreCase(tipo) || ("Boleta".equalsIgnoreCase(tipo) && subtotal > 750)) {
             totalIva = subtotal * IVA;
         } else {
             totalIva = 0;
         }
+        // Redondear a 2 decimales
+        totalIva = Math.round(totalIva * 100.0) / 100.0;
         return totalIva;
     }
-
+    
     public double getTotalAPagar() {
-        // Calcula el total a pagar sumando el subtotal y el IVA
         totalAPagar = getSubtotal() + getTotalIva();
+        // Redondear a 2 decimales
+        totalAPagar = Math.round(totalAPagar * 100.0) / 100.0;
         return totalAPagar;
     }
+    
 }
