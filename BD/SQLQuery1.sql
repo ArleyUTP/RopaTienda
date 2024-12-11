@@ -1251,9 +1251,12 @@ SELECT
 FROM Comprobantes;
 
 SELECT C.serie,FORMAT(C.correlativo, '00000000') AS correlativo,C.orden_pedido_id,C.tipo,
-CONVERT(DATE, C.fecha_emision) AS fechaEmision,CONVERT(TIME, C.fecha_emision) AS horaEmision,
+FORMAT(C.fecha_emision, 'dd/MM/yyyy') AS fechaEmision,    FORMAT(C.fecha_emision, 'HH:mm:ss') AS horaEmision,
 CL.nombre AS cliente,U.nombre+' '+U.apellido AS vendedor,	DE.nombre + '\' + P.nombre + '\' + D.nombre AS direccion,
-CL.tipo_documento,CL.numero_documento,O.forma_pago
+CL.tipo_documento,CL.numero_documento,O.forma_pago,C.subtotal,
+    C.total_iva,
+    C.total_a_pagar,
+    C.total_letras
 FROM Comprobantes C
 INNER JOIN OrdenPedido O ON C.orden_pedido_id=O.id
 INNER JOIN Clientes CL ON  O.cliente_id=CL.id
@@ -1261,19 +1264,4 @@ INNER JOIN Usuarios U ON O.vendedor_id=U.id
 INNER JOIN Distritos D ON CL.distrito_id = D.id
 INNER JOIN Provincias P ON D.provincia_id = P.id
 INNER JOIN Departamentos DE ON P.departamento_id = DE.id
-WHERE 
-
-		SELECT
-		C.nombre AS Cliente,
-		U.nombre + ' ' + U.apellido AS Vendedor,
-		DE.nombre + '\' + P.nombre + '\' + D.nombre AS Ubicacion,
-		C.tipo_documento AS TipoDocumento,
-		C.numero_documento AS NumeroDocumento,
-		OP.forma_pago AS FormaPago
-		FROM OrdenPedido OP
-		JOIN Clientes C ON OP.cliente_id = C.id
-		JOIN Usuarios U ON OP.vendedor_id = U.id
-		JOIN Distritos D ON C.distrito_id = D.id
-		JOIN Provincias P ON D.provincia_id = P.id
-		JOIN Departamentos DE ON P.departamento_id = DE.id
-		WHERE OP.id = @idOrdenPedido;
+WHERE C.id=5

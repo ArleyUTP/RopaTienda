@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import javax.swing.WindowConstants;
 
 import Abstrac.DAO;
+import java.io.InputStream;
 import java.util.HashMap;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -17,10 +18,17 @@ public class Jasper extends DAO {
 
     public Jasper() {
         try {
-            HashMap parametros = new HashMap();
+            JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reports/Factura.jasper"));
+            InputStream subReportStream = getClass().getResourceAsStream("/Reports/DetallesProductos.jasper");
+            if (subReportStream == null) {
+                System.out.println("Subreporte no encontrado");
+            } else {
+                System.out.println("Subreporte cargado correctamente");
+            }
+            HashMap<String, Object> parametros = new HashMap<>();
             parametros.put("orden_id", 1);
             parametros.put("comprobante_id", 5);
-            JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reports/Factura.jasper"));
+//            parametros.put("SubReport", subReportStream);  // Usar el subreporte como InputStream
             JasperPrint jPrint = JasperFillManager.fillReport(report, parametros, getconection());
             JasperViewer view = new JasperViewer(jPrint, false);
             view.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
