@@ -287,7 +287,7 @@ public class Productos_Detalles extends javax.swing.JPanel {
         ProductoInventarioDAO productoInventarioDAO = new ProductoInventarioDAO();
         CarritoDetalles carritoDetalles = new CarritoDetalles();
         if (tallaDeRopaSeccionada != null & colorDeRopaSeleccionada != null) {
-            if ((int) cantidad.getValue() <= 0) {
+            if ((int) cantidad.getValue() > 0 && carritoDetalles!= null) {
                 int idVariante = productoInventarioDAO.obtenerIdVariantePorTallayColor(tallaDeRopaSeccionada, colorDeRopaSeleccionada);
                 if (idVariante != 0) {
                     ProductoInventario productoInventario = new ProductoInventario();

@@ -6,8 +6,10 @@ import Modelo.Usuario;
 import Persistencia.CarritoComprasDAO;
 import Persistencia.CarritoDetallesDAO;
 import com.formdev.flatlaf.FlatClientProperties;
+import java.awt.Dimension;
 import java.util.List;
 import javax.swing.BorderFactory;
+import raven.toast.Notifications;
 
 public class CarritoCompra extends javax.swing.JPanel {
 
@@ -37,17 +39,24 @@ public class CarritoCompra extends javax.swing.JPanel {
     }
 
     public void cargarDatos() {
+        CarritoComprasDAO carritoComprasDAO = new CarritoComprasDAO();
+        CarritoDetallesDAO carritoDetallesDAO = new CarritoDetallesDAO();
         if (usuario != null) {
-            CarritoComprasDAO carritoComprasDAO = new CarritoComprasDAO();
-            CarritoDetallesDAO carritoDetallesDAO = new CarritoDetallesDAO();
             carritoCompra = carritoComprasDAO.obtenerCarritoCompras(usuario);
-            List<CarritoDetalles> listaCarritoDetalle = carritoDetallesDAO.obtenerDetallesPorCarrito(carritoCompra);
-            listaCarritoDetalle.forEach(carritoDetalle -> {
-                Item_Carrrito item_Carrrito = new Item_Carrrito(carritoDetalle);
-                panelCentrar.add(item_Carrrito);
-            });
-            panelCentrar.revalidate();
-            panelCentrar.repaint();
+            if (carritoCompra != null) {
+                List<CarritoDetalles> listaCarritoDetalle = carritoDetallesDAO.obtenerDetallesPorCarrito(carritoCompra);
+                if (!listaCarritoDetalle.isEmpty()) {
+                    listaCarritoDetalle.forEach(carritoDetalle -> {
+                        Item_Carrrito item_Carrrito = new Item_Carrrito(carritoDetalle);
+                        item_Carrrito.setPreferredSize(new Dimension(240, 20));
+                        panelCentrar.add(item_Carrrito);
+                    });
+                    panelCentrar.revalidate();
+                    panelCentrar.repaint();
+                } else {
+                    Notifications.getInstance().show(Notifications.Type.INFO, "No hay Productos en el Carrito");
+                }
+            }
         }
     }
 
@@ -84,7 +93,7 @@ public class CarritoCompra extends javax.swing.JPanel {
 
         jScrollPane1.setBorder(null);
 
-        panelCentrar.setLayout(new javax.swing.BoxLayout(panelCentrar, javax.swing.BoxLayout.Y_AXIS));
+        panelCentrar.setLayout(new java.awt.GridLayout(0, 1));
 
         // Espaciado entre elementos
         panelCentrar.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Opcional

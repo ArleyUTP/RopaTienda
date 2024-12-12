@@ -12,6 +12,7 @@
 		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SubReport" class="java.io.InputStream"/>
+	<parameter name="Logo" class="java.io.InputStream"/>
 	<query language="sql"><![CDATA[SELECT C.serie,FORMAT(C.correlativo, '00000000') AS correlativo,C.orden_pedido_id,C.tipo,
 FORMAT(C.fecha_emision, 'dd/MM/yyyy') AS fechaEmision,    FORMAT(C.fecha_emision, 'HH:mm:ss') AS horaEmision,
 CL.nombre AS cliente,U.nombre+' '+U.apellido AS vendedor,	DE.nombre +', '+ P.nombre  +', '+ D.nombre AS direccion,
@@ -173,7 +174,7 @@ WHERE C.id= $P{comprobante_id} ]]></query>
 			<expression><![CDATA[$F{forma_pago}]]></expression>
 		</element>
 		<element kind="image" uuid="c1c7342e-2b52-4d5d-8a54-74638323b469" x="10" y="10" width="110" height="100" onErrorType="Icon">
-			<expression><![CDATA["Logo.png"]]></expression>
+			<expression><![CDATA[$P{Logo}]]></expression>
 		</element>
 		<element kind="staticText" uuid="bb73b3f5-4e81-43fb-b268-d7cba9ab8c74" x="120" y="0" width="160" height="120" fontSize="18.0" hTextAlign="Center" vTextAlign="Middle">
 			<text><![CDATA[INKAFASHION]]></text>
@@ -232,7 +233,7 @@ WHERE C.id= $P{comprobante_id} ]]></query>
 		<element kind="textField" uuid="38c1a77e-ffae-4a21-954c-5cc9549d1e25" x="98" y="280" width="457" height="20" fontSize="12.0" textAdjust="StretchHeight" vTextAlign="Middle">
 			<expression><![CDATA[$F{total_letras}]]></expression>
 		</element>
-		<element kind="subreport" uuid="bc31a26f-fad4-4d18-8975-9c47e694d545" x="0" y="0" width="554" height="20">
+		<element kind="subreport" uuid="bc31a26f-fad4-4d18-8975-9c47e694d545" x="-20" y="0" width="595" height="20">
 			<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 			<expression><![CDATA[$P{SubReport}]]></expression>
 			<parameter name="orden_id">

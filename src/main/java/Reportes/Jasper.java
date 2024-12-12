@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import javax.swing.WindowConstants;
 
 import Abstrac.DAO;
+import Modelo.OrdenPedido;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import net.sf.jasperreports.engine.JRException;
@@ -17,24 +19,34 @@ import net.sf.jasperreports.view.JasperViewer;
 public class Jasper extends DAO {
 
     public Jasper() {
+    }
+
+    public void generarReporte(OrdenPedido ordenPedido, int idComprobante) throws IOException {
         try {
             JasperReport report = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reports/Factura.jasper"));
+
+            HashMap<String, Object> parametros = new HashMap<>();
+            parametros.put("orden_id", ordenPedido.getId());
+            parametros.put("comprobante_id", idComprobante);
+
             InputStream subReportStream = getClass().getResourceAsStream("/Reports/DetallesProductos.jasper");
             if (subReportStream == null) {
-                System.out.println("Subreporte no encontrado");
-            } else {
-                System.out.println("Subreporte cargado correctamente");
+                throw new IOException("Subreporte no encontrado");
             }
-            HashMap<String, Object> parametros = new HashMap<>();
-            parametros.put("orden_id", 1);
-            parametros.put("comprobante_id", 5);
-//            parametros.put("SubReport", subReportStream);  // Usar el subreporte como InputStream
+            parametros.put("SubReport", subReportStream);
+
+            InputStream logoStream = getClass().getResourceAsStream("/Reports/Logo.png");
+            if (logoStream == null) {
+                throw new IOException("Logo no encontrado");
+            }
+            parametros.put("Logo", logoStream);
+
             JasperPrint jPrint = JasperFillManager.fillReport(report, parametros, getconection());
             JasperViewer view = new JasperViewer(jPrint, false);
             view.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             view.setVisible(true);
         } catch (JRException e) {
-            manejarError("Error al mostrar informe", e);
+            manejarError("Error al generar reporte", e);
         }
     }
 
@@ -43,7 +55,10 @@ public class Jasper extends DAO {
         throw new UnsupportedOperationException("Unimplemented method 'parsear'");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Jasper jasper = new Jasper();
+        OrdenPedido ordenPedido = new OrdenPedido();
+        ordenPedido.setId(1);
+        jasper.generarReporte(ordenPedido, 5);
     }
 }

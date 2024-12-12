@@ -58,13 +58,13 @@ public class OrdenPedidoDAO extends DAO<OrdenPedido> {
 
         }
     }
-    
-    public void rellenarDatosVistaPrevia(OrdenPedido ordenPedido,JLabel lbl_nombreCLiente, JLabel lbl_nombreVendedor,JLabel lbl_direccion,JLabel lbl_tipoDocumeto,JLabel lbl_numeroDocumento,JLabel lbl_tipoPago){
+
+    public void rellenarDatosVistaPrevia(OrdenPedido ordenPedido, JLabel lbl_nombreCLiente, JLabel lbl_nombreVendedor, JLabel lbl_direccion, JLabel lbl_tipoDocumeto, JLabel lbl_numeroDocumento, JLabel lbl_tipoPago) {
         String sql = "EXEC SP_ObtenerDatosPedido ?";
-        try (Connection con = getconection();CallableStatement cs = con.prepareCall(sql)){
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall(sql)) {
             cs.setInt(1, ordenPedido.getId());
-            try(ResultSet rs = cs.executeQuery()){
-                while(rs.next()){
+            try (ResultSet rs = cs.executeQuery()) {
+                while (rs.next()) {
                     lbl_nombreCLiente.setText(rs.getString("Cliente"));
                     lbl_nombreVendedor.setText(rs.getString("Vendedor"));
                     lbl_direccion.setText(rs.getString("Ubicacion"));
@@ -77,22 +77,24 @@ public class OrdenPedidoDAO extends DAO<OrdenPedido> {
             // TODO: handle exception
         }
     }
-    public OrdenPedido obtenerOrdenPedidoPorId(int id){
+
+    public OrdenPedido obtenerOrdenPedidoPorId(int id) {
         OrdenPedido ordenPedido = null;
         String sql = "EXEC SP_ObtenerOrdenPorId ?";
-        try (Connection con = getconection();CallableStatement cs = con.prepareCall(sql)){
+        try (Connection con = getconection(); CallableStatement cs = con.prepareCall(sql)) {
             cs.setInt(1, id);
-            try(ResultSet rs = cs.executeQuery()){
+            try (ResultSet rs = cs.executeQuery()) {
                 if (rs.next()) {
                     ordenPedido = parsear(rs);
                 }
             }
-            
+
         } catch (Exception e) {
             manejarError("Error al obtener Orden pedido por id", e);
         }
         return ordenPedido;
     }
+
     @Override
     public OrdenPedido parsear(ResultSet rs) {
         OrdenPedido ordenPedido = new OrdenPedido();

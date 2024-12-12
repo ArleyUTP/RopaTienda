@@ -1,11 +1,6 @@
 package Vista;
 
-import Componentes.Ofertas_Item;
-import Modelo.CarritoCompras;
-import Modelo.CarritoDetalles;
 import Modelo.Usuario;
-import Persistencia.CarritoComprasDAO;
-import Persistencia.CarritoDetallesDAO;
 import Vista_Orden.CarritoCompra;
 import Vista_Orden.GenerarOrder;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -16,7 +11,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.ImageIcon;
 import raven.drawer.Drawer;
 import raven.popup.DefaultOption;
 import raven.popup.GlassPanePopup;
@@ -87,15 +81,15 @@ public class Menu_Principal extends javax.swing.JFrame {
                 drawerPanel.setBackground(Color.decode("#39E079"));
             }
         }
-        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png"), "S/.1000", "12-10-2024"));
-        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\WHITE GLENN SHIRT - WHITE GLENN SHIRT.jpeg"), "S/.1000", "12-10-2024"));
-        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\Zapatos semiformales.jpeg"), "S/.1000", "12-10-2024"));
-        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\Zapatos semiformales.jpeg"), "S/.1000", "12-10-2024"));
-        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\Zapatos semiformales.jpeg"), "S/.1000", "12-10-2024"));
-        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\Zapatos semiformales.jpeg"), "S/.1000", "12-10-2024"));
-        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\Zapatos semiformales.jpeg"), "S/.1000", "12-10-2024"));
-        contenedorOfertas.revalidate();
-        contenedorOfertas.repaint();
+//        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Desktop\\UTP\\pinterest\\descarga (2)_x16_drawing.png"), "S/.1000", "12-10-2024"));
+//        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\WHITE GLENN SHIRT - WHITE GLENN SHIRT.jpeg"), "S/.1000", "12-10-2024"));
+//        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\Zapatos semiformales.jpeg"), "S/.1000", "12-10-2024"));
+//        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\Zapatos semiformales.jpeg"), "S/.1000", "12-10-2024"));
+//        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\Zapatos semiformales.jpeg"), "S/.1000", "12-10-2024"));
+//        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\Zapatos semiformales.jpeg"), "S/.1000", "12-10-2024"));
+//        contenedorOfertas.add(new Ofertas_Item(new ImageIcon("C:\\Users\\user\\Downloads\\Zapatos semiformales.jpeg"), "S/.1000", "12-10-2024"));
+//        contenedorOfertas.revalidate();
+//        contenedorOfertas.repaint();
     }
 
     @SuppressWarnings("unchecked")
@@ -181,40 +175,6 @@ public class Menu_Principal extends javax.swing.JFrame {
         Drawer.getInstance().showDrawer();
     }//GEN-LAST:event_jMenu1MouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(Menu_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new Menu_Principal().setVisible(true);
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelSuperior;

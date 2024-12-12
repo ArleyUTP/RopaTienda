@@ -3,7 +3,6 @@ package Vista_Productos;
 import Modelo.Producto;
 import Modelo.ProductoInventario;
 import Persistencia.ProductoDAO;
-import Persistencia.ProductoInventarioDAO;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Dimension;

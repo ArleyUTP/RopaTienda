@@ -9,7 +9,10 @@ import Persistencia.ComprobanteDAO;
 import com.formdev.flatlaf.FlatClientProperties;
 import Persistencia.OrdenPedidoDAO;
 import Persistencia.SeriesCorrelativosDAO;
+import Reportes.Jasper;
 import Reportes.Vista_Previa;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -173,7 +176,6 @@ public class Vistar_Ordenes extends javax.swing.JPanel {
                         SeriesCorrelativos serieCorrelativo = seriesDAO.obtenerSerieYCorrelativo(tipoSeleccionado);
                         comprobante.setSerie(serieCorrelativo.getSerie());
                         comprobante.setCorrelativo(serieCorrelativo.getCorrelativoActual() + 1);
-
                         // Generar el comprobante
                         System.out.println("Tipo: " + tipoSeleccionado);
                         System.out.println("Serie: " + comprobante.getSerie());
@@ -184,13 +186,13 @@ public class Vistar_Ordenes extends javax.swing.JPanel {
                         System.out.println("Total En letras:" + comprobante.getTotalLetras());
                         ComprobanteDAO comprobanteDAO = new ComprobanteDAO();
                         long idComprobante = comprobanteDAO.generarComprobante(comprobante);
-                        // Actualizar el correlativo en la tabla SeriesCorrelativos
                         seriesDAO.actualizarCorrelativo(serieCorrelativo.getId(), comprobante.getCorrelativo());
                         if (idComprobante != 0) {
-
+                            Jasper jasper = new Jasper();
+                            jasper.generarReporte(ordenSeleccionada, (int) idComprobante);
                         }
                         Notifications.getInstance().show(Notifications.Type.SUCCESS, "Comprobante generado con ID: " + idComprobante);
-                    } catch (Exception e) {
+                    } catch (IOException | SQLException e) {
                         Notifications.getInstance().show(Notifications.Type.ERROR, "Error al generar comprobante: " + e.getMessage());
                     }
                 }
