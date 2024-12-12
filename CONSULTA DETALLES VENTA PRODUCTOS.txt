@@ -1,7 +1,0 @@
-SELECT DC.cantidad,P.descripcion,P.precio_venta,DC.subtotal
-FROM OrdenPedido OP
-JOIN CarritoCompras CC ON OP.carrito_id=CC.id
-JOIN DetallesCarritoComprar DC ON DC.carrito_id=CC.id
-JOIN Inventario I ON DC.inventario_id=I.id
-JOIN Producto P ON I.producto_id=P.id
-WHERE OP.id=1
